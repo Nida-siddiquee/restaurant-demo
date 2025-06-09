@@ -44,3 +44,23 @@ npm run build
 
 # 6. Run locally in Docker
 docker-compose up --build
+
+---
+
+## 📦 Available Scripts
+
+| Command                | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `npm start`            | Start development server with HMR (Vite)     |
+| `npm run build`        | Build production bundle                      |
+| `npm test`             | Run unit tests via Jest                      |
+| `npm run e2e`          | Run end-to-end tests with Playwright         |
+| `npm run lint`         | Lint code with ESLint                        |
+| `npm run format`       | Format code with Prettier                    |
+| `npm run type-check`   | Run TypeScript strict type checks            |
+| `npm run storybook`    | Launch Storybook for UI development (if any) |
+
+
+
+
+
