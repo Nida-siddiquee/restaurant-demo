@@ -5,25 +5,27 @@
 ──────────────────────────────────────────────────────────────────────────────*/
 :root {
   /* Font stack & text */
-  --font-family:      system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --line-height:      1.5;
-  --fw-normal:        400;
-  --fw-medium:        500;
+  --font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --line-height: 1.5;
+  --fw-normal: 400;
+  --fw-medium: 500;
 
   /* Light‐mode colors */
-  --color-text:            #213547;
-  --color-bg:              #ffffff;
-  --color-card-bg:         #ffffff;
-  --color-primary:         #ef7902;
-  --color-primary-light:   #db7228da;
-  --color-border:          #e2e8f0;
-  --color-shadow-1:        rgba(0, 112, 243, 0.05);
-  --color-shadow-2:        rgba(0, 112, 243, 0.10);
+  --color-text: #213547;
+  --color-bg: #ffffff;
+  --color-tab-bg: #f5f3f1;
+  --color-tab-bg-hover: #eae6e4;
+  --color-card-bg: #ffffff;
+  --color-primary: #FF8000;
+  --color-primary-light: #db7228da;
+  --color-border: #e2e8f0;
+  --color-shadow-1: rgba(0, 112, 243, 0.05);
+  --color-shadow-2: rgba(25, 41, 60, 0.1);
 
   /* Global type settings */
   font-family: var(--font-family);
-  line-height:  var(--line-height);
-  font-weight:  var(--fw-normal);
+  line-height: var(--line-height);
+  font-weight: var(--fw-normal);
   color-scheme: light;
 }
 
@@ -36,7 +38,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background-color: var(--color-bg);
@@ -49,12 +52,17 @@ a {
   font-weight: var(--fw-medium);
   text-decoration: none;
   transition: color 0.2s ease;
-}
-a:hover {
-  color: var(--color-primary-light);
+  cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6 {
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: var(--fw-medium);
 }
@@ -70,11 +78,9 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-primary-light)
-  );
+  background: linear-gradient(135deg,
+      var(--color-primary),
+      var(--color-primary-light));
   color: #fff;
   box-shadow:
     0 4px 12px var(--color-shadow-1),
@@ -99,7 +105,9 @@ button:disabled {
   box-shadow: none;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.3;
@@ -122,7 +130,9 @@ textarea:focus {
 /*──────────────────────────────────────────────────────────────────────────────
   4. Utility & Layout Helpers
 ──────────────────────────────────────────────────────────────────────────────*/
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -136,10 +146,3 @@ html, body, #root {
 /*──────────────────────────────────────────────────────────────────────────────
   5. Default Card Override for Components
 ──────────────────────────────────────────────────────────────────────────────*/
-.card-container {
-  background: var(--color-card-bg);
-  border-radius: 16px;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.05),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-}

@@ -1,40 +1,70 @@
-import styled from 'styled-components';
+import styled from "styled-components"
 
-export const Container = styled.div`
-  max-width: 400px;
-  margin: 4rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-`;
+export const Page = styled.div`
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+`
 
 export const Title = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
   text-align: center;
-`;
+  margin-bottom: 1.5rem;
+`
 
-export const Select = styled.select`
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 1rem;
-`;
+export const Grid = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+`
+
+export const Card = styled.div`
+  background: var(--color-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`
+
+export const Name = styled.h3`
+  margin: 0;
+  padding: 1rem;
+  font-size: 1.25rem;
+  background: var(--color-primary);
+  color: white;
+`
+
+export const Body = styled.div`
+  padding: 1rem;
+  flex: 1;
+`
+
+export const Address = styled.p`
+  margin: 0.5rem 0;
+  color: #555;
+  font-size: 0.9rem;
+`
+
+export const Rating = styled.span`
+  font-weight: bold;
+  color: #f5a623;
+`
 
 export const Button = styled.button`
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  background-color: #0070f3;
+  margin: 1rem;
+  background: var(--color-primary);
   color: white;
+  padding: 0.75rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
 
   &:hover {
-    background-color: #0059c1;
+    background: var(--color-primary-dark);
   }
-`;
+`
+
+export const ErrorMsg = styled.p`
+  color: red;
+  text-align: center;
+`

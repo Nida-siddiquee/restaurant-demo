@@ -4,7 +4,7 @@ import {
   Container,
   Title,
   Select,
-  Button,
+ 
 } from './PostcodeSelect.styled';
 import {
   fetchPostcodesRequest,
@@ -12,6 +12,7 @@ import {
 } from '@/features/postcodes/postcodesSlice';
 import { RootState } from '@/app/store';
 import { useNavigate } from 'react-router-dom';
+import PrimaryButton from '@/components/Atoms/PrimaryButton';
 
 const PostcodeSelectPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,9 +55,9 @@ const PostcodeSelectPage: React.FC = () => {
               </option>
             ))}
           </Select>
-          <Button onClick={handleSubmit} disabled={!localPostcode}>
+          <PrimaryButton onClick={handleSubmit} disabled={!localPostcode}>
             View Restaurants
-          </Button>
+          </PrimaryButton>
         </>
       )}
     </Container>
