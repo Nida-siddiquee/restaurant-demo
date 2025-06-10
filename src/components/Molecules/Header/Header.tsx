@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
   return (
     <HeaderWrapper>
-      <LogoContainer>
+      <LogoContainer to={selectedPostcode ? 'restaurants' : '/'}>
         <img src={LogoSVG} alt="logo" />
       </LogoContainer>
       {selectedPostcode && (

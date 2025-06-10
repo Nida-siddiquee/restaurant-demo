@@ -13,6 +13,7 @@ import {
 import { RootState } from '@/app/store';
 import { useNavigate } from 'react-router-dom';
 import PrimaryButton from '@/components/Atoms/PrimaryButton';
+import { fetchRestaurantsRequest } from '@/features/restaurants/restaurantsSlice';
 
 const PostcodeSelectPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const PostcodeSelectPage: React.FC = () => {
     const selectedPostcode = postcodes.find((p) => p.code === localPostcode);
     if (selectedPostcode) {
       dispatch(selectPostcode(selectedPostcode));
+      dispatch(fetchRestaurantsRequest(selectedPostcode.code));
       navigate('/restaurants'); // Route to your restaurants listing page
     }
   };

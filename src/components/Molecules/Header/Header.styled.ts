@@ -31,7 +31,7 @@ export const HeaderWrapper = styled.header`
   }
 `;
 
-export const LogoContainer = styled.div`
+export const LogoContainer = styled(Link)`
   display: flex;
   align-items: center;
   gap: 1rem;

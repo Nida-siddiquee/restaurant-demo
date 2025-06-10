@@ -5,7 +5,7 @@ import {  Restaurant, RestaurantsResponse } from './types';
 export const fetchRestaurantsRequest = createAction< string >('restaurants/fetchRestaurantsRequest');
 export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>('restaurants/fetchRestaurantsSuccess');
 export const fetchRestaurantsFailure = createAction<string>('restaurants/fetchRestaurantsFailure');
-
+export const setSearchQuery = createAction<string>('restaurants/setSearchQuery');
 export const selectRestaurant = createAction<string>('restaurants/selectRestaurant')
 
 interface RestaurantsState {
@@ -14,6 +14,8 @@ interface RestaurantsState {
   error: string | null;
   selectedId: string | null
   selected: Restaurant | null
+    searchQuery: string;   // Add this line
+
 }
 
 const initialState: RestaurantsState = {
@@ -22,6 +24,7 @@ const initialState: RestaurantsState = {
   error: null,
   selectedId: null,
   selected: null,
+searchQuery:''
 };
 
 export const restaurantsSlice = createSlice({
@@ -35,13 +38,14 @@ export const restaurantsSlice = createSlice({
       .addCase(fetchRestaurantsRequest, (state) => {
         state.loading = true;
         state.error = null;
+        state.data = null
       })
       .addCase(fetchRestaurantsSuccess, (state, action: PayloadAction<RestaurantsResponse>) => {
         state.loading = false;
         state.data = action.payload;
-        // if (state.selectedId) {
-        //   state.selected = state.data.find(r => r.id === state.selectedId) || null
-        // }
+        if (state.selectedId) {
+          state.selected = state.data.restaurants.find(r => r.id === state.selectedId) || null
+        }
       })
       .addCase(fetchRestaurantsFailure, (state, action: PayloadAction<string>) => {
         state.loading = false;
@@ -49,7 +53,10 @@ export const restaurantsSlice = createSlice({
       })
        .addCase(selectRestaurant, (state, action: PayloadAction<string>) => {
         state.selectedId = action.payload
-        // state.selected = state.data.find(r => r.id === action.payload) || null
+        state.selected = state.data?.restaurants.find(r => r.id === action.payload) || null
+      })
+      .addCase(setSearchQuery, (state, action: PayloadAction<string>) => {
+        state.searchQuery = action.payload;
       }),
 });
 
