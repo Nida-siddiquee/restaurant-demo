@@ -6,7 +6,7 @@ export function highlightMatch(text: string, query: string) {
     <>
       {parts.map((part, i) =>
         regex.test(part) ? (
-          <mark key={i} style={{ background: '#ffe08a', color: '#262626' }}>{part}</mark>
+          <mark key={i} style={{ background: 'var(--color-primary-light)', color: 'var(--color-text)' }}>{part}</mark>
         ) : (
           part
         )

@@ -10,7 +10,10 @@ export const Title = styled.h2`
   text-align: center;
   margin-bottom: 1.5rem;
 `
-
+export const SubHeading = styled.h3`
+  text-align: left;
+  margin-bottom: 1.5rem;
+`
 export const Grid = styled.div`
   display: grid;
   gap: 1rem;

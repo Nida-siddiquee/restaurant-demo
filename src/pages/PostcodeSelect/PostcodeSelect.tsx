@@ -27,7 +27,7 @@ const PostcodeSelectPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchPostcodesRequest());
-  }, [dispatch]);
+  }, []);
 
   const handleSubmit = () => {
     const selectedPostcode = postcodes.find((p) => p.code === localPostcode);
