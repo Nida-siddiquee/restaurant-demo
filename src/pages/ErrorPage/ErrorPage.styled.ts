@@ -1,6 +1,5 @@
-
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const ErrorIcon = styled.div`
   font-size: 3.5rem;
@@ -56,13 +55,17 @@ export const StyledLink = styled(Link)`
   padding: 0.85rem 2.1rem;
   border-radius: 2px;
   font-size: 1.08rem;
-  box-shadow: 0 4px 12px rgba(255,128,0,0.09);
+  box-shadow: 0 4px 12px rgba(255, 128, 0, 0.09);
   text-decoration: none;
-  transition: background 0.18s, box-shadow 0.18s, transform 0.14s;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s,
+    transform 0.14s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: linear-gradient(135deg, #ffb366, #ff8000);
-    box-shadow: 0 8px 24px rgba(255,128,0,0.13);
+    box-shadow: 0 8px 24px rgba(255, 128, 0, 0.13);
     transform: translateY(-2px);
   }
 `;

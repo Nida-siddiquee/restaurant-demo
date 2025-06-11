@@ -3,8 +3,5 @@ import restaurantsSaga from '@/features/restaurants/restaurantsSaga';
 import postcodesSaga from '@/features/postcodes/postcodesSaga';
 
 export default function* rootSaga() {
-  yield all([
-    fork(restaurantsSaga),
-    fork(postcodesSaga),
-  ]);
+  yield all([fork(restaurantsSaga), fork(postcodesSaga)]);
 }

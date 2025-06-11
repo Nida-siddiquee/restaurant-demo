@@ -7,7 +7,6 @@ import { RootState, AppDispatch } from '@/app/store';
 import MapView from '@/components/Atoms/MapView';
 import { selectRestaurant, fetchRestaurantsRequest } from '@/features/restaurants/restaurantsSlice';
 
-
 const Wrapper = styled.div`
   max-width: 960px;
   margin: 1rem auto 3rem;
@@ -45,7 +44,7 @@ const Hero = styled.div`
     border-radius: 12px;
     background: #fff;
     border: 2px solid #eee;
-    box-shadow: 0 2px 8px rgba(25,40,70,0.08);
+    box-shadow: 0 2px 8px rgba(25, 40, 70, 0.08);
 
     @media (max-width: 600px) {
       width: 60px;
@@ -193,8 +192,7 @@ const RestaurantDetailPage: React.FC = () => {
     }
   }, [dispatch, id, restaurant, loading, navigate]);
 
-  if (loading || !restaurant)
-    return <p style={{ textAlign: 'center' }}>Loading…</p>;
+  if (loading || !restaurant) return <p style={{ textAlign: 'center' }}>Loading…</p>;
 
   const {
     logoUrl,
@@ -254,7 +252,7 @@ const RestaurantDetailPage: React.FC = () => {
             {address.city} {address.postalCode}
           </p>
           <MapWrapper>
-            <MapView latitude={lat} longitude={lng}  />
+            <MapView latitude={lat} longitude={lng} />
           </MapWrapper>
         </Section>
       )}

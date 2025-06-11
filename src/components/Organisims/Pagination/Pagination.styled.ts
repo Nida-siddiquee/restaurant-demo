@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   gap: 0.5rem;
   margin-top: 2rem;
   flex-wrap: wrap;
-`
+`;
 
 export const PageButton = styled.button<{ $active?: boolean }>`
   background: ${({ $active }) => ($active ? 'var(--color-primary)' : '#f2f2f2')};
@@ -20,4 +20,4 @@ export const PageButton = styled.button<{ $active?: boolean }>`
     opacity: 0.5;
     cursor: not-allowed;
   }
-`
+`;

@@ -2,9 +2,16 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/app/store';
 import { resetFilters, setActiveFilters } from '@/features/restaurants/restaurantsSlice';
-import { ClearButton, FilterRow, FiltersList, Sidebar, SidebarTitle, ToggleSwitch, TopRow } from '../Sidebar.styled';
+import {
+  ClearButton,
+  FilterRow,
+  FiltersList,
+  Sidebar,
+  SidebarTitle,
+  ToggleSwitch,
+  TopRow,
+} from '../Sidebar.styled';
 import { FILTERS } from '../constants';
-
 
 interface FiltersSidebarProps {
   totalRestaurants: number;
@@ -27,7 +34,7 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => 
   };
 
   return (
-    <Sidebar className='desktop-only'>
+    <Sidebar className="desktop-only">
       <TopRow>
         <SidebarTitle>{totalRestaurants} places</SidebarTitle>
         {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters</ClearButton>}

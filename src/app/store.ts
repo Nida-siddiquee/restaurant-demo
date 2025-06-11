@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import createSagaMiddleware      from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 import {
   persistReducer,
   persistStore,
@@ -13,12 +13,12 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import restaurantsReducer from '@/features/restaurants/restaurantsSlice';
-import postcodesReducer   from '@/features/postcodes/postcodesSlice';
-import rootSaga           from './rootSaga';
+import postcodesReducer from '@/features/postcodes/postcodesSlice';
+import rootSaga from './rootSaga';
 
 const rootReducer = combineReducers({
   restaurants: restaurantsReducer,
-  postcodes:   postcodesReducer,
+  postcodes: postcodesReducer,
 });
 
 const persistConfig = {
@@ -32,7 +32,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       thunk: false,
       serializableCheck: {

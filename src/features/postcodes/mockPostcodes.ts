@@ -1,4 +1,3 @@
-
 export const mockPostcodes = [
   { code: 'CT1 2EH', label: 'Canterbury - CT1 2EH' },
   { code: 'BS1 4DJ', label: 'Bristol - BS1 4DJ' },

@@ -1,1 +1,1 @@
-export {default} from './FiltersSidebar';
+export { default } from './FiltersSidebar';

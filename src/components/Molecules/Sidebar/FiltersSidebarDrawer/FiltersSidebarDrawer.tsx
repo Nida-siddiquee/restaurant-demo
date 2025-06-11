@@ -30,7 +30,6 @@ const FiltersSidebarDrawer: React.FC<Props> = ({ open, onClose }) => {
     );
   };
 
-
   return (
     <>
       <Overlay open={open} onClick={onClose} />
@@ -49,7 +48,6 @@ const FiltersSidebarDrawer: React.FC<Props> = ({ open, onClose }) => {
             </FilterRow>
           ))}
         </FiltersList>
-
       </Drawer>
     </>
   );

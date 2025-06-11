@@ -8,7 +8,7 @@ export const Card = styled.div`
   margin: 0.7rem 0;
   min-width: 220px;
   cursor: pointer;
-  transition: box-shadow .2s;
+  transition: box-shadow 0.2s;
 
   &:hover {
     box-shadow: 0 8px 28px rgba(25, 40, 70, 0.13);
@@ -51,7 +51,7 @@ export const OfferRibbon = styled.div`
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
   svg {
     flex-shrink: 0;
@@ -117,7 +117,7 @@ export const Body = styled.div`
 export const Name = styled.h3`
   font-size: 1.25rem;
   font-weight: 700;
-  margin: 0 0 .45rem;
+  margin: 0 0 0.45rem;
 
   @media (max-width: 600px) {
     font-size: 1rem;
@@ -130,11 +130,15 @@ export const DetailsRow = styled.div`
   align-items: center;
   color: #606770;
   font-size: 1rem;
-  margin-bottom: .4rem;
-  gap: .5em;
+  margin-bottom: 0.4rem;
+  gap: 0.5em;
 
-  .star { color: #f5a623; }
-  .clock{ font-size: 1em; }
+  .star {
+    color: #f5a623;
+  }
+  .clock {
+    font-size: 1em;
+  }
 
   @media (max-width: 600px) {
     font-size: 0.88rem;
@@ -146,13 +150,13 @@ export const DetailsRow = styled.div`
 export const DeliveryRow = styled.div`
   display: flex;
   align-items: center;
-  gap: .5em;
+  gap: 0.5em;
   font-size: 1.05rem;
   font-weight: 500;
   color: #222;
 
   @media (max-width: 600px) {
-    font-size: 0.90rem;
+    font-size: 0.9rem;
     gap: 0.32em;
   }
 `;

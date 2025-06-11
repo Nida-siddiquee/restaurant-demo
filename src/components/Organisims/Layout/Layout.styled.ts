@@ -6,10 +6,9 @@ export const Container = styled.div`
     'header '
     ' main';
   grid-template-rows: auto 1fr;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr;
   height: 100vh;
 `;
-
 
 export const Main = styled.main`
   grid-area: main;

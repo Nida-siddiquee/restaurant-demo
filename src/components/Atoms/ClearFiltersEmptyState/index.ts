@@ -1,1 +1,1 @@
-export {default} from './ClearFiltersEmptyState'
+export { default } from './ClearFiltersEmptyState';

@@ -1,24 +1,26 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Overlay = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? 'block' : 'none')};
   position: fixed;
   z-index: 1200;
   inset: 0;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.25);
 `;
 
 export const Drawer = styled.aside<{ open: boolean }>`
   position: fixed;
-  left: 0; top: 0; bottom: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 280px;
   max-width: 90vw;
   background: #fff;
-  box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
   padding: 2rem 1.2rem 1rem 1.2rem;
   z-index: 1300;
   transform: translateX(${({ open }) => (open ? 0 : '-105%')});
-  transition: transform 0.3s cubic-bezier(.77,0,.18,1);
+  transition: transform 0.3s cubic-bezier(0.77, 0, 0.18, 1);
   @media (min-width: 801px) {
     display: none;
   }
@@ -27,7 +29,7 @@ export const Drawer = styled.aside<{ open: boolean }>`
 export const Sidebar = styled.aside`
   min-width: 300px;
   padding: 1.5rem 1rem 1rem 0;
-  
+
   @media (max-width: 800px) {
     display: none;
   }
@@ -49,8 +51,6 @@ export const FiltersList = styled.div`
   gap: 0.7em;
 `;
 
-
-
 export const CloseBtn = styled.button`
   border: none;
   background: none;
@@ -71,22 +71,18 @@ export const ClearButton = styled.button`
   font-size: 1rem;
   margin-left: auto;
   cursor: pointer;
-  padding:  0;
+  padding: 0;
   text-decoration: underline;
   &:hover {
     color: var(--color-primary-light);
   }
 `;
 
-
 export const TopRow = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: space-between;
 `;
-
-
-
 
 export const FilterRow = styled.label`
   display: flex;

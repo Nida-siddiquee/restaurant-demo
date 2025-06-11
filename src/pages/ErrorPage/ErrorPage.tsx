@@ -1,6 +1,5 @@
-import React from "react";
-import { Wrapper, ErrorIcon, Title, Message, StyledLink } from "./ErrorPage.styled";
-
+import React from 'react';
+import { Wrapper, ErrorIcon, Title, Message, StyledLink } from './ErrorPage.styled';
 
 const ErrorPage: React.FC = () => (
   <Wrapper>

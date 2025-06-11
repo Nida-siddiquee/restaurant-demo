@@ -1,8 +1,10 @@
-import { RestaurantsResponse } from "@/features/restaurants/types";
+import { RestaurantsResponse } from '@/features/restaurants/types';
 
 export async function fetchRestaurantsApi(postcode: string): Promise<RestaurantsResponse> {
   try {
-    const res = await fetch(`/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`);
+    const res = await fetch(
+      `/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`,
+    );
     if (!res.ok) {
       throw new Error(`API error: ${res.status} ${res.statusText}`);
     }
@@ -14,7 +16,7 @@ export async function fetchRestaurantsApi(postcode: string): Promise<Restaurants
 
     return json as RestaurantsResponse;
   } catch (error) {
-    console.error("Failed to fetch restaurants:", error);
+    console.error('Failed to fetch restaurants:', error);
     throw error instanceof Error ? error : new Error(String(error));
   }
 }

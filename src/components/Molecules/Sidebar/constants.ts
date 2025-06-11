@@ -1,4 +1,3 @@
-
 export const FILTERS = [
   { id: 'with_discounts', label: 'Offers & Savings' },
   { id: 'free_delivery', label: 'Free Delivery' },
