@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Page = styled.div`
-  max-width: 900px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
 `
@@ -22,7 +22,7 @@ export const Grid = styled.div`
 
 export const Card = styled.div`
   background: var(--color-card-bg);
-  border-radius: 12px;
+  border-radius: 2px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   display: flex;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { highlightMatch } from '@/components/utils/highlightMatch';
 
 interface RestaurantCardProps {
-  heroUrl?: string;        // main banner / food photo
+  heroUrl?: string;       
   logoUrl?: string;
   name: string;
   highlight?: string;
@@ -12,16 +12,15 @@ interface RestaurantCardProps {
   reviewCount: string;
   deliveryTime: string;
   deliveryFee: string;
-  offer?: string;          // e.g. "Cheeky Tuesday • 20% off"
+  offer?: string;          
   badge?: 'Sponsored' | 'StampCard' | null;
   onClick?: () => void;
 }
 
-/* --------- Styled blocks --------- */
 
 const Card = styled.div`
   background: white;
-  border-radius: 18px;
+  border-radius: 2npx;
   box-shadow: 0 4px 16px rgba(25, 40, 70, 0.06);
   overflow: hidden;
   margin: 0.7rem 0;
@@ -123,14 +122,12 @@ const DeliveryRow = styled.div`
   color: #222;
 `;
 
-/* ---------- SVG helper ---------- */
 const TagIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff8000">
     <path d="M21.586 11.586l-9.172-9.172a2.002 2.002 0 0 0-1.414-.586h-7a2 2 0 0 0-2 2v7c0 .53.211 1.039.586 1.414l9.172 9.172a2 2 0 0 0 2.828 0l7-7a2 2 0 0 0 0-2.828zM7.5 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
   </svg>
 );
 
-/* ========== Component ========== */
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
   heroUrl,
   logoUrl,
@@ -146,10 +143,8 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
 }) => (
   <Card onClick={onClick}>
     <TopWrapper>
-      {/* banner */}
       {heroUrl && <img className="banner" src={heroUrl} alt={`${name} banner`} />}
 
-      {/* offer ribbon */}
       {offer && (
         <OfferRibbon>
           <TagIcon />
@@ -157,10 +152,8 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         </OfferRibbon>
       )}
 
-      {/* restaurant logo */}
       {logoUrl && <Logo src={logoUrl} alt={`${name} logo`} />}
 
-      {/* badge bottom-right */}
       {badge && <Badge>{badge}</Badge>}
     </TopWrapper>
 

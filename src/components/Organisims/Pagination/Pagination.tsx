@@ -11,9 +11,9 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `
 
-const PageButton = styled.button<{ active?: boolean }>`
-  background: ${({ active }) => (active ? 'var(--color-primary)' : '#f2f2f2')};
-  color: ${({ active }) => (active ? '#fff' : '#333')};
+const PageButton = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) => ($active ? 'var(--color-primary)' : '#f2f2f2')};
+  color: ${({ $active }) => ($active ? '#fff' : '#333')};
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -65,7 +65,7 @@ const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }
         typeof item === "number" ? (
           <PageButton
             key={item}
-            active={item === currentPage}
+            $active={item === currentPage}
             onClick={() => setCurrentPage(item)}
           >
             {item}

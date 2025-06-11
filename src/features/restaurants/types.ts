@@ -171,7 +171,17 @@ export interface EnrichedList {
 export interface EnrichedLists {
   [key: string]: EnrichedList
 }
-
+export interface LayoutFilterItem {
+  type: 'filter';
+  id: string;     // e.g. "free_delivery"
+  title: string;  // e.g. "Free Delivery"
+}
+export interface LayoutSection {
+  type: 'list';
+  id: string;            // "search-refine-filters"
+  title: string;         // "Filters"
+  contents: LayoutFilterItem[];
+}
 /** Top‐level response */
 export interface RestaurantsResponse {
   metaData: MetaData
@@ -179,6 +189,9 @@ export interface RestaurantsResponse {
   deliveryFees: DeliveryFees
   promotedPlacement: PromotedPlacement
   filters: Filters
-  layout: Layout
+  layout: {
+    'search-refine-filters': LayoutSection;
+    'search-filter-carousel': LayoutSection;
+  }
   enrichedLists: EnrichedLists
 }

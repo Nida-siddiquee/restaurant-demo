@@ -23,6 +23,12 @@ const Main = styled.main`
   padding: 2rem;
   overflow-y: auto;
   background: var(--color-bg);
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+  @media (max-width: 480px) {
+    padding: 0rem;
+  }
 `;
 
  const Layout: React.FC<LayoutProps> = ({ children }) => {
