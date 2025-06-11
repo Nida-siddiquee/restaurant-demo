@@ -22,7 +22,6 @@ const MapView: React.FC<MapViewProps> = ({ latitude, longitude, zoom = 15 }) => 
                 title="Restaurant Location"
                 width="100%" 
                 height="280"
-                frameBorder="0"
                 src={mapUrl}
                 style={{ border: 0 }}
                 allowFullScreen

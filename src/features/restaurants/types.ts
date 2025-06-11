@@ -1,12 +1,9 @@
-// src/features/restaurants/types.ts
 
-/** GeoJSON Point */
 export interface Point {
   type: "Point"
   coordinates: [number, number]
 }
 
-/** Address details for a restaurant */
 export interface Address {
   city: string
   firstLine: string
@@ -14,26 +11,22 @@ export interface Address {
   location: Point
 }
 
-/** Rating info */
 export interface Rating {
   count: number
   starRating: number
   userRating: number | null
 }
 
-/** A special deal or offer */
 export interface Deal {
   description: string
   offerType: string
 }
 
-/** Cuisine category */
 export interface Cuisine {
   name: string
   uniqueName: string
 }
 
-/** Availability window detail */
 export interface AvailabilityDetail {
   isOpen: boolean
   canPreOrder: boolean
@@ -46,13 +39,11 @@ export interface AvailabilityDetail {
   }
 }
 
-/** Combined availability info */
 export interface Availability {
   delivery?: AvailabilityDetail
   collection?: AvailabilityDetail
 }
 
-/** Core restaurant model */
 export interface Restaurant {
   id: string
   name: string
@@ -81,13 +72,12 @@ export interface Restaurant {
   logoUrl: string
   isTestRestaurant: boolean
   deals: Deal[]
-  tags: unknown[]        // refine if you have a shape for tags
+  tags: unknown[]        
   cuisines: Cuisine[]
   availability: Availability
   description?: string
 }
 
-/** Metadata about the search area */
 export interface MetaData {
   canonicalName: string
   district: string
@@ -109,13 +99,11 @@ export interface MetaData {
   deliveryArea: string
 }
 
-/** Delivery fee band for a restaurant */
 export interface DeliveryFeeBand {
   minimumAmount: number
   fee: number
 }
 
-/** Fees structure keyed by restaurant ID */
 export interface DeliveryFees {
   restaurants: Record<
     string,
@@ -127,7 +115,6 @@ export interface DeliveryFees {
   >
 }
 
-/** Promoted placement config */
 export interface PromotedPlacement {
   filteredSearchPromotedLimit: number
   rankedIds: string[]
@@ -140,7 +127,6 @@ export interface PromotedPlacement {
   >
 }
 
-/** A single filter option */
 export interface FilterOption {
   displayName: string
   imageName: string
@@ -148,10 +134,8 @@ export interface FilterOption {
   restaurantIds: string[]
 }
 
-/** All filters keyed by filter-id */
 export type Filters = Record<string, FilterOption>
 
-/** Layout block content */
 export interface LayoutItem {
   type: string
   id: string
@@ -159,30 +143,26 @@ export interface LayoutItem {
   contents: Array<{ type: string; id: string; title: string }>
 }
 
-/** Whole layout object keyed by layout-id */
 export type Layout = Record<string, LayoutItem>
 
-/** Enriched list tracking info */
 export interface EnrichedList {
   trackingId: string
 }
 
-/** Collection of enriched lists keyed by list-name */
 export interface EnrichedLists {
   [key: string]: EnrichedList
 }
 export interface LayoutFilterItem {
   type: 'filter';
-  id: string;     // e.g. "free_delivery"
-  title: string;  // e.g. "Free Delivery"
+  id: string;     
+  title: string;  
 }
 export interface LayoutSection {
   type: 'list';
-  id: string;            // "search-refine-filters"
-  title: string;         // "Filters"
+  id: string;           
+  title: string;         
   contents: LayoutFilterItem[];
 }
-/** Top‐level response */
 export interface RestaurantsResponse {
   metaData: MetaData
   restaurants: Restaurant[]

@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { LayoutFilterItem, Restaurant, RestaurantsResponse } from './types';
+import type { Restaurant, RestaurantsResponse } from './types';
 
 export const fetchRestaurantsRequest = createAction<string>('restaurants/fetchRestaurantsRequest');
 export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>(
@@ -7,9 +7,12 @@ export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>(
 );
 export const fetchRestaurantsFailure = createAction<string>('restaurants/fetchRestaurantsFailure');
 export const setSearchQuery = createAction<string>('restaurants/setSearchQuery');
-export const setCurrentPage = createAction<number>('restaurants/setCurrentPage'); 
+export const setCurrentPage = createAction<number>('restaurants/setCurrentPage');
 export const selectRestaurant = createAction<string>('restaurants/selectRestaurant');
-export const setActiveFilters = createAction<{ [filterId: string]: boolean }>('restaurants/setActiveFilters');
+export const setActiveFilters = createAction<{ [filterId: string]: boolean }>(
+  'restaurants/setActiveFilters',
+);
+export const resetFilters = createAction('restaurants/resetFilters');
 
 interface RestaurantsState {
   data: RestaurantsResponse | null;
@@ -19,8 +22,7 @@ interface RestaurantsState {
   selected: Restaurant | null;
   searchQuery: string;
   currentPage: number;
-    activeFilters: { [filterId: string]: boolean };  // <--- NEW
-
+  activeFilters: { [filterId: string]: boolean };
 }
 
 const initialState: RestaurantsState = {
@@ -38,28 +40,29 @@ export const restaurantsSlice = createSlice({
   name: 'restaurants',
   initialState,
   reducers: {
-    /* select a single restaurant */
     selectRestaurant: (state, action: PayloadAction<string>) => {
       state.selectedId = action.payload;
       state.selected = state.data?.restaurants.find(r => r.id === action.payload) ?? null;
     },
 
-    /* search & pagination */
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
-      state.currentPage = 1; 
+      state.currentPage = 1;
     },
-  setCurrentPage: (state, action: PayloadAction<number>) => {
-    state.currentPage = action.payload;
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+    toggleFilter: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.activeFilters[id] = !state.activeFilters[id];
+    },
+    resetFilters: state => {
+      state.activeFilters = {};
+      state.currentPage = 1;
+    },
   },
-  toggleFilter: (state, action: PayloadAction<string>) => {
-    const id = action.payload;
-    state.activeFilters[id] = !state.activeFilters[id];
-  },
-},
   extraReducers: builder =>
     builder
-      /* handle fetch lifecycle */
       .addCase(fetchRestaurantsRequest, state => {
         state.loading = true;
         state.error = null;
@@ -75,10 +78,14 @@ export const restaurantsSlice = createSlice({
       .addCase(fetchRestaurantsFailure, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.error = action.payload;
-      }).addCase(setActiveFilters, (state, action: PayloadAction<{ [filterId: string]: boolean }>) => {
-        state.activeFilters = action.payload;
-         state.currentPage = 1;
-      }),
+      })
+      .addCase(
+        setActiveFilters,
+        (state, action: PayloadAction<{ [filterId: string]: boolean }>) => {
+          state.activeFilters = action.payload;
+          state.currentPage = 1;
+        },
+      ),
 });
 
 export default restaurantsSlice.reducer;

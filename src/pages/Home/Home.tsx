@@ -2,42 +2,37 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
-import { Page, Title, Grid, ErrorMsg, SubHeading } from './Home.styled';
+import {
+  Page,
+  Grid,
+  ErrorMsg,
+  SubHeading,
+  Icon,
+  FilterContainer,
+  FilterButton,
+  FlexWrap,
+  Content,
+} from './Home.styled';
 
 import {
   selectRestaurant,
   setSearchQuery,
   setCurrentPage,
+  resetFilters,
 } from '@/features/restaurants/restaurantsSlice';
-
+import FilterIcon from '@/assets/filterIcon.svg';
 import { RootState, AppDispatch } from '@/app/store';
 import Pagination from '@/components/Organisims/Pagination/Pagination';
 import RestaurantCard from '@/components/Molecules/DetailCard';
 import SearchBox from '@/components/Atoms/SearchBox';
-import FiltersSidebar from '@/components/Molecules/FiltersSidebar';
-import styled from 'styled-components';
+import FiltersSidebar from '@/components/Molecules/Sidebar/FiltersSidebar';
+import ClearFiltersEmptyState from '@/components/Atoms/ClearFiltersEmptyState';
+import FiltersSidebarDrawer from '@/components/Molecules/Sidebar/FiltersSidebarDrawer';
+import { ClearButton } from '@/components/Molecules/Sidebar/Sidebar.styled';
+import LoadingScreen from '@/components/Molecules/LoadingScreen';
+import ErrorPage from '../ErrorPage';
 
 const RESTAURANTS_PER_PAGE = 30;
-
-const FlexWrap = styled.div`
-  display: flex;
-  align-items: flex-start;
-  max-width: 1280px;
-  margin: 0 auto;
-  width: 100%;
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-`;
-
-const Content = styled.div`
-  flex: 1;
-  min-width: 0;
-  padding: 0 1rem;
-  @media (max-width: 490px) {
-    padding: 0;
-  }
-`;
 
 const RestaurantsListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +43,8 @@ const RestaurantsListPage: React.FC = () => {
   );
 
   const [searchInput, setSearchInput] = useState(searchQuery);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const [debouncedQuery] = useDebounce(searchInput, 300);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -60,8 +57,7 @@ const RestaurantsListPage: React.FC = () => {
 
   const filteredRestaurants = useMemo(() => {
     let list = data?.restaurants ?? [];
-
-    // Sidebar filter pipeline
+    // Apply active filters
     const f = activeFilters ?? {};
     if (f.free_delivery) list = list.filter(r => r.deliveryCost === 0);
     if (f.open_now) list = list.filter(r => r.isOpenNowForDelivery);
@@ -70,7 +66,8 @@ const RestaurantsListPage: React.FC = () => {
     if (f.new) list = list.filter(r => r.isNew);
     if (f['four_star']) list = list.filter(r => (r.rating?.starRating ?? 0) >= 4);
 
-    // Search
+    // search
+
     const q = searchQuery.trim().toLowerCase();
     if (!q) return list;
     return list.filter(
@@ -84,6 +81,7 @@ const RestaurantsListPage: React.FC = () => {
   const totalPages = Math.ceil(filteredRestaurants.length / RESTAURANTS_PER_PAGE);
   const startIdx = (currentPage - 1) * RESTAURANTS_PER_PAGE;
   const pageSlice = filteredRestaurants.slice(startIdx, startIdx + RESTAURANTS_PER_PAGE);
+  const hasActiveFilters = Object.values(activeFilters).some(Boolean);
 
   const handleDetails = (id: string) => {
     dispatch(selectRestaurant(id));
@@ -93,15 +91,23 @@ const RestaurantsListPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
   };
-
+  const handleClear = () => {
+    dispatch(resetFilters());
+  };
   return (
     <Page>
+      {loading && <LoadingScreen />}
+      {error && <ErrorPage />}
       <FlexWrap>
-        <FiltersSidebar />
+        <FilterContainer className="mobile-only">
+          <FilterButton aria-label="Open filters" onClick={() => setDrawerOpen(true)}>
+            <Icon src={FilterIcon} alt="Filter icon" />
+          </FilterButton>
+          {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters </ClearButton>}
+        </FilterContainer>
+        <FiltersSidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+        <FiltersSidebar totalRestaurants={filteredRestaurants.length} />
         <Content>
-          <Title>Available Restaurants</Title>
-          {loading && <p>Loading restaurants…</p>}
-          {error && <ErrorMsg>{error}</ErrorMsg>}
           <SearchBox
             value={searchInput}
             onChange={setSearchInput}
@@ -113,7 +119,7 @@ const RestaurantsListPage: React.FC = () => {
             {filteredRestaurants.length !== 1 && 's'}
           </SubHeading>
           {!loading && !error && filteredRestaurants.length === 0 && (
-            <p>No restaurants found for this search.</p>
+            <ClearFiltersEmptyState onClear={() => dispatch(resetFilters())} />
           )}
           <Grid>
             {pageSlice.map(r => (

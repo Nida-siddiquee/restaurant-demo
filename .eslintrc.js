@@ -27,8 +27,8 @@ module.exports = {
   plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
-    'react/react-in-jsx-scope': 'off', // Not needed with React 17+
-    'react/prop-types': 'off', // We use TypeScript for prop types
+    'react/react-in-jsx-scope': 'off', 
+    'react/prop-types': 'off', 
     '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };

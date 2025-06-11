@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// features/restaurants/restaurantsSaga.ts
+
 import type { PayloadAction }    from '@reduxjs/toolkit'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { fetchRestaurantsApi }   from '@/services/api'

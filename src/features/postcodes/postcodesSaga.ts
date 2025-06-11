@@ -1,4 +1,3 @@
-// src/features/postcodes/postcodesSaga.ts
 
 import {put, takeLatest } from 'redux-saga/effects';
 import { fetchPostcodesSuccess, fetchPostcodesFailure, fetchPostcodesRequest } from './postcodesSlice';

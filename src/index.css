@@ -1,16 +1,10 @@
-/* index.css */
 
-/*──────────────────────────────────────────────────────────────────────────────
-  1. Color & Typography Tokens
-──────────────────────────────────────────────────────────────────────────────*/
 :root {
-  /* Font stack & text */
   --font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   --line-height: 1.5;
   --fw-normal: 400;
   --fw-medium: 500;
 
-  /* Light‐mode colors */
   --color-text: #213547;
   --color-bg: #ffffff;
   --color-tab-bg: #f5f3f1;
@@ -22,16 +16,12 @@
   --color-shadow-1: rgba(0, 112, 243, 0.05);
   --color-shadow-2: rgba(25, 41, 60, 0.1);
 
-  /* Global type settings */
   font-family: var(--font-family);
   line-height: var(--line-height);
   font-weight: var(--fw-normal);
   color-scheme: light;
 }
 
-/*──────────────────────────────────────────────────────────────────────────────
-  2. Global Resets & Base Styles
-──────────────────────────────────────────────────────────────────────────────*/
 *,
 *::before,
 *::after {
@@ -67,9 +57,6 @@ h6 {
   font-weight: var(--fw-medium);
 }
 
-/*──────────────────────────────────────────────────────────────────────────────
-  3. Form Controls
-──────────────────────────────────────────────────────────────────────────────*/
 button {
   font-family: inherit;
   font-size: 1rem;
@@ -82,17 +69,9 @@ button {
       var(--color-primary),
       var(--color-primary-light));
   color: #fff;
-  /* box-shadow:
-    0 4px 12px var(--color-shadow-1),
-    0 8px 24px var(--color-shadow-2);
-  */
+ 
 }
 
-/* button:hover {
-  box-shadow:
-    0 6px 16px var(--color-shadow-1),
-    0 10px 28px var(--color-shadow-2);
-} */
 
 button:disabled {
   opacity: 0.5;
@@ -107,7 +86,6 @@ textarea {
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.3;
-  border: 2px solid var(--color-border);
   border-radius: 2px;
   padding: 0.75rem 1rem;
   background: var(--color-card-bg);
@@ -119,13 +97,9 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.2);
 }
 
-/*──────────────────────────────────────────────────────────────────────────────
-  4. Utility & Layout Helpers
-──────────────────────────────────────────────────────────────────────────────*/
 html,
 body,
 #root {
@@ -138,7 +112,9 @@ body,
   justify-content: center;
   padding: 2rem;
 }
-
-/*──────────────────────────────────────────────────────────────────────────────
-  5. Default Card Override for Components
-──────────────────────────────────────────────────────────────────────────────*/
+@media (min-width: 801px) {
+  .mobile-only { display: none !important; }
+}
+@media (max-width: 800px) {
+  .desktop-only { display: none !important; }
+}
