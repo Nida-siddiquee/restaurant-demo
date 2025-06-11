@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
@@ -36,6 +36,7 @@ const RESTAURANTS_PER_PAGE = 30;
 const RestaurantsListPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const { data, loading, error, searchQuery, currentPage, activeFilters } = useSelector(
     (state: RootState) => state.restaurants,
@@ -47,6 +48,11 @@ const RestaurantsListPage: React.FC = () => {
   const [debouncedQuery] = useDebounce(searchInput, 300);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+  useEffect(() => {
+    if (pageRef.current) {
+      pageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [currentPage]);
   useEffect(() => {
     if (debouncedQuery !== searchQuery) {
@@ -94,7 +100,7 @@ const RestaurantsListPage: React.FC = () => {
     dispatch(resetFilters());
   };
   return (
-    <Page>
+    <Page ref={pageRef}>
       {loading && <LoadingScreen />}
       {error && <ErrorPage />}
       <FlexWrap>
@@ -113,7 +119,7 @@ const RestaurantsListPage: React.FC = () => {
             onClear={() => setSearchInput('')}
             placeholder="Search by name, location, cuisine…"
           />
-          <SubHeading>
+          <SubHeading id="restaurant-count">
             Order from {filteredRestaurants.length} place
             {filteredRestaurants.length !== 1 && 's'}
           </SubHeading>
