@@ -10,7 +10,6 @@ import type { RestaurantsResponse } from './types';
 
 export function* fetchRestaurantsSaga(action: PayloadAction<string>) {
   try {
-    console.log('Fetching restaurants for postcode:', action.payload);
     const response: RestaurantsResponse = yield call(fetchRestaurantsApi, action.payload);
     yield put(fetchRestaurantsSuccess(response));
   } catch (err: any) {
