@@ -20,7 +20,6 @@ import {
   resetFilters,
 } from '@/features/restaurants/restaurantsSlice';
 import FilterIcon from '@/assets/filterIcon.svg';
-import { RootState, AppDispatch } from '@/app/store';
 import Pagination from '@/components/Organisims/Pagination/Pagination';
 import RestaurantCard from '@/components/Molecules/DetailCard';
 import SearchBox from '@/components/Atoms/SearchBox';
@@ -34,12 +33,12 @@ import ErrorPage from '../ErrorPage';
 const RESTAURANTS_PER_PAGE = 30;
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
 
   const { data, loading, error, searchQuery, currentPage, activeFilters } = useSelector(
-    (state: RootState) => state.restaurants,
+    (state: any) => state.restaurants,
   );
 
   const [searchInput, setSearchInput] = useState(searchQuery);

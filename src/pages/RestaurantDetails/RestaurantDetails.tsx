@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RootState, AppDispatch } from '@/app/store';
 import MapView from '@/components/Atoms/MapView';
 import LoadingScreen from '@/components/Molecules/LoadingScreen';
 import ErrorPage from '@/pages/ErrorPage';
@@ -23,15 +22,15 @@ import {
 const FALLBACK_HERO =
   'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1600&q=80';
 
-const useSelectedPostcode = () => useSelector((state: RootState) => state.postcodes.selected?.code);
+const useSelectedPostcode = () => useSelector((state: any) => state.postcodes.selected?.code);
 
 const RestaurantDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const postcode = useSelectedPostcode();
-  const { selected, loading, error } = useSelector((s: RootState) => s.restaurants);
+  const { selected, loading, error } = useSelector((s: any) => s.restaurants);
 
   useEffect(() => {
     if (!selected) {

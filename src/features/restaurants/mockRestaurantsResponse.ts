@@ -1,6 +1,6 @@
-// mockRestaurantsResponse.ts
+import { RestaurantsResponse } from "./types";
 
-export const mockRestaurantsResponse = {
+export const mockRestaurantsResponse: RestaurantsResponse = {
   metaData: {
     canonicalName: 'cf11-cardiff',
     district: 'CF11',

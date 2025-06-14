@@ -10,11 +10,9 @@ describe('highlightMatch', () => {
 
   it('highlights matching text (case insensitive)', () => {
     const { container } = render(<>{highlightMatch('Chicken Burger', 'chicken')}</>);
-    // Should wrap the match in a <mark>
     const mark = container.querySelector('mark');
     expect(mark).toBeInTheDocument();
     expect(mark?.textContent?.toLowerCase()).toBe('chicken');
-    // Remaining text should also be present
     expect(container.textContent).toContain('Burger');
   });
 
@@ -36,7 +34,6 @@ describe('highlightMatch', () => {
   });
 
   it('handles special regex characters in query', () => {
-    // Test for queries like "."
     const { container } = render(<>{highlightMatch('A.B', '.')}</>);
     expect(container.querySelectorAll('mark').length).toBe(1);
     expect(container.textContent).toBe('A.B');

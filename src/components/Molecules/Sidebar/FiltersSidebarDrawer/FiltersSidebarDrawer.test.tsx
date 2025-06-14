@@ -33,7 +33,6 @@ describe('FiltersSidebarDrawer', () => {
 
   it('does not render drawer or overlay when closed', () => {
     renderDrawer({ open: false });
-    // Drawer and overlay should be hidden or not in the document
     expect(screen.queryByText(/Filters/i)).not.toBeInTheDocument();
   });
 
@@ -62,7 +61,6 @@ describe('FiltersSidebarDrawer', () => {
   it('calls onClose when overlay is clicked', () => {
     const onClose = jest.fn();
     renderDrawer({ open: true, onClose });
-    // Overlay should be the first child and clickable
     fireEvent.click(screen.getByTestId('overlay'));
     expect(onClose).toHaveBeenCalled();
   });

@@ -1,21 +1,26 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
+  fetchPostcodesRequest,
   fetchPostcodesSuccess,
   fetchPostcodesFailure,
-  fetchPostcodesRequest,
+  Postcode,
 } from './postcodesSlice';
-import { mockPostcodes } from '@/features/postcodes/mockPostcodes';
+import { mockPostcodes } from './mockPostcodes';
 
-function* fetchPostcodesSaga() {
+// Replace this with your real API call!
+function fetchPostcodesApi(): Postcode[] {
+  return [...mockPostcodes];
+}
+
+export function* fetchPostcodesWorker() {
   try {
-    yield put(fetchPostcodesSuccess(mockPostcodes));
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch postcodes';
-
-    yield put(fetchPostcodesFailure(message));
+    const postcodes: Postcode[] = yield call(fetchPostcodesApi);
+    yield put(fetchPostcodesSuccess(postcodes));
+  } catch (error: any) {
+    yield put(fetchPostcodesFailure(error.message));
   }
 }
 
-export default function* postcodesRootSaga() {
-  yield takeLatest(fetchPostcodesRequest.type, fetchPostcodesSaga);
+export default function* postcodesSaga() {
+  yield takeLatest(fetchPostcodesRequest.type, fetchPostcodesWorker);
 }

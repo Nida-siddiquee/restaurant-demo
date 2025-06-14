@@ -1,47 +1,31 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import {
-  persistReducer,
-  persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // default: localStorage
 import restaurantsReducer from '@/features/restaurants/restaurantsSlice';
 import postcodesReducer from '@/features/postcodes/postcodesSlice';
 import rootSaga from './rootSaga';
 
-const rootReducer = combineReducers({
+const sagaMiddleware = createSagaMiddleware();
+
+const rootReducer = {
   restaurants: restaurantsReducer,
   postcodes: postcodesReducer,
-});
+};
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['restaurants', 'postcodes'],
 };
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-const sagaMiddleware = createSagaMiddleware();
+const persistedReducer = persistReducer(persistConfig, combineReducers(rootReducer));
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      thunk: false,
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ thunk: false, serializableCheck: false }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);
+
 export const persistor = persistStore(store);
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
