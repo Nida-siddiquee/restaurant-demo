@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -28,7 +28,7 @@ const RestaurantDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const pageRef = useRef<HTMLDivElement>(null);
   const postcode = useSelectedPostcode();
   const { selected, loading, error } = useSelector((s: any) => s.restaurants);
 
@@ -41,6 +41,10 @@ const RestaurantDetailPage: React.FC = () => {
       }
     } else if (id && selected && id !== selected.id) {
       dispatch(selectRestaurant(id));
+    }
+
+    if (pageRef.current) {
+      pageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, []);
 
@@ -68,8 +72,10 @@ const RestaurantDetailPage: React.FC = () => {
   const [lng, lat] = address.location.coordinates;
 
   return (
-    <Wrapper>
-      <BackLink to="/restaurants">← Back to list</BackLink>
+    <Wrapper ref={pageRef}>
+      <BackLink id="back-button" to="/restaurants">
+        ← Back to list
+      </BackLink>
 
       <Hero>
         <img src={FALLBACK_HERO} alt={`${name} banner image`} className="hero" />
