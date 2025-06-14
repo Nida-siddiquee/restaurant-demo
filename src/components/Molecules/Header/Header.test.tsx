@@ -13,7 +13,7 @@ const renderWithProviders = (storeState: any) => {
       <MemoryRouter>
         <Header />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
   );
 };
 
@@ -54,9 +54,7 @@ describe('Header', () => {
         selected: { label: 'London, E1 8QS', code: 'E1 8QS' },
       },
     });
-    const logoLink = screen.getByRole('link', { name: 'logo' }); 
+    const logoLink = screen.getByRole('link', { name: 'logo' });
     expect(logoLink).toHaveAttribute('href', '/restaurants');
-
   });
-
 });

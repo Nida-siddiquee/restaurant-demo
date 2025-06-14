@@ -8,7 +8,7 @@ describe('MapView', () => {
     expect(iframe).toBeInTheDocument();
     expect(iframe).toHaveAttribute(
       'src',
-      expect.stringContaining('https://www.google.com/maps?q=51.5,-0.12&z=15&output=embed')
+      expect.stringContaining('https://www.google.com/maps?q=51.5,-0.12&z=15&output=embed'),
     );
     expect(iframe).toHaveAttribute('width', '100%');
     expect(iframe).toHaveAttribute('height', '280');
@@ -20,7 +20,7 @@ describe('MapView', () => {
     const iframe = screen.getByTitle(/restaurant location/i);
     expect(iframe).toHaveAttribute(
       'src',
-      expect.stringContaining('https://www.google.com/maps?q=12.3,45.6&z=10&output=embed')
+      expect.stringContaining('https://www.google.com/maps?q=12.3,45.6&z=10&output=embed'),
     );
   });
 

@@ -20,7 +20,7 @@ describe('SecondaryButton', () => {
     render(
       <SecondaryButton onClick={onClick} disabled>
         Disabled
-      </SecondaryButton>
+      </SecondaryButton>,
     );
     const btn = screen.getByRole('button');
     expect(btn).toBeDisabled();

@@ -11,13 +11,13 @@ function renderSidebar(storeState = {}) {
   const store = mockStore({
     restaurants: {
       activeFilters: defaultFilters,
-      ...storeState
-    }
+      ...storeState,
+    },
   });
   return render(
     <Provider store={store}>
       <FiltersSidebar totalRestaurants={11} />
-    </Provider>
+    </Provider>,
   );
 }
 
@@ -53,7 +53,7 @@ describe('FiltersSidebar', () => {
     render(
       <Provider store={store}>
         <FiltersSidebar totalRestaurants={11} />
-      </Provider>
+      </Provider>,
     );
     fireEvent.click(screen.getByText(/clear filters/i));
     expect(store.dispatch).toHaveBeenCalled();
@@ -65,7 +65,7 @@ describe('FiltersSidebar', () => {
     render(
       <Provider store={store}>
         <FiltersSidebar totalRestaurants={11} />
-      </Provider>
+      </Provider>,
     );
     const checkboxes = screen.getAllByRole('checkbox');
     fireEvent.click(checkboxes[0]);

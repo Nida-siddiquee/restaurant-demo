@@ -16,7 +16,7 @@ function renderDrawer({ open = true, filters = {}, onClose = jest.fn() } = {}) {
     ...render(
       <Provider store={store}>
         <FiltersSidebarDrawer open={open} onClose={onClose} />
-      </Provider>
+      </Provider>,
     ),
     store,
     onClose,
@@ -28,8 +28,7 @@ describe('FiltersSidebarDrawer', () => {
     renderDrawer({ open: true });
     expect(screen.getByText(/Filters/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /close filters/i })).toBeInTheDocument();
-      expect(screen.getByTestId('overlay')).toBeInTheDocument();
-
+    expect(screen.getByTestId('overlay')).toBeInTheDocument();
   });
 
   it('does not render drawer or overlay when closed', () => {

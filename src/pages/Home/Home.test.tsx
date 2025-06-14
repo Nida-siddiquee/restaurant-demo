@@ -106,12 +106,10 @@ describe('RestaurantsListPage', () => {
   });
 
   it('clicking a restaurant calls handleDetails', () => {
-    
     const store = mockStore(getInitialState());
     renderPage(store);
     const card = screen.getByTestId(/200586/i).closest('div');
-    expect(card).toHaveAttribute('role', 'button'); 
-    
+    expect(card).toHaveAttribute('role', 'button');
   });
 
   it('renders pagination only if more than 1 page', () => {

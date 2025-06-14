@@ -6,7 +6,7 @@ const getPageButtons = () => screen.queryAllByRole('button', { name: /^[0-9]+$/ 
 describe('Pagination', () => {
   it('renders nothing if only one page', () => {
     const { container } = render(
-      <Pagination totalPages={1} currentPage={1} setCurrentPage={jest.fn()} />
+      <Pagination totalPages={1} currentPage={1} setCurrentPage={jest.fn()} />,
     );
     expect(container.firstChild).toBeNull();
   });
@@ -45,7 +45,6 @@ describe('Pagination', () => {
     render(<Pagination totalPages={4} currentPage={4} setCurrentPage={jest.fn()} />);
     expect(screen.getByText(/Next/i)).toBeDisabled();
   });
-
 
   it('shows ellipsis for many pages', () => {
     render(<Pagination totalPages={10} currentPage={5} setCurrentPage={jest.fn()} />);
@@ -87,4 +86,4 @@ describe('Pagination', () => {
     expect(screen.getByText('10')).toBeInTheDocument();
     expect(screen.getAllByText('...').length).toBeGreaterThanOrEqual(1);
   });
-})
+});

@@ -7,7 +7,7 @@ describe('ErrorPage', () => {
     render(
       <MemoryRouter>
         <ErrorPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText('😕')).toBeInTheDocument();
   });
@@ -16,7 +16,7 @@ describe('ErrorPage', () => {
     render(
       <MemoryRouter>
         <ErrorPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByRole('heading', { name: /Something Went Wrong/i })).toBeInTheDocument();
   });
@@ -25,18 +25,16 @@ describe('ErrorPage', () => {
     render(
       <MemoryRouter>
         <ErrorPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
-    expect(
-      screen.getByText(/Oops! We couldn't find the page/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Oops! We couldn't find the page/i)).toBeInTheDocument();
   });
 
   it('renders the link to home', () => {
     render(
       <MemoryRouter>
         <ErrorPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     const link = screen.getByRole('link', { name: /Go Home/i });
     expect(link).toBeInTheDocument();

@@ -26,5 +26,4 @@ describe('PrimaryButton', () => {
     expect(btn).toBeDisabled();
     fireEvent.click(btn);
   });
-
 });

@@ -16,10 +16,10 @@ describe('SearchBox', () => {
     expect(handleChange).toHaveBeenCalledWith('pizza');
   });
 
-it('renders the search icon', () => {
-  render(<SearchBox value="" onChange={() => {}} />);
-  expect(screen.getByTestId('search-svg')).toBeInTheDocument();
-});
+  it('renders the search icon', () => {
+    render(<SearchBox value="" onChange={() => {}} />);
+    expect(screen.getByTestId('search-svg')).toBeInTheDocument();
+  });
 
   it('renders clear button only if value and onClear are provided', () => {
     const handleClear = jest.fn();

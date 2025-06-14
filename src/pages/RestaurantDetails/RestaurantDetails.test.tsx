@@ -10,12 +10,7 @@ jest.mock('@/components/Atoms/MapView', () => () => <div>MapView</div>);
 jest.mock('@/components/Molecules/LoadingScreen', () => () => <div>LoadingScreen</div>);
 jest.mock('@/pages/ErrorPage', () => () => <div>ErrorPage</div>);
 
-
-
-function renderWithProviders(
-  storeState: any,
-  route: string = '/restaurants/200586'
-) {
+function renderWithProviders(storeState: any, route: string = '/restaurants/200586') {
   const mockStore = configureStore([]);
   const store = mockStore(storeState);
 
@@ -26,7 +21,7 @@ function renderWithProviders(
           <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
         </Routes>
       </MemoryRouter>
-    </Provider>
+    </Provider>,
   );
 }
 
@@ -34,7 +29,7 @@ describe('RestaurantDetailPage', () => {
   it('renders loading screen when loading', () => {
     renderWithProviders({
       restaurants: { selected: null, loading: true, error: null },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
     expect(screen.getByText(/LoadingScreen/i)).toBeInTheDocument();
   });
@@ -42,7 +37,7 @@ describe('RestaurantDetailPage', () => {
   it('renders error page when error exists', () => {
     renderWithProviders({
       restaurants: { selected: null, loading: false, error: 'Something went wrong' },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
     expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
   });
@@ -50,7 +45,7 @@ describe('RestaurantDetailPage', () => {
   it('renders error page when restaurant not found', () => {
     renderWithProviders({
       restaurants: { selected: null, loading: false, error: null },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
     expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
   });
@@ -58,7 +53,7 @@ describe('RestaurantDetailPage', () => {
   it('renders restaurant details correctly', () => {
     renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
 
     expect(screen.getByText(/← Back to list/i)).toBeInTheDocument();
@@ -75,7 +70,7 @@ describe('RestaurantDetailPage', () => {
   it('shows address details', () => {
     renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
 
     expect(screen.getByText(/29 - 31 City Road/i)).toBeInTheDocument();
@@ -85,15 +80,15 @@ describe('RestaurantDetailPage', () => {
   it('renders only first 6 cuisines', () => {
     const manyCuisines = [...Array(10)].map((_, i) => ({
       name: `Cuisine${i}`,
-      uniqueName: `cuisine${i}`
+      uniqueName: `cuisine${i}`,
     }));
     renderWithProviders({
       restaurants: {
         selected: { ...mockRestaurant, cuisines: manyCuisines },
         loading: false,
-        error: null
+        error: null,
       },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
     for (let i = 0; i < 6; i++) {
       expect(screen.getByText(`Cuisine${i}`)).toBeInTheDocument();
@@ -104,7 +99,7 @@ describe('RestaurantDetailPage', () => {
   it('back link navigates to /restaurants', async () => {
     renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
-      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } }
+      postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
 
     const backLink = screen.getByText(/← Back to list/i);

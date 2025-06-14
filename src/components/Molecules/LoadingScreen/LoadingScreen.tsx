@@ -1,6 +1,5 @@
-
 import React from 'react';
-import Loading from '@/assets/Loading.gif'; 
+import Loading from '@/assets/Loading.gif';
 import { Container, LoaderImage, LoadingText } from './LoadingScreen.styled';
 
 const LoadingScreen: React.FC = () => (
