@@ -22,6 +22,7 @@ interface RestaurantCardProps {
   deliveryTime: string;
   deliveryFee: string;
   offer?: string;
+  testId?: string;
   badge?: 'Sponsored' | 'StampCard' | null;
   onClick?: () => void;
 }
@@ -43,9 +44,10 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   deliveryFee,
   offer,
   badge,
+  testId,
   onClick,
 }) => (
-  <Card onClick={onClick}>
+  <Card onClick={onClick} data-testid={testId} role="button" tabIndex={0}>
     <TopWrapper>
       {heroUrl && <img className="banner" src={heroUrl} alt={`${name} banner`} />}
 

@@ -14,7 +14,7 @@ export const setActiveFilters = createAction<{ [filterId: string]: boolean }>(
 );
 export const resetFilters = createAction('restaurants/resetFilters');
 
-interface RestaurantsState {
+export interface RestaurantsState {
   data: RestaurantsResponse | null;
   loading: boolean;
   error: string | null;
@@ -42,7 +42,14 @@ export const restaurantsSlice = createSlice({
   reducers: {
     selectRestaurant: (state, action: PayloadAction<string>) => {
       state.selectedId = action.payload;
-      state.selected = state.data?.restaurants.find(r => r.id === action.payload) ?? null;
+      const restaurant = state.data?.restaurants.find(r => r.id === action.payload);
+      if (restaurant) {
+        state.selected = restaurant;
+      } else {
+        state.selected = null;
+        state.loading = false;
+        state.error = 'Error: Restaurant not found';
+      }
     },
 
     setSearchQuery: (state, action: PayloadAction<string>) => {

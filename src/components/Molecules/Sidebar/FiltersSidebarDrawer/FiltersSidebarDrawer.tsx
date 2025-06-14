@@ -29,10 +29,10 @@ const FiltersSidebarDrawer: React.FC<Props> = ({ open, onClose }) => {
       }),
     );
   };
-
+if (!open) return null;
   return (
     <>
-      <Overlay open={open} onClick={onClose} />
+      <Overlay data-testid='overlay' open={open} onClick={onClose} />
       <Drawer open={open}>
         <SidebarTitle>
           Filters

@@ -33,7 +33,7 @@ import ErrorPage from '../ErrorPage';
 
 const RESTAURANTS_PER_PAGE = 30;
 
-const RestaurantsListPage: React.FC = () => {
+const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
@@ -101,69 +101,76 @@ const RestaurantsListPage: React.FC = () => {
   };
   return (
     <Page ref={pageRef}>
-      {loading && <LoadingScreen />}
       {error && <ErrorPage />}
-      <FlexWrap>
-        <FilterContainer className="mobile-only">
-          <FilterButton aria-label="Open filters" onClick={() => setDrawerOpen(true)}>
-            <Icon src={FilterIcon} alt="Filter icon" />
-          </FilterButton>
-          {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters </ClearButton>}
-        </FilterContainer>
-        <FiltersSidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-        <FiltersSidebar totalRestaurants={filteredRestaurants.length} />
-        <Content>
-          <SearchBox
-            value={searchInput}
-            onChange={setSearchInput}
-            onClear={() => setSearchInput('')}
-            placeholder="Search by name, location, cuisine…"
-          />
-          <SubHeading id="restaurant-count">
-            Order from {filteredRestaurants.length} place
-            {filteredRestaurants.length !== 1 && 's'}
-          </SubHeading>
-          {!loading && !error && filteredRestaurants.length === 0 && (
-            <ClearFiltersEmptyState onClear={() => dispatch(resetFilters())} />
-          )}
-          <Grid>
-            {pageSlice.map(r => (
-              <RestaurantCard
-                logoUrl={r.logoUrl}
-                key={r.id}
-                name={r.name}
-                highlight={debouncedQuery}
-                rating={r.rating?.starRating ?? 0}
-                reviewCount={r.rating?.count?.toLocaleString() ?? '0'}
-                deliveryTime={
-                  r.deliveryEtaMinutes
-                    ? `${r.deliveryEtaMinutes.rangeLower}-${r.deliveryEtaMinutes.rangeUpper} min`
-                    : 'N/A'
-                }
-                deliveryFee={r.deliveryCost !== undefined ? `£${r.deliveryCost.toFixed(2)}` : 'N/A'}
-                offer={r.deals?.[0]?.description || undefined}
-                badge={
-                  r.isPremier
-                    ? 'Sponsored'
-                    : r.deals?.some(d => d.offerType === 'StampCard')
-                      ? 'StampCard'
-                      : null
-                }
-                onClick={() => handleDetails(r.id)}
-              />
-            ))}
-          </Grid>
-          {totalPages > 1 && (
-            <Pagination
-              totalPages={totalPages}
-              currentPage={currentPage}
-              setCurrentPage={handlePageChange}
+
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+        <FlexWrap>
+          <FilterContainer className="mobile-only">
+            <FilterButton aria-label="Open filters" onClick={() => setDrawerOpen(true)}>
+              <Icon src={FilterIcon} alt="Filter icon" />
+            </FilterButton>
+            {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters </ClearButton>}
+          </FilterContainer>
+          <FiltersSidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+          <FiltersSidebar totalRestaurants={filteredRestaurants.length} />
+          <Content>
+            <SearchBox
+              value={searchInput}
+              onChange={setSearchInput}
+              onClear={() => setSearchInput('')}
+              placeholder="Search by name, location, cuisine…"
             />
-          )}
-        </Content>
-      </FlexWrap>
+            <SubHeading id="restaurant-count">
+              Order from {filteredRestaurants.length} place
+              {filteredRestaurants.length !== 1 && 's'}
+            </SubHeading>
+            {!loading && !error && filteredRestaurants.length === 0 && (
+              <ClearFiltersEmptyState onClear={() => dispatch(resetFilters())} />
+            )}
+            <Grid>
+              {pageSlice.map(r => (
+                <RestaurantCard
+                  logoUrl={r.logoUrl}
+                  key={r.id}
+                  testId={r.id}
+                  name={r.name}
+                  highlight={debouncedQuery}
+                  rating={r.rating?.starRating ?? 0}
+                  reviewCount={r.rating?.count?.toLocaleString() ?? '0'}
+                  deliveryTime={
+                    r.deliveryEtaMinutes
+                      ? `${r.deliveryEtaMinutes.rangeLower}-${r.deliveryEtaMinutes.rangeUpper} min`
+                      : 'N/A'
+                  }
+                  deliveryFee={
+                    r.deliveryCost !== undefined ? `£${r.deliveryCost.toFixed(2)}` : 'N/A'
+                  }
+                  offer={r.deals?.[0]?.description || undefined}
+                  badge={
+                    r.isPremier
+                      ? 'Sponsored'
+                      : r.deals?.some(d => d.offerType === 'StampCard')
+                        ? 'StampCard'
+                        : null
+                  }
+                  onClick={() => handleDetails(r.id)}
+                />
+              ))}
+            </Grid>
+            {totalPages > 1 && (
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setCurrentPage={handlePageChange}
+              />
+            )}
+          </Content>
+        </FlexWrap>
+      )}
     </Page>
   );
 };
 
-export default RestaurantsListPage;
+export default Home;

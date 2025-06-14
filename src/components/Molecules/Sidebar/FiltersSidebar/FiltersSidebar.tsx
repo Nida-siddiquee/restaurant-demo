@@ -34,7 +34,7 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => 
   };
 
   return (
-    <Sidebar className="desktop-only">
+    <Sidebar data-testid="sidebar" className="desktop-only">
       <TopRow>
         <SidebarTitle>{totalRestaurants} places</SidebarTitle>
         {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters</ClearButton>}

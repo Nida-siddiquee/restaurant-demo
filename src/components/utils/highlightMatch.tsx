@@ -1,6 +1,11 @@
+function escapeRegExp(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function highlightMatch(text: string, query: string) {
   if (!query) return text;
-  const regex = new RegExp(`(${query})`, 'ig');
+  const safeQuery = escapeRegExp(query);
+  const regex = new RegExp(`(${safeQuery})`, 'ig');
   const parts = text.split(regex);
   return (
     <>
