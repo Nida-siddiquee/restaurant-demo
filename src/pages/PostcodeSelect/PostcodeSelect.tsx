@@ -10,9 +10,7 @@ const PostcodeSelectPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data: postcodes, selected, loading } = useSelector(
-    (state: any) => state.postcodes
-  );
+  const { data: postcodes, selected, loading } = useSelector((state: any) => state.postcodes);
 
   const [localPostcode, setLocalPostcode] = useState(selected?.code || '');
 

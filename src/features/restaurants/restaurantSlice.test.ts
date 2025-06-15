@@ -32,7 +32,7 @@ describe('restaurantsSlice', () => {
   it('handles fetchRestaurantsSuccess', () => {
     const state = reducer(
       { ...initialState, loading: true },
-      fetchRestaurantsSuccess(mockRestaurantsResponse)
+      fetchRestaurantsSuccess(mockRestaurantsResponse),
     );
     expect(state.loading).toBe(false);
     expect(state.data).toEqual(mockRestaurantsResponse);
@@ -40,10 +40,7 @@ describe('restaurantsSlice', () => {
   });
 
   it('handles fetchRestaurantsFailure', () => {
-    const state = reducer(
-      { ...initialState, loading: true },
-      fetchRestaurantsFailure('Error')
-    );
+    const state = reducer({ ...initialState, loading: true }, fetchRestaurantsFailure('Error'));
     expect(state.loading).toBe(false);
     expect(state.error).toBe('Error');
   });
@@ -63,7 +60,7 @@ describe('restaurantsSlice', () => {
     const restaurantId = mockRestaurantsResponse.restaurants[0].id;
     const state = reducer(
       { ...initialState, data: mockRestaurantsResponse },
-      selectRestaurant(restaurantId)
+      selectRestaurant(restaurantId),
     );
     expect(state.selectedId).toBe(restaurantId);
     expect(state.selected).toEqual(mockRestaurantsResponse.restaurants[0]);
@@ -72,7 +69,7 @@ describe('restaurantsSlice', () => {
   it('handles selectRestaurant for missing id', () => {
     const state = reducer(
       { ...initialState, data: mockRestaurantsResponse },
-      selectRestaurant('missing-id')
+      selectRestaurant('missing-id'),
     );
     expect(state.selectedId).toBe('missing-id');
     expect(state.selected).toBeNull();
@@ -81,21 +78,21 @@ describe('restaurantsSlice', () => {
   });
 
   it('handles resetFilters', () => {
-    const state = reducer({
-      ...initialState,
-      activeFilters: { foo: true },
-      currentPage: 5,
-    }, resetFilters());
+    const state = reducer(
+      {
+        ...initialState,
+        activeFilters: { foo: true },
+        currentPage: 5,
+      },
+      resetFilters(),
+    );
     expect(state.activeFilters).toEqual({});
     expect(state.currentPage).toBe(1);
   });
 
   it('handles setActiveFilters', () => {
     const filters = { foo: true, bar: false };
-    const state = reducer(
-      { ...initialState, currentPage: 2 },
-      setActiveFilters(filters)
-    );
+    const state = reducer({ ...initialState, currentPage: 2 }, setActiveFilters(filters));
     expect(state.activeFilters).toEqual(filters);
     expect(state.currentPage).toBe(1);
   });

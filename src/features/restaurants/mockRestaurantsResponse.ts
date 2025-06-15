@@ -1,4 +1,4 @@
-import { RestaurantsResponse } from "./types";
+import { RestaurantsResponse } from './types';
 
 export const mockRestaurantsResponse: RestaurantsResponse = {
   metaData: {

@@ -25,20 +25,14 @@ describe('postcodesSlice', () => {
       { code: 'CF11', label: 'Cardiff' },
       { code: 'E1', label: 'London' },
     ];
-    const nextState = reducer(
-      { ...initialState, loading: true },
-      fetchPostcodesSuccess(postcodes)
-    );
+    const nextState = reducer({ ...initialState, loading: true }, fetchPostcodesSuccess(postcodes));
     expect(nextState.data).toEqual(postcodes);
     expect(nextState.loading).toBe(false);
   });
 
   it('handles fetchPostcodesFailure', () => {
     const errorMsg = 'Failed to fetch';
-    const nextState = reducer(
-      { ...initialState, loading: true },
-      fetchPostcodesFailure(errorMsg)
-    );
+    const nextState = reducer({ ...initialState, loading: true }, fetchPostcodesFailure(errorMsg));
     expect(nextState.loading).toBe(false);
     expect(nextState.error).toBe(errorMsg);
   });

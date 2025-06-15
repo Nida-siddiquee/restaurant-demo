@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(persistConfig, combineReducers(rootReduc
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({ thunk: false, serializableCheck: false }).concat(sagaMiddleware),
 });
 
