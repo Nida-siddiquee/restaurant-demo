@@ -19,4 +19,8 @@ export default defineConfig({
       },
     },
   },
+  define: {
+      // make VITE_API_BASE_URL available as process.env.VITE_API_BASE_URL
+      'process.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL)
+    }
 });
