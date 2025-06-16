@@ -1,12 +1,29 @@
 import { RestaurantsResponse } from '@/features/restaurants/types';
 
+function getEnvVar(key: string): string | undefined {
+
+  let importMeta: { env?: Record<string, string> } | undefined;
+  try {
+    importMeta = (new Function('return import.meta')  )();
+    if (importMeta && importMeta.env) {
+      return importMeta.env[key];
+    }
+  } catch {
+  }
+  
+  if (typeof window === 'undefined' && typeof globalThis.process !== 'undefined' && globalThis.process.env) {
+    return globalThis.process.env[key];
+  }
+  return undefined;
+}
+
 export async function fetchRestaurantsApi(postcode: string): Promise<RestaurantsResponse> {
   try {
-    const API_BASE = process.env.VITE_API_BASE_URL ||'/api'
+    const API_BASE = getEnvVar('VITE_API_BASE_URL') || '/api';
 
     const apiUrl = `${API_BASE}/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
 
-    const res = await fetch(apiUrl);
+    const res = await fetch(apiUrl, { mode: 'no-cors' });
     if (!res.ok) {
       throw new Error(`API error: ${res.status} ${res.statusText}`);
     }

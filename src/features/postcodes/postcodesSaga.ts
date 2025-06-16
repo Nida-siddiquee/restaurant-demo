@@ -16,8 +16,9 @@ export function* fetchPostcodesWorker() {
   try {
     const postcodes: Postcode[] = yield call(fetchPostcodesApi);
     yield put(fetchPostcodesSuccess(postcodes));
-  } catch (error: any) {
-    yield put(fetchPostcodesFailure(error.message));
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    yield put(fetchPostcodesFailure(errorMessage));
   }
 }
 

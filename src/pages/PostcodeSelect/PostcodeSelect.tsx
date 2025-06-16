@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '@/app/store';
 import { Container, Title, Select } from './PostcodeSelect.styled';
 import { fetchPostcodesRequest, selectPostcode } from '@/features/postcodes/postcodesSlice';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,7 @@ const PostcodeSelectPage: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data: postcodes, selected, loading } = useSelector((state: any) => state.postcodes);
+  const { data: postcodes, selected, loading } = useSelector((state: RootState) => state.postcodes);
 
   const [localPostcode, setLocalPostcode] = useState(selected?.code || '');
 

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
+import type { RootState } from '@/app/store';
 import {
   Page,
   Grid,
@@ -38,7 +39,7 @@ const Home: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
 
   const { data, loading, error, searchQuery, currentPage, activeFilters } = useSelector(
-    (state: any) => state.restaurants,
+    (state: RootState) => state.restaurants,
   );
 
   const [searchInput, setSearchInput] = useState(searchQuery);

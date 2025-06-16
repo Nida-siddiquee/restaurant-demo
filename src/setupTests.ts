@@ -7,6 +7,17 @@ import * as reactRedux from 'react-redux';
 jest.mock('@/assets/logo.svg', () => 'logo-mock.svg');
 jest.mock('@/assets/pin.svg', () => 'pin-mock.svg');
 
+// Mock import.meta for Jest environment
+Object.defineProperty(globalThis, 'import', {
+  value: {
+    meta: {
+      env: {
+        VITE_API_BASE_URL: '/api',
+      },
+    },
+  },
+});
+
 if (!global.TextEncoder) {
   global.TextEncoder = TextEncoder as any;
 }

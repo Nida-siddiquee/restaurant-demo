@@ -12,8 +12,9 @@ export function* fetchRestaurantsSaga(action: PayloadAction<string>) {
   try {
     const response: RestaurantsResponse = yield call(fetchRestaurantsApi, action.payload);
     yield put(fetchRestaurantsSuccess(response));
-  } catch (err: any) {
-    yield put(fetchRestaurantsFailure(err.message || 'Failed to fetch restaurants'));
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to fetch restaurants';
+    yield put(fetchRestaurantsFailure(errorMessage));
   }
 }
 
