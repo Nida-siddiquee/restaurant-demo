@@ -87,7 +87,7 @@ test.describe('Restaurant Details page', () => {
     const addressText = await addressSection.textContent();
     expect(addressText).toBeTruthy();
 
-    const hasAddressContent = (await addressSection.locator('text=/.*\w+.*\w+.*/').count()) > 0;
+    const hasAddressContent = (await addressSection.locator('text=/.*\\w+.*\\w+.*/').count()) > 0;
     expect(hasAddressContent).toBe(true);
   });
 

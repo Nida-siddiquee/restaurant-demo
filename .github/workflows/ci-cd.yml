@@ -174,7 +174,6 @@ jobs:
       #     vercel-args: '--prod'
       #     working-directory: ./
 
-     
       # Placeholder deployment step (replace with your actual deployment)
       - name: Deploy Application
         id: deploy

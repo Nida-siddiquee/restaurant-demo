@@ -25,7 +25,7 @@ A production-ready React + TypeScript boilerplate featuring:
 
 ## ⚡ Quick start
 
-```bash
+````bash
 # 1. Install deps
 npm ci
 
@@ -60,9 +60,10 @@ The Playwright tests can be configured to run against different environments:
 ### Local Development
 ```bash
 npm run e2e:local
-```
+````
 
 ### Preview Build
+
 ```bash
 npm run build
 npm run preview
@@ -70,7 +71,9 @@ npm run e2e:preview
 ```
 
 ### Deployed Application
+
 Set the `PLAYWRIGHT_BASE_URL` environment variable:
+
 ```bash
 # Option 1: Set environment variable
 export PLAYWRIGHT_BASE_URL=https://your-deployed-app.vercel.app
@@ -81,7 +84,9 @@ PLAYWRIGHT_BASE_URL=https://your-deployed-app.vercel.app npm run e2e:deployed
 ```
 
 ### Environment Variables
+
 Copy `.env.example` to `.env` and configure:
+
 ```bash
 cp .env.example .env
 # Edit .env with your configuration
@@ -103,19 +108,20 @@ This project includes a comprehensive GitHub Actions pipeline that:
 ### Pipeline Configuration
 
 The pipeline is defined in `.github/workflows/ci-cd.yml` and runs on:
+
 - Push to `main` or `master` branch
 - Pull requests to `main` or `master` branch
 
 ### Setting Up Deployment
 
- Vercel
+Vercel
+
 1. Create a Vercel account and project
 2. Add these secrets to your GitHub repository:
    - `VERCEL_TOKEN` - Your Vercel token
    - `VERCEL_ORG_ID` - Your Vercel organization ID
    - `VERCEL_PROJECT_ID` - Your Vercel project ID
 3. Uncomment the Vercel deployment step in the workflow
-
 
 ### GitHub Secrets Setup
 
@@ -128,6 +134,7 @@ VERCEL_PROJECT_ID=your_project_id
 ```
 
 Or for Netlify:
+
 ```
 NETLIFY_AUTH_TOKEN=your_netlify_token
 NETLIFY_SITE_ID=your_site_id

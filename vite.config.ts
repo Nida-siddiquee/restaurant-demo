@@ -10,7 +10,9 @@ export default defineConfig({
     },
   },
   define: {
-    __API_BASE__: JSON.stringify(process.env.NODE_ENV === 'development' ? '' : 'https://uk.api.just-eat.io'),
+    __API_BASE__: JSON.stringify(
+      process.env.NODE_ENV === 'development' ? '' : 'https://uk.api.just-eat.io',
+    ),
   },
   server: {
     port: 5174,
@@ -19,7 +21,7 @@ export default defineConfig({
         target: 'https://uk.api.just-eat.io',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },
