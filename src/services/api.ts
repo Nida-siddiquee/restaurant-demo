@@ -5,7 +5,7 @@ export async function fetchRestaurantsApi(postcode: string): Promise<Restaurants
     const API_BASE = import.meta.env.VITE_API_BASE_URL? import.meta.env.VITE_API_BASE_URL :''
     const apiUrl = `${API_BASE}/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
 
-    const res = await fetch(apiUrl,{mode:'no-cors'});
+    const res = await fetch(apiUrl);
     if (!res.ok) {
       throw new Error(`API error: ${res.status} ${res.statusText}`);
     }
