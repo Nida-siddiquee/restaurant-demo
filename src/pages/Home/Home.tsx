@@ -98,9 +98,11 @@ const Home: React.FC = () => {
   const handleClear = () => {
     dispatch(resetFilters());
   };
+  if (error) {
+    return <Page ref={pageRef}>{error && <ErrorPage />} </Page>;
+  }
   return (
     <Page ref={pageRef}>
-      {error && <ErrorPage />}
 
       {loading ? (
         <LoadingScreen />

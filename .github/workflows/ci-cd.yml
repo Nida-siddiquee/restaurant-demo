@@ -131,7 +131,7 @@ jobs:
         id: deploy
         run: |
           echo "Deploying application..."
-          echo "url=https://your-deployed-app.com" >> $GITHUB_OUTPUT
+          echo "url=https://restaurant-demo-tau.vercel.app" >> $GITHUB_OUTPUT
 
   # Job 5: E2E Tests on Production (main/master only)
   e2e-tests-production:
