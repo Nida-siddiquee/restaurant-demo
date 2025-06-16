@@ -1,3 +1,4 @@
+
 name: CI/CD Pipeline
 
 on:
@@ -115,23 +116,15 @@ jobs:
           name: build-files
           path: dist/
 
-      # Example deployment to Vercel (uncomment and configure secrets)
-      # - name: Deploy to Vercel
-      #   id: deploy
-      #   uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-      #     vercel-args: '--prod'
-      #     working-directory: ./
-
-      # Placeholder deployment step (replace with your actual deployment)
-      - name: Deploy Application
+      - name: Deploy to Vercel Production
         id: deploy
-        run: |
-          echo "Deploying application..."
-          echo "url=https://restaurant-demo-tau.vercel.app" >> $GITHUB_OUTPUT
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
 
   # Job 5: E2E Tests on Production (main/master only)
   e2e-tests-production:
@@ -171,12 +164,14 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-  # Job 6: E2E Tests on Preview (PRs only)
-  e2e-tests-preview:
-    name: E2E Tests (Preview)
+  # Job 6: Deploy Preview (PRs only)
+  deploy-preview:
+    name: Deploy Preview
     runs-on: ubuntu-latest
     needs: [build]
     if: github.event_name == 'pull_request'
+    outputs:
+      preview-url: ${{ steps.deploy-preview.outputs.url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -196,21 +191,81 @@ jobs:
           name: build-files
           path: dist/
 
+      - name: Deploy to Vercel Preview
+        id: deploy-preview
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          github-comment: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ./
+
+      - name: Comment Preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 **Preview deployment ready!**
+              
+              Preview URL: ${{ steps.deploy-preview.outputs.url }}
+              
+              The E2E tests will run automatically against this preview deployment.`
+            })
+
+  # Job 7: E2E Tests on Preview (PRs only)
+  e2e-tests-preview:
+    name: E2E Tests (Preview)
+    runs-on: ubuntu-latest
+    needs: [deploy-preview]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Start preview server
-        run: npm run preview &
-        env:
-          CI: true
+      - name: Wait for preview deployment to be ready
+        run: |
+          echo "Waiting for preview deployment to be fully ready..."
+          sleep 45
+          
+          # Test that the deployment is accessible
+          max_attempts=10
+          attempt=0
+          while [ $attempt -lt $max_attempts ]; do
+            if curl -f -s "${{ needs.deploy-preview.outputs.preview-url }}" > /dev/null; then
+              echo "Preview deployment is ready!"
+              break
+            fi
+            echo "Attempt $((attempt + 1))/$max_attempts: Deployment not ready yet..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
+          
+          if [ $attempt -eq $max_attempts ]; then
+            echo "Preview deployment failed to become ready"
+            exit 1
+          fi
 
-      - name: Wait for server
-        run: npx wait-on http://localhost:4173 --timeout 60000
-
-      - name: Run Playwright tests
-        run: npm run e2e:preview
+      - name: Run Playwright tests against preview
+        run: npm run e2e:deployed
         env:
-          PLAYWRIGHT_BASE_URL: http://localhost:4173
+          PLAYWRIGHT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -219,3 +274,24 @@ jobs:
           name: playwright-report-preview
           path: playwright-report/
           retention-days: 30
+
+      - name: Comment test results
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const testStatus = '${{ job.status }}' === 'success' ? '✅ PASSED' : '❌ FAILED';
+            const message = '${{ job.status }}' === 'success' 
+              ? 'All tests passed! ✨' 
+              : 'Some tests failed. Check the [test report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🧪 **E2E Tests ${testStatus}**
+              
+              Preview URL: ${{ needs.deploy-preview.outputs.preview-url }}
+              
+              ${message}`
+            })
