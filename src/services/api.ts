@@ -2,9 +2,7 @@ import { RestaurantsResponse } from '@/features/restaurants/types';
 
 export async function fetchRestaurantsApi(postcode: string): Promise<RestaurantsResponse> {
   try {
-    const apiUrl = __API_BASE__ === 'https://uk.api.just-eat.io' 
-      ? `/api/restaurants?postcode=${encodeURIComponent(postcode)}`
-      : `${__API_BASE__}/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
+    const apiUrl =`${__API_BASE__}/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
 
     const res = await fetch(apiUrl);
     if (!res.ok) {
