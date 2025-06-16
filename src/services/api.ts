@@ -2,7 +2,9 @@ import { RestaurantsResponse } from '@/features/restaurants/types';
 
 export async function fetchRestaurantsApi(postcode: string): Promise<RestaurantsResponse> {
   try {
-    const apiUrl = `/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
+    const API_BASE = import.meta.env.VITE_API_BASE_URL? import.meta.env.VITE_API_BASE_URL :''
+
+    const apiUrl = `${API_BASE}/api/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
 
     const res = await fetch(apiUrl);
     if (!res.ok) {

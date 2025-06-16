@@ -10,7 +10,6 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5174,
     proxy: {
       '/api': {
         target: 'https://uk.api.just-eat.io',
