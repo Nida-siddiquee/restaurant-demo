@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/restaurants.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/restaurants",
+      "destination": "/api/restaurants"
+    }
+  ]
+}

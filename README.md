@@ -53,6 +53,33 @@ docker-compose up --build
 
 ---
 
+## 🔌 API Configuration
+
+This application uses the Just Eat API to fetch restaurant data. To handle CORS restrictions in production, we use different strategies for different environments:
+
+### Development Mode
+- Uses Vite proxy configuration in `vite.config.ts`
+- Proxies requests from `/api/*` to `https://uk.api.just-eat.io/*`
+- No CORS issues since requests appear to come from the same origin
+
+### Production Mode (Vercel)
+- Uses serverless API routes in the `/api` directory
+- `api/restaurants.ts` acts as a proxy to the Just Eat API
+- Handles CORS headers properly
+- Deployed automatically with Vercel
+
+### How it works
+1. **Development**: `localhost:5174/api/...` → Vite proxy → `https://uk.api.just-eat.io/...`
+2. **Production**: `your-domain.com/api/...` → Vercel serverless function → `https://uk.api.just-eat.io/...`
+
+### Files involved:
+- `src/services/api.ts` - API service that detects environment
+- `api/restaurants.ts` - Vercel serverless API route  
+- `vite.config.ts` - Development proxy configuration
+- `vercel.json` - Vercel deployment configuration
+
+---
+
 ## 🧪 E2E Testing Configuration
 
 The Playwright tests can be configured to run against different environments:
@@ -96,21 +123,44 @@ cp .env.example .env
 
 ## 🚀 CI/CD Pipeline
 
-This project includes a comprehensive GitHub Actions pipeline that:
+This project includes a comprehensive GitHub Actions pipeline that ensures quality and deployment safety:
 
-1. **Lints and type-checks** the code
-2. **Runs unit tests** with coverage
-3. **Builds** the application
-4. **Runs E2E tests** against the build
-5. **Deploys** to production (only on main branch)
-6. **Runs post-deployment tests** against the live site
+### Pipeline Flow
+
+**For Pull Requests:**
+1. **Lint & Type Check** - Ensures code quality standards
+2. **Unit Tests** - Runs Jest tests with coverage
+3. **Build** - Compiles the application 
+4. **E2E Tests (Preview)** - Tests against a local preview server
+
+**For Main/Master Branch:**
+1. **Lint & Type Check** - Ensures code quality standards
+2. **Unit Tests** - Runs Jest tests with coverage
+3. **Build** - Compiles the application
+4. **Deploy** - Deploys to production environment
+5. **E2E Tests (Production)** - Tests against the live deployed URL
+
+### Key Features
+
+- **Smart E2E Testing**: 
+  - PRs test against preview servers (localhost)
+  - Main/master tests against the actual deployed application
+  - No localhost testing for production deployments
+- **Build Artifacts**: Shared between jobs for efficiency
+- **Environment-based URLs**: Uses `PLAYWRIGHT_BASE_URL` for flexible testing
+- **Comprehensive Coverage**: All tests must pass before deployment
+
+### E2E Test Configuration
+
+The tests are configured to run against different environments:
+
+- **Local Development**: `npm run e2e:local` (port 5174)
+- **Preview Build**: `npm run e2e:preview` (port 4173) 
+- **Deployed Application**: `npm run e2e:deployed` (uses PLAYWRIGHT_BASE_URL)
 
 ### Pipeline Configuration
 
-The pipeline is defined in `.github/workflows/ci-cd.yml` and runs on:
-
-- Push to `main` or `master` branch
-- Pull requests to `main` or `master` branch
+The pipeline is defined in `.github/workflows/ci-cd.yml` and includes:
 
 ### Setting Up Deployment
 
@@ -152,5 +202,29 @@ NETLIFY_SITE_ID=your_site_id
 ### Environment Protection
 
 The `production` environment is protected and will require manual approval for deployments if configured in your repository settings.
+
+---
+
+## 🚀 Deployment Instructions
+
+### Deploying to Vercel
+
+1. **Connect your repository** to Vercel
+2. **Deploy** - Vercel will automatically detect the React app and serverless functions
+3. **Environment Variables** - No additional environment variables needed for the API proxy
+4. **Custom domains** - Works with custom domains automatically
+
+The `vercel.json` configuration ensures that:
+- The `/api/restaurants` endpoint is properly routed
+- Serverless functions are deployed with the correct runtime
+- CORS headers are handled properly
+
+### Deploying to Other Platforms
+
+For other platforms (Netlify, Railway, etc.), you'll need to:
+
+1. **Netlify**: Create Netlify Functions in `/netlify/functions/`
+2. **Railway**: Deploy as a Node.js app with API routes
+3. **Custom server**: Implement the proxy in your backend
 
 ---
