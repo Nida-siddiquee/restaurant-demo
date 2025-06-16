@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Restaurant Details page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
     await page.getByText('View Restaurants').click();

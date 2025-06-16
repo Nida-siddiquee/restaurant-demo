@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Home Page', () => {
   test('loads restaurants and allows searching', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
     await page.getByText('View Restaurants').click();
@@ -48,7 +48,7 @@ test.describe('Home Page', () => {
   });
 
   test('opens and closes mobile filter drawer', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
     await page.getByText('View Restaurants').click();
@@ -68,13 +68,13 @@ test.describe('Home Page', () => {
   });
 
   test('shows button disabled when no area selected', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     const button = page.getByTestId('view-restaurants-btn');
     await expect(button).toBeDisabled();
   });
 
   test('shows all available areas in dropdown', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     const select = page.locator('select');
@@ -85,7 +85,7 @@ test.describe('Home Page', () => {
   });
 
   test('navigates to restaurants page after selecting area', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
     await page.getByText('View Restaurants').click();
 
@@ -94,7 +94,7 @@ test.describe('Home Page', () => {
   });
 
   test('handles search with no results', async ({ page }) => {
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
     await page.getByText('View Restaurants').click();
