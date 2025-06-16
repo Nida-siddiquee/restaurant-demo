@@ -9,6 +9,7 @@ function getEnvVar(key: string): string | undefined {
       return importMeta.env[key];
     }
   } catch {
+    console.warn('Failed to access import.meta.env, falling back to globalThis');
   }
   
   if (typeof window === 'undefined' && typeof globalThis.process !== 'undefined' && globalThis.process.env) {
