@@ -1,9 +1,8 @@
-
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { MemoryRouter } from 'react-router-dom';
 import { render, screen, fireEvent, act, within } from '@testing-library/react';
-import Homes from '@/pages/Home';
+import Home from '@/pages/Home';
 import { mockRestaurantsResponse } from '../../features/restaurants/mockRestaurantsResponse';
 
 beforeAll(() => {
@@ -29,7 +28,7 @@ const renderPage = store =>
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Homes />
+        <Home />
       </MemoryRouter>
     </Provider>,
   );
@@ -39,7 +38,7 @@ describe('RestaurantsListPage', () => {
     const store = mockStore(getInitialState({ loading: true }));
     renderPage(store);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
-  });
+  })
 
   it('renders error page', () => {
     const store = mockStore(getInitialState({ error: 'Some error' }));
@@ -173,5 +172,82 @@ describe('RestaurantsListPage', () => {
     fireEvent.click(screen.getByLabelText(/Open filters/i));
     fireEvent.click(screen.getByRole('button', { name: /Close filters/i }));
     expect(screen.queryByText(/Filters/i)).not.toBeInTheDocument();
+  });
+
+  it('clears filters when postcode changes', () => {
+    const initialStore = mockStore(getInitialState({ 
+      activeFilters: { free_delivery: true },
+    }));
+    
+    const { rerender } = render(
+      <Provider store={initialStore}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const newStore = mockStore({
+      ...getInitialState({ activeFilters: { free_delivery: true } }),
+      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } }
+    });
+
+    rerender(
+      <Provider store={newStore}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const actions = newStore.getActions();
+    expect(actions).toContainEqual(
+      expect.objectContaining({ type: 'restaurants/resetFilters' }),
+    );
+  });
+
+  it('does not clear filters on initial load', () => {
+    const store = mockStore(getInitialState({ 
+      activeFilters: { free_delivery: true },
+    }));
+    
+    renderPage(store);
+
+    const actions = store.getActions();
+    expect(actions).not.toContainEqual(
+      expect.objectContaining({ type: 'restaurants/resetFilters' }),
+    );
+  });
+
+  it('does not clear filters when postcode changes but no filters are active', () => {
+    const initialStore = mockStore(getInitialState({ 
+      activeFilters: {},
+    }));
+    
+    const { rerender } = render(
+      <Provider store={initialStore}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const newStore = mockStore({
+      ...getInitialState({ activeFilters: {} }),
+      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } }
+    });
+
+    rerender(
+      <Provider store={newStore}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    const actions = newStore.getActions();
+    expect(actions).not.toContainEqual(
+      expect.objectContaining({ type: 'restaurants/resetFilters' }),
+    );
   });
 });
