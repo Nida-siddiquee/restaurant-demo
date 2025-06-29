@@ -78,6 +78,8 @@ export const restaurantsSlice = createSlice({
       .addCase(fetchRestaurantsSuccess, (state, action: PayloadAction<RestaurantsResponse>) => {
         state.loading = false;
         state.data = action.payload;
+        state.activeFilters = {};
+
         if (state.selectedId) {
           state.selected = state.data.restaurants.find(r => r.id === state.selectedId) ?? null;
         }

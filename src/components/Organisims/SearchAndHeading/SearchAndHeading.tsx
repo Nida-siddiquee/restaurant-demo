@@ -1,0 +1,33 @@
+import React from 'react';
+import SearchBox from '@/components/Atoms/SearchBox';
+import { SubHeading } from './SearchAndHeading.styled';
+
+interface SearchAndHeadingProps {
+  searchInput: string;
+  onSearchChange: (value: string) => void;
+  onSearchClear: () => void;
+  restaurantCount: number;
+}
+
+const SearchAndHeading: React.FC<SearchAndHeadingProps> = ({
+  searchInput,
+  onSearchChange,
+  onSearchClear,
+  restaurantCount,
+}) => {
+  return (
+    <>
+      <SearchBox
+        value={searchInput}
+        onChange={onSearchChange}
+        onClear={onSearchClear}
+        placeholder="Search by name, location, cuisine…"
+      />
+      <SubHeading id="restaurant-count">
+        Order from {restaurantCount} place{restaurantCount !== 1 && 's'}
+      </SubHeading>
+    </>
+  );
+};
+
+export default SearchAndHeading;

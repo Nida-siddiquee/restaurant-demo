@@ -1,1 +1,1 @@
-export { default } from './FiltersSidebarDrawer';
+export { default } from './FiltersSidebarDrawer.tsx';

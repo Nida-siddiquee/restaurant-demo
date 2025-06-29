@@ -1,0 +1,166 @@
+import { render, screen } from '@testing-library/react';
+import HomeContent from './HomeContent';
+import { Restaurant } from '@/features/restaurants/types';
+import { mockRestaurantsResponse } from '@/features/restaurants/mockRestaurantsResponse';
+
+// Mock child components
+jest.mock('../SearchAndHeading/SearchAndHeading', () => {
+  return function MockSearchAndHeading(props: any) {
+    return (
+      <div data-testid="search-and-heading">
+        <div>Restaurant count: {props.restaurantCount}</div>
+        <input 
+          data-testid="search-input"
+          value={props.searchInput}
+          onChange={(e) => props.onSearchChange(e.target.value)}
+        />
+      </div>
+    );
+  };
+});
+
+jest.mock('../RestaurantGrid/RestaurantGrid', () => {
+  return function MockRestaurantGrid(props: any) {
+    return (
+      <div data-testid="restaurant-grid">
+        {props.restaurants.map((restaurant: Restaurant) => (
+          <div key={restaurant.id} data-testid={`restaurant-${restaurant.id}`}>
+            {restaurant.name}
+          </div>
+        ))}
+      </div>
+    );
+  };
+});
+
+jest.mock('@/components/Molecules/Sidebar/FiltersSidebar', () => {
+  return function MockFiltersSidebar(props: any) {
+    return <div data-testid="filters-sidebar">Total: {props.totalRestaurants}</div>;
+  };
+});
+
+jest.mock('@/components/Atoms/ClearFiltersEmptyState', () => {
+  return function MockClearFiltersEmptyState(props: any) {
+    return (
+      <div data-testid="clear-filters-empty-state">
+        <button onClick={props.onClear}>Clear filters</button>
+      </div>
+    );
+  };
+});
+
+jest.mock('@/components/Organisims/Pagination/Pagination', () => {
+  return function MockPagination(props: any) {
+    return (
+      <div data-testid="pagination">
+        Page {props.currentPage} of {props.totalPages}
+      </div>
+    );
+  };
+});
+
+const mockRestaurant: Restaurant = mockRestaurantsResponse.restaurants[0];
+
+const defaultProps = {
+  searchInput: '',
+  onSearchChange: jest.fn(),
+  onSearchClear: jest.fn(),
+  filteredRestaurants: [mockRestaurant],
+  pageSlice: [mockRestaurant],
+  searchQuery: '',
+  loading: false,
+  error: null,
+  totalPages: 1,
+  currentPage: 1,
+  onRestaurantClick: jest.fn(),
+  onPageChange: jest.fn(),
+  onClearFilters: jest.fn(),
+};
+
+describe('HomeContent', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders all main components', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    expect(screen.getByTestId('filters-sidebar')).toBeInTheDocument();
+    expect(screen.getByTestId('search-and-heading')).toBeInTheDocument();
+    expect(screen.getByTestId('restaurant-grid')).toBeInTheDocument();
+  });
+
+  it('displays correct restaurant count in filters sidebar', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    expect(screen.getByText('Total: 1')).toBeInTheDocument();
+  });
+
+  it('displays correct restaurant count in search and heading', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    expect(screen.getByText('Restaurant count: 1')).toBeInTheDocument();
+  });
+
+  it('renders restaurants in the grid', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    expect(screen.getByTestId(`restaurant-${mockRestaurant.id}`)).toBeInTheDocument();
+    expect(screen.getByText(mockRestaurant.name)).toBeInTheDocument();
+  });
+
+  it('shows pagination when total pages > 1', () => {
+    render(<HomeContent {...defaultProps} totalPages={3} currentPage={2} />);
+    
+    expect(screen.getByTestId('pagination')).toBeInTheDocument();
+    expect(screen.getByText('Page 2 of 3')).toBeInTheDocument();
+  });
+
+  it('does not show pagination when total pages = 1', () => {
+    render(<HomeContent {...defaultProps} totalPages={1} />);
+    
+    expect(screen.queryByTestId('pagination')).not.toBeInTheDocument();
+  });
+
+  it('shows clear filters empty state when no restaurants and not loading', () => {
+    render(<HomeContent 
+      {...defaultProps} 
+      filteredRestaurants={[]}
+      pageSlice={[]}
+      loading={false}
+      error={null}
+    />);
+    
+    expect(screen.getByTestId('clear-filters-empty-state')).toBeInTheDocument();
+  });
+
+  it('does not show clear filters empty state when loading', () => {
+    render(<HomeContent 
+      {...defaultProps} 
+      filteredRestaurants={[]}
+      pageSlice={[]}
+      loading={true}
+      error={null}
+    />);
+    
+    expect(screen.queryByTestId('clear-filters-empty-state')).not.toBeInTheDocument();
+  });
+
+  it('does not show clear filters empty state when there is an error', () => {
+    render(<HomeContent 
+      {...defaultProps} 
+      filteredRestaurants={[]}
+      pageSlice={[]}
+      loading={false}
+      error="Some error"
+    />);
+    
+    expect(screen.queryByTestId('clear-filters-empty-state')).not.toBeInTheDocument();
+  });
+
+  it('does not show clear filters empty state when there are restaurants', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    expect(screen.queryByTestId('clear-filters-empty-state')).not.toBeInTheDocument();
+  });
+});
