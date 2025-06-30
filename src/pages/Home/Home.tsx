@@ -29,11 +29,7 @@ const Home: React.FC = () => {
   const [searchInput, setSearchInput] = useState(searchQuery);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debouncedQuery] = useDebounce(searchInput, 300);
-  const filteredRestaurants = useFilteredRestaurants(
-    data?.restaurants,
-    searchQuery,
-    activeFilters,
-  );
+  const filteredRestaurants = useFilteredRestaurants(data?.restaurants, searchQuery, activeFilters);
   const { totalPages, pageSlice } = usePagination(filteredRestaurants, currentPage);
   const hasActiveFilters = Object.values(activeFilters).some(Boolean);
 
@@ -51,23 +47,17 @@ const Home: React.FC = () => {
     }
   }, [debouncedQuery, searchQuery, dispatch]);
 
-  // Clear filters when postcode/location changes
   useEffect(() => {
     const currentPostcodeCode = selectedPostcode?.code;
-    
-    // Only clear filters if:
-    // 1. We have a previous postcode (not initial load)
-    // 2. The postcode has actually changed
-    // 3. We have active filters to clear
+
     if (
-      previousPostcodeRef.current !== null && 
-      previousPostcodeRef.current !== currentPostcodeCode && 
+      previousPostcodeRef.current !== null &&
+      previousPostcodeRef.current !== currentPostcodeCode &&
       hasActiveFilters
     ) {
       dispatch(resetFilters());
     }
-    
-    // Update the ref with current postcode
+
     previousPostcodeRef.current = currentPostcodeCode || null;
   }, [selectedPostcode?.code, hasActiveFilters, dispatch]);
 

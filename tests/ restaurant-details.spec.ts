@@ -106,7 +106,7 @@ test.describe('Restaurant Details page', () => {
       route.continue();
     });
 
-    await page.goto('http://localhost:5174/');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
 
@@ -118,7 +118,7 @@ test.describe('Restaurant Details page', () => {
   });
 
   test('handles missing data gracefully', async ({ page }) => {
-    await page.goto('http://localhost:5174/restaurants/999999');
+    await page.goto('/restaurants/999999');
 
     await page.waitForLoadState('networkidle');
 
