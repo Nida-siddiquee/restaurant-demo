@@ -6,7 +6,7 @@ export const Card = styled.div`
   box-shadow: 0 4px 16px rgba(25, 40, 70, 0.06);
   overflow: hidden;
   margin: 0.7rem 0;
-  min-width: 220px;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -18,7 +18,6 @@ export const Card = styled.div`
   }
 
   @media (max-width: 600px) {
-    min-width: 0;
     margin: 0.6rem 0 1rem 0;
     border-radius: 9px;
   }
