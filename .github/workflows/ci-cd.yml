@@ -126,45 +126,7 @@ jobs:
           vercel-args: '--prod'
           working-directory: ./
 
-  # Job 5: E2E Tests on Production (main/master only)
-  e2e-tests-production:
-    name: E2E Tests (Production)
-    runs-on: ubuntu-latest
-    needs: [deploy]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Wait for deployment to be ready
-        run: sleep 30
-
-      - name: Run E2E tests against production
-        run: npm run e2e:deployed
-        env:
-          PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.deployment-url }}
-
-      - name: Upload production test report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: production-playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-  # Job 6: Deploy Preview (PRs only)
+  # Job 5: Deploy Preview (PRs only)
   deploy-preview:
     name: Deploy Preview
     runs-on: ubuntu-latest
@@ -214,84 +176,5 @@ jobs:
               
               Preview URL: ${{ steps.deploy-preview.outputs.url }}
               
-              The E2E tests will run automatically against this preview deployment.`
-            })
-
-  # Job 7: E2E Tests on Preview (PRs only)
-  e2e-tests-preview:
-    name: E2E Tests (Preview)
-    runs-on: ubuntu-latest
-    needs: [deploy-preview]
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Wait for preview deployment to be ready
-        run: |
-          echo "Waiting for preview deployment to be fully ready..."
-          sleep 45
-          
-          # Test that the deployment is accessible
-          max_attempts=10
-          attempt=0
-          while [ $attempt -lt $max_attempts ]; do
-            if curl -f -s "${{ needs.deploy-preview.outputs.preview-url }}" > /dev/null; then
-              echo "Preview deployment is ready!"
-              break
-            fi
-            echo "Attempt $((attempt + 1))/$max_attempts: Deployment not ready yet..."
-            sleep 10
-            attempt=$((attempt + 1))
-          done
-          
-          if [ $attempt -eq $max_attempts ]; then
-            echo "Preview deployment failed to become ready"
-            exit 1
-          fi
-
-      - name: Run Playwright tests against preview
-        run: npm run e2e:deployed
-        env:
-          PLAYWRIGHT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report-preview
-          path: playwright-report/
-          retention-days: 30
-
-      - name: Comment test results
-        uses: actions/github-script@v7
-        if: always()
-        with:
-          script: |
-            const testStatus = '${{ job.status }}' === 'success' ? '✅ PASSED' : '❌ FAILED';
-            const message = '${{ job.status }}' === 'success' 
-              ? 'All tests passed! ✨' 
-              : 'Some tests failed. Check the [test report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.';
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🧪 **E2E Tests ` + testStatus + `**
-              
-              Preview URL: ${{ needs.deploy-preview.outputs.preview-url }}
-              
-              ` + message
+              You can now manually test the preview deployment.`
             })

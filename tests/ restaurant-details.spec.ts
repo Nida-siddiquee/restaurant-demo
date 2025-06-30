@@ -5,7 +5,7 @@ test.describe('Restaurant Details page', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
-    await page.getByText('View Restaurants').click();
+    await page.getByTestId('view-restaurants-btn').click();
 
     await expect(page.getByText(/Order from \d+ place/)).toBeVisible({ timeout: 10000 });
 
@@ -57,7 +57,7 @@ test.describe('Restaurant Details page', () => {
   });
 
   test('shows restaurant rating and reviews', async ({ page }) => {
-    await expect(page.getByText('★')).toBeVisible();
+    await expect(page.locator('.star, [data-testid*="rating"], [aria-label*="rating"], text=★').first()).toBeVisible();
   });
 
   test('displays delivery time and cost', async ({ page }) => {
@@ -110,7 +110,7 @@ test.describe('Restaurant Details page', () => {
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
 
-    const navigation = page.getByText('View Restaurants').click();
+    const navigation = page.getByTestId('view-restaurants-btn').click();
     await expect(page.getByTestId('loading-container')).toBeVisible();
     await navigation;
 

@@ -64,7 +64,7 @@ const PostcodeSelectPage: React.FC = () => {
             ))}
           </Select>
           <div id="postcode-help" className="sr-only">
-            Select a postcode from the dropdown to view restaurants in that area
+            Select a postcode from the dropdown to find nearby dining options
           </div>
           <PrimaryButton
             type="submit"
