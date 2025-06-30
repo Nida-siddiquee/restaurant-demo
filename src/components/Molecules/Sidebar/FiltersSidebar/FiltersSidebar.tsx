@@ -34,16 +34,29 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => 
   };
 
   return (
-    <Sidebar data-testid="sidebar" className="desktop-only">
+    <Sidebar data-testid="sidebar" className="desktop-only" aria-labelledby="filters-title">
       <TopRow>
-        <SidebarTitle>{totalRestaurants} places</SidebarTitle>
-        {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters</ClearButton>}
+        <SidebarTitle id="filters-title" role="heading" aria-level={2}>
+          {totalRestaurants} places
+        </SidebarTitle>
+        {hasActiveFilters && (
+          <ClearButton 
+            onClick={handleClear}
+            aria-label="Clear all active filters"
+          >
+            Clear filters
+          </ClearButton>
+        )}
       </TopRow>
-      <FiltersList>
+      <FiltersList role="group" aria-labelledby="filters-title">
         {FILTERS.map(f => (
           <FilterRow key={f.id}>
             {f.label}
-            <ToggleSwitch checked={!!activeFilters?.[f.id]} onChange={() => handleToggle(f.id)} />
+            <ToggleSwitch 
+              checked={!!activeFilters?.[f.id]} 
+              onChange={() => handleToggle(f.id)}
+              aria-label={f.label}
+            />
           </FilterRow>
         ))}
       </FiltersList>

@@ -22,8 +22,9 @@ describe('MobileFilterBar', () => {
   it('renders the filter icon', () => {
     render(<MobileFilterBar {...defaultProps} />);
     
-    const filterIcon = screen.getByAltText('Filter icon');
+    const filterIcon = screen.getByRole('presentation');
     expect(filterIcon).toBeInTheDocument();
+    expect(filterIcon).toHaveAttribute('src', 'pin-mock.svg');
   });
 
   it('calls onFilterClick when filter button is clicked', () => {

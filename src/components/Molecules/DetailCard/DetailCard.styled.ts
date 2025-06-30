@@ -7,6 +7,9 @@ export const Card = styled.div`
   overflow: hidden;
   margin: 0.7rem 0;
   min-width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   transition: box-shadow 0.2s;
 
@@ -108,6 +111,9 @@ export const Logo = styled.img`
 
 export const Body = styled.div`
   padding: 1.1rem 1.1rem 0.9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 600px) {
     padding: 0.7rem 0.7rem 0.55rem;

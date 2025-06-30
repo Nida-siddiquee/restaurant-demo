@@ -9,6 +9,9 @@ exports[`RestaurantCard matches snapshot 1`] = `
   overflow: hidden;
   margin: 0.7rem 0;
   min-width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
@@ -77,6 +80,9 @@ exports[`RestaurantCard matches snapshot 1`] = `
 
 .c5 {
   padding: 1.1rem 1.1rem 0.9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .c6 {
@@ -183,6 +189,7 @@ exports[`RestaurantCard matches snapshot 1`] = `
 }
 
 <div
+    aria-label="Testaurant restaurant - 4.7 stars, 20-30 min delivery, from £2.00, Deal"
     class="c0"
     role="button"
     tabindex="0"
@@ -233,27 +240,47 @@ exports[`RestaurantCard matches snapshot 1`] = `
         class="c7"
       >
         <span
+          aria-hidden="true"
           class="star"
         >
           ★
         </span>
-        4.7 
         <span
+          aria-label="Rating: 4.7 out of 5 stars"
+        >
+          4.7
+        </span>
+        <span
+          aria-label="100 reviews"
           style="font-size: .9em; color: rgb(136, 102, 136);"
         >
           (100)
         </span>
         <span
+          aria-hidden="true"
           class="clock"
         >
           🕒
         </span>
-        20-30 min
+        <span
+          aria-label="Delivery time: 20-30 min"
+        >
+          20-30 min
+        </span>
       </div>
       <div
         class="c8"
       >
-        🚴‍♂️ Delivery from £2.00
+        <span
+          aria-hidden="true"
+        >
+          🚴‍♂️
+        </span>
+        <span
+          aria-label="Delivery cost: £2.00"
+        >
+          Delivery from £2.00
+        </span>
       </div>
     </div>
   </div>

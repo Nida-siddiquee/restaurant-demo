@@ -1,7 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Pagination from './Pagination';
 
-const getPageButtons = () => screen.queryAllByRole('button', { name: /^[0-9]+$/ });
+const getPageButtons = () => screen.queryAllByRole('button').filter(button => 
+  /^[0-9]+$/.test(button.textContent || '')
+);
 
 describe('Pagination', () => {
   it('renders nothing if only one page', () => {
@@ -22,8 +24,6 @@ describe('Pagination', () => {
   it('highlights the current page', () => {
     render(<Pagination totalPages={3} currentPage={2} setCurrentPage={jest.fn()} />);
     const page2 = screen.getByText('2');
-    // expect(page2).toHaveAttribute('aria-current', 'true'); // Only if you set this in styled
-    // OR: Check with custom prop/class
     expect(page2).toHaveStyle({ background: expect.stringMatching(/.+/) });
   });
 

@@ -16,11 +16,21 @@ const MobileFilterBar: React.FC<MobileFilterBarProps> = ({
 }) => {
   return (
     <FilterContainer className="mobile-only">
-      <FilterButton aria-label="Open filters" onClick={onFilterClick}>
-        <Icon src={FilterIcon} alt="Filter icon" />
+      <FilterButton 
+        aria-label={`Open filters${hasActiveFilters ? ' (filters active)' : ''}`} 
+        onClick={onFilterClick}
+        type="button"
+      >
+        <Icon src={FilterIcon} alt="" role="presentation" />
       </FilterButton>
       {hasActiveFilters && (
-        <ClearButton onClick={onClearFilters}>Clear filters</ClearButton>
+        <ClearButton 
+          onClick={onClearFilters}
+          type="button"
+          aria-label="Clear all active filters"
+        >
+          Clear filters
+        </ClearButton>
       )}
     </FilterContainer>
   );

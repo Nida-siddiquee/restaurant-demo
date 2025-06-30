@@ -28,13 +28,22 @@ const PostcodeSelectPage: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && localPostcode && !loading) {
+      handleSubmit();
+    }
+  };
+
   return (
     <Container>
-      <Title>Select Your Area</Title>
+      <Title id="postcode-page-title">Select Your Area</Title>
       {loading ? (
-        <p>Loading...</p>
+        <p aria-live="polite" role="status">Loading...</p>
       ) : (
-        <>
+        <form 
+          onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+          aria-labelledby="postcode-page-title"
+        >
           <label htmlFor="postcode-select" style={{ marginBottom: 8, fontWeight: 500 }}>
             Choose a postcode:
           </label>
@@ -42,7 +51,10 @@ const PostcodeSelectPage: React.FC = () => {
             id="postcode-select"
             value={localPostcode}
             aria-label="Postcode Select"
+            aria-describedby="postcode-help"
             onChange={e => setLocalPostcode(e.target.value)}
+            onKeyDown={handleKeyDown}
+            required
           >
             <option value="">Choose a postcode</option>
             {postcodes.map(p => (
@@ -51,14 +63,23 @@ const PostcodeSelectPage: React.FC = () => {
               </option>
             ))}
           </Select>
+          <div id="postcode-help" className="sr-only">
+            Select a postcode from the dropdown to view restaurants in that area
+          </div>
           <PrimaryButton
-            onClick={handleSubmit}
+            type="submit"
             disabled={!localPostcode || loading}
             data-testid="view-restaurants-btn"
+            aria-describedby={!localPostcode ? "submit-help" : undefined}
           >
             View Restaurants
           </PrimaryButton>
-        </>
+          {!localPostcode && (
+            <div id="submit-help" className="sr-only">
+              Please select a postcode to continue
+            </div>
+          )}
+        </form>
       )}
     </Container>
   );

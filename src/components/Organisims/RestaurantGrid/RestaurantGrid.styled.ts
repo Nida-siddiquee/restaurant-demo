@@ -5,3 +5,8 @@ export const Grid = styled.div`
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 `;
+
+export const GridItem = styled.div`
+  display: flex;
+  height: 100%;
+`;
