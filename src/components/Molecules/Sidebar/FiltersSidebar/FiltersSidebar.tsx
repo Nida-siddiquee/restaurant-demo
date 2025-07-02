@@ -12,10 +12,7 @@ import {
   TopRow,
 } from '../Sidebar.styled';
 import { FILTERS } from '../constants';
-
-interface FiltersSidebarProps {
-  totalRestaurants: number;
-}
+import { FiltersSidebarProps } from '../types';
 
 const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => {
   const activeFilters = useSelector((s: RootState) => s.restaurants.activeFilters);

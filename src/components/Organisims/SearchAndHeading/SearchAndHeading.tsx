@@ -1,13 +1,7 @@
 import React from 'react';
 import SearchBox from '@/components/Atoms/SearchBox';
 import { SubHeading } from './SearchAndHeading.styled';
-
-interface SearchAndHeadingProps {
-  searchInput: string;
-  onSearchChange: (value: string) => void;
-  onSearchClear: () => void;
-  restaurantCount: number;
-}
+import { SearchAndHeadingProps } from './types';
 
 const SearchAndHeading: React.FC<SearchAndHeadingProps> = ({
   searchInput,

@@ -12,13 +12,9 @@ import {
   ToggleSwitch,
 } from '../Sidebar.styled';
 import { FILTERS } from '../constants';
+import { FiltersSidebarDrawerProps } from '../types';
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
-
-const FiltersSidebarDrawer: React.FC<Props> = ({ open, onClose }) => {
+const FiltersSidebarDrawer: React.FC<FiltersSidebarDrawerProps> = ({ open, onClose }) => {
   const activeFilters = useSelector((s: RootState) => s.restaurants.activeFilters);
   const dispatch = useDispatch<AppDispatch>();
 

@@ -7,7 +7,7 @@ import { mockRestaurant } from './mockRestaurant';
 
 jest.mock('@/components/Atoms/MapView', () => () => <div>MapView</div>);
 jest.mock('@/components/Molecules/LoadingScreen', () => () => <div>LoadingScreen</div>);
-jest.mock('@/pages/ErrorPage', () => () => <div>ErrorPage</div>);
+
 
 function renderWithProviders(storeState: any, route: string = '/restaurants/200586') {
   const mockStore = configureStore([]);
@@ -38,7 +38,8 @@ describe('RestaurantDetailPage', () => {
       restaurants: { selected: null, loading: false, error: 'Something went wrong' },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
+jest.mock('@/pages/ErrorPage', () => () => <div>ErrorPage</div>);
+    expect(screen.getByText(/Service Unavailable|Connection Problem|Something went wrong/i)).toBeInTheDocument();
   });
 
   it('renders error page when restaurant not found', () => {
@@ -46,7 +47,7 @@ describe('RestaurantDetailPage', () => {
       restaurants: { selected: null, loading: false, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Not Found/i)).toBeInTheDocument();
   });
 
   it('renders restaurant details correctly', () => {

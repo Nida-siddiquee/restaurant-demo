@@ -2,12 +2,9 @@ import React from 'react';
 import { Icon, Message, Title, Wrapper } from './ClearFiltersEmptyState.styled';
 import SecondaryButton from '../SecondaryButton';
 import FilterIcon from '@/assets/filterIcon.svg';
+import { ClearFiltersEmptyStateProps } from './types';
 
-interface Props {
-  onClear: () => void;
-}
-
-const ClearFiltersEmptyState: React.FC<Props> = ({ onClear }) => (
+const ClearFiltersEmptyState: React.FC<ClearFiltersEmptyStateProps> = ({ onClear }) => (
   <Wrapper 
     role="status" 
     aria-live="polite"

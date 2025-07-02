@@ -1,13 +1,7 @@
 import React from 'react';
 import { Grid, GridItem } from './RestaurantGrid.styled';
 import RestaurantCard from '@/components/Molecules/DetailCard';
-import { Restaurant } from '@/features/restaurants/types';
-
-interface RestaurantGridProps {
-  restaurants: Restaurant[];
-  searchQuery: string;
-  onRestaurantClick: (id: string) => void;
-}
+import { RestaurantGridProps } from './types';
 
 const RestaurantGrid: React.FC<RestaurantGridProps> = ({
   restaurants,

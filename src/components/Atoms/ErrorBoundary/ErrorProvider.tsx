@@ -1,12 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
-import { CustomError } from '@/utils/errors';
-
-interface ErrorProviderProps {
-  children: ReactNode;
-  fallback?: React.ComponentType<{ error: CustomError; onRetry: () => void }>;
-  onError?: (error: CustomError) => void;
-}
+import { ErrorProviderProps } from './types';
 
 const ErrorProvider: React.FC<ErrorProviderProps> = ({ 
   children, 

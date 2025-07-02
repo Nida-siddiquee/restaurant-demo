@@ -1,12 +1,6 @@
 import React from 'react';
 import { ClearBtn, Input, SearchIcon, Wrapper } from './SearchBox.styled';
-
-interface SearchBoxProps {
-  value: string;
-  onChange: (v: string) => void;
-  onClear?: () => void;
-  placeholder?: string;
-}
+import { SearchBoxProps } from './types';
 
 const SearchBox: React.FC<SearchBoxProps> = ({
   value,

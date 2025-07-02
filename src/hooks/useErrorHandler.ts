@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { CustomError, parseError } from '@/utils/errors';
 
 interface UseErrorHandlerOptions {
@@ -20,7 +20,9 @@ interface UseErrorHandlerReturn {
 }
 
 export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorHandlerReturn => {
-  const { maxRetries = 3, retryDelay = 1000, onError } = options;
+  const maxRetries = useMemo(() => options.maxRetries ?? 3, [options.maxRetries]);
+  const retryDelay = useMemo(() => options.retryDelay ?? 1000, [options.retryDelay]);
+  const onError = useMemo(() => options.onError, [options.onError]);
   
   const [error, setError] = useState<CustomError | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);

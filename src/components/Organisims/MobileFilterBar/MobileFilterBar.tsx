@@ -2,12 +2,7 @@ import React from 'react';
 import { FilterContainer, FilterButton, Icon } from './MobileFilterBar.styled';
 import { ClearButton } from '@/components/Molecules/Sidebar/Sidebar.styled';
 import FilterIcon from '@/assets/filterIcon.svg';
-
-interface MobileFilterBarProps {
-  hasActiveFilters: boolean;
-  onFilterClick: () => void;
-  onClearFilters: () => void;
-}
+import { MobileFilterBarProps } from './types';
 
 const MobileFilterBar: React.FC<MobileFilterBarProps> = ({
   hasActiveFilters,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { highlightMatch } from '@/components/utils/highlightMatch';
-
+import { RestaurantCardProps } from './types';
 import {
   Badge,
   Body,
@@ -12,21 +12,6 @@ import {
   OfferRibbon,
   TopWrapper,
 } from './DetailCard.styled';
-
-interface RestaurantCardProps {
-  heroUrl?: string;
-  logoUrl?: string;
-  name: string;
-  highlight?: string;
-  rating: number;
-  reviewCount: string;
-  deliveryTime: string;
-  deliveryFee: string;
-  offer?: string;
-  testId?: string;
-  badge?: 'Sponsored' | 'StampCard' | null;
-  onClick?: () => void;
-}
 
 const TagIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff8000">

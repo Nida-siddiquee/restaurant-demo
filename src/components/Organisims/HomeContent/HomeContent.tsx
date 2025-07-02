@@ -5,23 +5,7 @@ import RestaurantGrid from '../RestaurantGrid/RestaurantGrid';
 import FiltersSidebar from '@/components/Molecules/Sidebar/FiltersSidebar';
 import ClearFiltersEmptyState from '@/components/Atoms/ClearFiltersEmptyState';
 import Pagination from '@/components/Organisims/Pagination/Pagination';
-import { Restaurant } from '@/features/restaurants/types';
-
-interface HomeContentProps {
-  searchInput: string;
-  onSearchChange: (value: string) => void;
-  onSearchClear: () => void;
-  filteredRestaurants: Restaurant[];
-  pageSlice: Restaurant[];
-  searchQuery: string;
-  loading: boolean;
-  error: string | null;
-  totalPages: number;
-  currentPage: number;
-  onRestaurantClick: (id: string) => void;
-  onPageChange: (page: number) => void;
-  onClearFilters: () => void;
-}
+import { HomeContentProps } from './types';
 
 const HomeContent: React.FC<HomeContentProps> = ({
   searchInput,

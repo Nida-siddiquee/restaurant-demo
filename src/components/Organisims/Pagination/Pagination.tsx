@@ -1,13 +1,8 @@
 import React from 'react';
 import { PageButton, Wrapper } from './Pagination.styled';
+import { PaginationProps } from './types';
 
-type Props = {
-  totalPages: number;
-  currentPage: number;
-  setCurrentPage: (p: number) => void;
-};
-
-const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCurrentPage }) => {
   if (totalPages <= 1) return null;
 
   const getPageList = () => {
