@@ -59,12 +59,12 @@ describe('ErrorDisplay', () => {
   it('shows all action buttons when provided', () => {
     const error = createNetworkError('Connection failed');
     render(
-      <ErrorDisplay 
+      <ErrorDisplay
         error={error}
         onRetry={mockOnRetry}
         onGoHome={mockOnGoHome}
         onReload={mockOnReload}
-      />
+      />,
     );
 
     expect(screen.getByText('Try Again')).toBeInTheDocument();
@@ -75,12 +75,12 @@ describe('ErrorDisplay', () => {
   it('calls correct handlers when buttons are clicked', () => {
     const error = createNetworkError('Connection failed');
     render(
-      <ErrorDisplay 
+      <ErrorDisplay
         error={error}
         onRetry={mockOnRetry}
         onGoHome={mockOnGoHome}
         onReload={mockOnReload}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('Try Again'));

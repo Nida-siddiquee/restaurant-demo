@@ -3,18 +3,14 @@ import ErrorDisplay from '@/components/Atoms/ErrorDisplay';
 import { RestaurantErrorStateProps } from './types';
 import { Wrapper } from './RestaurantErrorState.styled';
 
-const RestaurantErrorState: React.FC<RestaurantErrorStateProps> = ({ 
-  error, 
-  onRetry, 
-  onGoHome 
+const RestaurantErrorState: React.FC<RestaurantErrorStateProps> = ({
+  error,
+  onRetry,
+  onGoHome,
 }) => {
   return (
     <Wrapper>
-      <ErrorDisplay
-        error={error}
-        onRetry={onRetry}
-        onGoHome={onGoHome}
-      />
+      <ErrorDisplay error={error} onRetry={onRetry} onGoHome={onGoHome} />
     </Wrapper>
   );
 };

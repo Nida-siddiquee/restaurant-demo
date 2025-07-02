@@ -1,7 +1,7 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import postcodesSaga, { fetchPostcodesWorker } from './postcodesSaga';
-import fetchPostcodesApi from './postcodesSaga'; 
+import fetchPostcodesApi from './postcodesSaga';
 import { fetchPostcodesRequest, fetchPostcodesSuccess, Postcode } from './postcodesSlice';
 import { mockPostcodes } from './mockPostcodes';
 

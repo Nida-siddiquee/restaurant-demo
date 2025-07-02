@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import ErrorBoundary from './ErrorBoundary';
 import { createNetworkError } from '@/utils/errors';
 
-const ThrowError: React.FC<{ shouldThrow?: boolean; message?: string }> = ({ 
-  shouldThrow = false, 
-  message = 'Test error' 
+const ThrowError: React.FC<{ shouldThrow?: boolean; message?: string }> = ({
+  shouldThrow = false,
+  message = 'Test error',
 }) => {
   if (shouldThrow) {
     throw new Error(message);
@@ -28,7 +28,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <div>Test content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Test content')).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} message="Component crashed" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
@@ -49,25 +49,23 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary onError={mockOnError}>
         <ThrowError shouldThrow={true} message="Test error" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(mockOnError).toHaveBeenCalledTimes(1);
     expect(mockOnError).toHaveBeenCalledWith(
       expect.objectContaining({ message: 'Test error' }),
-      expect.objectContaining({ componentStack: expect.any(String) })
+      expect.objectContaining({ componentStack: expect.any(String) }),
     );
   });
 
   it('uses custom fallback component when provided', () => {
-    const CustomFallback = ({ error }: { error: any }) => (
-      <div>Custom error: {error.message}</div>
-    );
+    const CustomFallback = ({ error }: { error: any }) => <div>Custom error: {error.message}</div>;
 
     render(
       <ErrorBoundary fallbackComponent={CustomFallback}>
         <ThrowError shouldThrow={true} message="Custom error message" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Custom error: Custom error message')).toBeInTheDocument();
@@ -77,7 +75,7 @@ describe('ErrorBoundary', () => {
     const { rerender } = render(
       <ErrorBoundary resetKeys={['key1']}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Something Went Wrong')).toBeInTheDocument();
@@ -85,7 +83,7 @@ describe('ErrorBoundary', () => {
     rerender(
       <ErrorBoundary resetKeys={['key2']}>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('No error')).toBeInTheDocument();
@@ -99,7 +97,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <CustomErrorComponent />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Connection Problem')).toBeInTheDocument();

@@ -9,7 +9,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   placeholder = 'Search…',
 }) => {
   const inputId = React.useId();
-  
+
   return (
     <Wrapper role="search">
       <SearchIcon aria-hidden="true">
@@ -29,12 +29,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       />
 
       {!!value && onClear && (
-        <ClearBtn 
-          onClick={onClear} 
-          aria-label="Clear search"
-          id={`${inputId}-clear`}
-          type="button"
-        >
+        <ClearBtn onClick={onClear} aria-label="Clear search" id={`${inputId}-clear`} type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <line x1="6" y1="6" x2="18" y2="18" />
             <line x1="18" y1="6" x2="6" y2="18" />

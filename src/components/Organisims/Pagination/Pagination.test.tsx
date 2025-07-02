@@ -1,9 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Pagination from './Pagination';
 
-const getPageButtons = () => screen.queryAllByRole('button').filter(button => 
-  /^[0-9]+$/.test(button.textContent || '')
-);
+const getPageButtons = () =>
+  screen.queryAllByRole('button').filter(button => /^[0-9]+$/.test(button.textContent || ''));
 
 describe('Pagination', () => {
   it('renders nothing if only one page', () => {

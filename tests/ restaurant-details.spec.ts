@@ -57,7 +57,9 @@ test.describe('Restaurant Details page', () => {
   });
 
   test('shows restaurant rating and reviews', async ({ page }) => {
-    await expect(page.locator('.star, [data-testid*="rating"], [aria-label*="rating"], text=★').first()).toBeVisible();
+    await expect(
+      page.locator('.star, [data-testid*="rating"], [aria-label*="rating"], text=★').first(),
+    ).toBeVisible();
   });
 
   test('displays delivery time and cost', async ({ page }) => {

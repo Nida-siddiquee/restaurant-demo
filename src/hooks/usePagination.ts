@@ -10,7 +10,7 @@ export const usePagination = (
     const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
     const startIdx = (currentPage - 1) * restaurantsPerPage;
     const pageSlice = restaurants.slice(startIdx, startIdx + restaurantsPerPage);
-    
+
     return {
       totalPages,
       pageSlice,

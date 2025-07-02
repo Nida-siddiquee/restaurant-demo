@@ -26,7 +26,7 @@ const HomeContent: React.FC<HomeContentProps> = ({
 }) => {
   return (
     <>
-      <FiltersSidebar 
+      <FiltersSidebar
         totalRestaurants={filteredRestaurants.length}
         sortOption={sortOption}
         onSortChange={onSortChange}
@@ -38,7 +38,7 @@ const HomeContent: React.FC<HomeContentProps> = ({
           onSearchClear={onSearchClear}
           restaurantCount={filteredRestaurants.length}
         />
-        
+
         {!loading && !error && filteredRestaurants.length === 0 && (
           <ClearFiltersEmptyState onClear={onClearFilters} />
         )}

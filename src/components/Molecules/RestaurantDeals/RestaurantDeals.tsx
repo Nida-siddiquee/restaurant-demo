@@ -2,8 +2,6 @@ import React from 'react';
 import { Section, SectionTitle, DealChip } from './RestaurantDeals.styled';
 import { RestaurantDealsProps } from './types';
 
-
-
 const RestaurantDeals: React.FC<RestaurantDealsProps> = ({ deals }) => {
   if (!deals || deals.length === 0) return null;
 

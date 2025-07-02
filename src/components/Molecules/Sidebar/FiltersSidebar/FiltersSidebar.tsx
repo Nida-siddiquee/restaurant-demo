@@ -16,10 +16,10 @@ import { FILTERS } from '../constants';
 import { FiltersSidebarProps } from '../types';
 import SortingDropdown from '@/components/Molecules/SortingDropdown';
 
-const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ 
-  totalRestaurants, 
-  sortOption, 
-  onSortChange 
+const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
+  totalRestaurants,
+  sortOption,
+  onSortChange,
 }) => {
   const activeFilters = useSelector((s: RootState) => s.restaurants.activeFilters);
   const dispatch = useDispatch<AppDispatch>();
@@ -43,25 +43,22 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
           {totalRestaurants} places
         </SidebarTitle>
         {hasActiveFilters && (
-          <ClearButton 
-            onClick={handleClear}
-            aria-label="Clear all active filters"
-          >
+          <ClearButton onClick={handleClear} aria-label="Clear all active filters">
             Clear filters
           </ClearButton>
         )}
       </TopRow>
-      
+
       <SectionTitle>Sort by</SectionTitle>
       <SortingDropdown value={sortOption} onChange={onSortChange} />
-      
+
       <SectionTitle>Filter options</SectionTitle>
       <FiltersList role="group" aria-labelledby="filters-title">
         {FILTERS.map(f => (
           <FilterRow key={f.id}>
             {f.label}
-            <ToggleSwitch 
-              checked={!!activeFilters?.[f.id]} 
+            <ToggleSwitch
+              checked={!!activeFilters?.[f.id]}
               onChange={() => handleToggle(f.id)}
               aria-label={f.label}
             />

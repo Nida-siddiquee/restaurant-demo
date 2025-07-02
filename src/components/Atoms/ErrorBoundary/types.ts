@@ -17,6 +17,9 @@ export interface ErrorBoundaryState {
 
 export interface ErrorProviderProps {
   children: React.ReactNode;
-  fallback?: React.ComponentType<{ error: import('@/utils/errors').CustomError; onRetry: () => void }>;
+  fallback?: React.ComponentType<{
+    error: import('@/utils/errors').CustomError;
+    onRetry: () => void;
+  }>;
   onError?: (error: import('@/utils/errors').CustomError) => void;
 }

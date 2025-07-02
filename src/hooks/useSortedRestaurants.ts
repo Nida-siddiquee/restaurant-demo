@@ -10,7 +10,7 @@ export const useSortedRestaurants = (
     if (!restaurants || restaurants.length === 0) {
       return [];
     }
-    
+
     return sortRestaurants(restaurants, sortOption);
   }, [restaurants, sortOption]);
 };

@@ -14,7 +14,7 @@ interface UseErrorHandlerReturn {
   clearError: () => void;
   executeWithErrorHandling: <T>(
     fn: () => Promise<T>,
-    context?: Record<string, unknown>
+    context?: Record<string, unknown>,
   ) => Promise<T | null>;
   retry: () => Promise<void>;
 }
@@ -23,7 +23,7 @@ export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorH
   const maxRetries = useMemo(() => options.maxRetries ?? 3, [options.maxRetries]);
   const retryDelay = useMemo(() => options.retryDelay ?? 1000, [options.retryDelay]);
   const onError = useMemo(() => options.onError, [options.onError]);
-  
+
   const [error, setError] = useState<CustomError | null>(null);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
@@ -41,10 +41,7 @@ export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorH
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const executeWithErrorHandling = useCallback(
-    async <T>(
-      fn: () => Promise<T>,
-      context?: Record<string, unknown>
-    ): Promise<T | null> => {
+    async <T>(fn: () => Promise<T>, context?: Record<string, unknown>): Promise<T | null> => {
       try {
         setError(null);
         setLastAttemptedFunction({ fn, context });
@@ -53,21 +50,21 @@ export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorH
         return result;
       } catch (err) {
         const customError = parseError(err);
-        
+
         if (context) {
           customError.context = { ...customError.context, ...context };
         }
-        
+
         setError(customError);
-        
+
         if (onError) {
           onError(customError);
         }
-        
+
         return null;
       }
     },
-    [onError]
+    [onError],
   );
 
   const retry = useCallback(async (): Promise<void> => {
@@ -76,25 +73,25 @@ export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorH
     }
 
     setIsRetrying(true);
-    
+
     try {
       await delay(retryDelay * Math.pow(2, retryCount));
-      
+
       setRetryCount(prev => prev + 1);
       await lastAttemptedFunction.fn();
-      
+
       setError(null);
       setRetryCount(0);
       setLastAttemptedFunction(null);
     } catch (err) {
       const customError = parseError(err);
-      
+
       if (lastAttemptedFunction.context) {
         customError.context = { ...customError.context, ...lastAttemptedFunction.context };
       }
-      
+
       setError(customError);
-      
+
       if (onError) {
         onError(customError);
       }

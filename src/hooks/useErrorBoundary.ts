@@ -26,10 +26,9 @@ export const useErrorBoundary = (): UseErrorBoundaryReturn => {
   };
 };
 
-
 export const useThrowAsyncError = () => {
   const [, setState] = useState();
-  
+
   return useCallback((error: unknown) => {
     setState(() => {
       throw error;

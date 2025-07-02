@@ -11,7 +11,7 @@ export const SearchRow = styled.div`
   gap: 15px;
   margin-bottom: 1rem;
   flex-wrap: wrap;
-  
+
   @media (max-width: 800px) {
     display: block;
   }
@@ -20,7 +20,7 @@ export const SearchRow = styled.div`
 export const SortContainer = styled.div`
   display: flex;
   align-items: center;
-  
+
   @media (max-width: 800px) {
     display: none;
   }
@@ -42,7 +42,8 @@ export const StyledSelect = styled.select`
   cursor: pointer;
   transition: border-color 0.2s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: #0066cc;
     outline: none;
   }

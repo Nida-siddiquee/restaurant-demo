@@ -25,8 +25,8 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
 
   return (
     <Wrapper role="navigation" aria-label="Pagination Navigation">
-      <PageButton 
-        onClick={() => setCurrentPage(currentPage - 1)} 
+      <PageButton
+        onClick={() => setCurrentPage(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Go to previous page"
       >
@@ -45,8 +45,8 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
             {item}
           </PageButton>
         ) : (
-          <span 
-            key={`ellipsis-${idx}`} 
+          <span
+            key={`ellipsis-${idx}`}
             style={{ padding: '0.5rem 0.75rem', color: '#888' }}
             aria-hidden="true"
           >

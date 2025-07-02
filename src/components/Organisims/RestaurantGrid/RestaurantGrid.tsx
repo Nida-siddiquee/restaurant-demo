@@ -9,8 +9,8 @@ const RestaurantGrid: React.FC<RestaurantGridProps> = ({
   onRestaurantClick,
 }) => {
   return (
-    <Grid 
-      role="list" 
+    <Grid
+      role="list"
       aria-label={`Restaurant search results, ${restaurants.length} restaurant${restaurants.length !== 1 ? 's' : ''} found`}
       aria-describedby="restaurant-count"
     >
@@ -29,8 +29,8 @@ const RestaurantGrid: React.FC<RestaurantGridProps> = ({
                 : 'N/A'
             }
             deliveryFee={
-              restaurant.deliveryCost !== undefined 
-                ? `£${restaurant.deliveryCost.toFixed(2)}` 
+              restaurant.deliveryCost !== undefined
+                ? `£${restaurant.deliveryCost.toFixed(2)}`
                 : 'N/A'
             }
             offer={restaurant.deals?.[0]?.description || undefined}

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Section = styled.section`
   background: var(--color-card-bg, #fff);
@@ -33,5 +33,3 @@ export const MapWrapper = styled.div`
     min-height: 120px;
   }
 `;
-
-

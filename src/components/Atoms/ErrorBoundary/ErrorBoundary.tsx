@@ -25,41 +25,42 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
-    const customError = error instanceof CustomError 
-      ? error 
-      : createGenericError(error.message || 'An unexpected error occurred');
+    const customError =
+      error instanceof CustomError
+        ? error
+        : createGenericError(error.message || 'An unexpected error occurred');
 
     return { hasError: true, error: customError };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     const customError = this.state.error || createGenericError(error.message);
-    
+
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+
     this.props.onError?.(customError, errorInfo);
 
     // In test environments, assume development mode
     const isDevelopment = typeof window !== 'undefined' || typeof global !== 'undefined';
     if (!isDevelopment) {
-      // Some error reporting service can be used here, e.g., 
+      // Some error reporting service can be used here, e.g.,
     }
   }
 
   componentDidUpdate(prevProps: ErrorBoundaryProps) {
     const { resetOnPropsChange, resetKeys } = this.props;
     const { hasError } = this.state;
-    
+
     if (hasError && resetKeys && prevProps.resetKeys) {
       const hasResetKeyChanged = resetKeys.some(
-        (key, index) => key !== prevProps.resetKeys![index]
+        (key, index) => key !== prevProps.resetKeys![index],
       );
-      
+
       if (hasResetKeyChanged) {
         this.resetErrorBoundary();
       }
     }
-    
+
     if (hasError && resetOnPropsChange && prevProps.children !== this.props.children) {
       this.resetErrorBoundary();
     }
@@ -75,7 +76,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (this.resetTimeoutId) {
       clearTimeout(this.resetTimeoutId);
     }
-    
+
     this.setState({ hasError: false, error: null });
   };
 

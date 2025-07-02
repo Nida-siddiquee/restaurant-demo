@@ -5,14 +5,30 @@ import RestaurantContent from './RestaurantContent';
 import { Restaurant } from '@/features/restaurants/types';
 
 jest.mock('@/components/Atoms/BackButton', () => {
-  return function MockBackButton({ children, to, id }: { children: React.ReactNode; to: string; id?: string }) {
-    return <a href={to} id={id} data-testid="back-button">{children}</a>;
+  return function MockBackButton({
+    children,
+    to,
+    id,
+  }: {
+    children: React.ReactNode;
+    to: string;
+    id?: string;
+  }) {
+    return (
+      <a href={to} id={id} data-testid="back-button">
+        {children}
+      </a>
+    );
   };
 });
 
 jest.mock('@/components/Molecules/RestaurantHero', () => {
   return function MockRestaurantHero({ name, logoUrl }: { name: string; logoUrl?: string }) {
-    return <div data-testid="restaurant-hero">Hero: {name} {logoUrl && `Logo: ${logoUrl}`}</div>;
+    return (
+      <div data-testid="restaurant-hero">
+        Hero: {name} {logoUrl && `Logo: ${logoUrl}`}
+      </div>
+    );
   };
 });
 
@@ -21,7 +37,8 @@ jest.mock('@/components/Molecules/RestaurantInfo', () => {
     return (
       <div data-testid="restaurant-info">
         Rating: {rating?.starRating} ({rating?.count})
-        {deliveryEtaMinutes && ` | ETA: ${deliveryEtaMinutes.rangeLower}-${deliveryEtaMinutes.rangeUpper}min`}
+        {deliveryEtaMinutes &&
+          ` | ETA: ${deliveryEtaMinutes.rangeLower}-${deliveryEtaMinutes.rangeUpper}min`}
         {deliveryCost !== undefined && ` | Cost: £${deliveryCost}`}
       </div>
     );
@@ -30,20 +47,28 @@ jest.mock('@/components/Molecules/RestaurantInfo', () => {
 
 jest.mock('@/components/Molecules/RestaurantTags', () => {
   return function MockRestaurantTags({ cuisines }: { cuisines: any[] }) {
-    return <div data-testid="restaurant-tags">Cuisines: {cuisines.map(c => c.name).join(', ')}</div>;
+    return (
+      <div data-testid="restaurant-tags">Cuisines: {cuisines.map(c => c.name).join(', ')}</div>
+    );
   };
 });
 
 jest.mock('@/components/Molecules/RestaurantDeals', () => {
   return function MockRestaurantDeals({ deals }: { deals: any[] }) {
     if (!deals || deals.length === 0) return null;
-    return <div data-testid="restaurant-deals">Deals: {deals.map(d => d.description).join(', ')}</div>;
+    return (
+      <div data-testid="restaurant-deals">Deals: {deals.map(d => d.description).join(', ')}</div>
+    );
   };
 });
 
 jest.mock('@/components/Molecules/RestaurantAddress', () => {
   return function MockRestaurantAddress({ address }: { address: any }) {
-    return <div data-testid="restaurant-address">Address: {address.firstLine}, {address.city}</div>;
+    return (
+      <div data-testid="restaurant-address">
+        Address: {address.firstLine}, {address.city}
+      </div>
+    );
   };
 });
 
@@ -113,9 +138,7 @@ describe('RestaurantContent', () => {
   const mockPageRef = React.createRef<HTMLDivElement>();
 
   it('renders all main components correctly', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     // Check main elements are present
     expect(screen.getByTestId('back-button')).toBeInTheDocument();
@@ -128,18 +151,14 @@ describe('RestaurantContent', () => {
   });
 
   it('displays restaurant name correctly', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const restaurantName = screen.getByTestId('restaurant-name');
     expect(restaurantName).toHaveTextContent('Test Restaurant');
   });
 
   it('passes correct props to BackButton', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const backButton = screen.getByTestId('back-button');
     expect(backButton).toHaveAttribute('href', '/restaurants');
@@ -148,36 +167,28 @@ describe('RestaurantContent', () => {
   });
 
   it('passes correct props to RestaurantHero', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const hero = screen.getByTestId('restaurant-hero');
     expect(hero).toHaveTextContent('Hero: Test Restaurant Logo: https://example.com/logo.jpg');
   });
 
   it('passes correct props to RestaurantInfo', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const info = screen.getByTestId('restaurant-info');
     expect(info).toHaveTextContent('Rating: 4.5 (123) | ETA: 30-45min | Cost: £2.99');
   });
 
   it('passes correct props to RestaurantTags', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const tags = screen.getByTestId('restaurant-tags');
     expect(tags).toHaveTextContent('Cuisines: Italian, Pizza');
   });
 
   it('passes correct props to RestaurantDeals when deals exist', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const deals = screen.getByTestId('restaurant-deals');
     expect(deals).toHaveTextContent('Deals: 20% off orders over £15, Free delivery');
@@ -185,9 +196,9 @@ describe('RestaurantContent', () => {
 
   it('handles restaurant without deals', () => {
     const restaurantWithoutDeals = { ...mockRestaurant, deals: [] };
-    
+
     renderWithRouter(
-      <RestaurantContent restaurant={restaurantWithoutDeals} pageRef={mockPageRef} />
+      <RestaurantContent restaurant={restaurantWithoutDeals} pageRef={mockPageRef} />,
     );
 
     expect(screen.queryByTestId('restaurant-deals')).not.toBeInTheDocument();
@@ -195,9 +206,9 @@ describe('RestaurantContent', () => {
 
   it('handles restaurant without logo', () => {
     const restaurantWithoutLogo = { ...mockRestaurant, logoUrl: '' };
-    
+
     renderWithRouter(
-      <RestaurantContent restaurant={restaurantWithoutLogo} pageRef={mockPageRef} />
+      <RestaurantContent restaurant={restaurantWithoutLogo} pageRef={mockPageRef} />,
     );
 
     const hero = screen.getByTestId('restaurant-hero');
@@ -207,9 +218,9 @@ describe('RestaurantContent', () => {
 
   it('handles restaurant with empty cuisines', () => {
     const restaurantWithoutCuisines = { ...mockRestaurant, cuisines: [] };
-    
+
     renderWithRouter(
-      <RestaurantContent restaurant={restaurantWithoutCuisines} pageRef={mockPageRef} />
+      <RestaurantContent restaurant={restaurantWithoutCuisines} pageRef={mockPageRef} />,
     );
 
     const tags = screen.getByTestId('restaurant-tags');
@@ -225,10 +236,8 @@ describe('RestaurantContent', () => {
       deliveryCost: undefined,
       deals: undefined,
     } as any;
-    
-    renderWithRouter(
-      <RestaurantContent restaurant={minimalRestaurant} pageRef={mockPageRef} />
-    );
+
+    renderWithRouter(<RestaurantContent restaurant={minimalRestaurant} pageRef={mockPageRef} />);
 
     // Should still render without errors
     expect(screen.getByTestId('restaurant-name')).toBeInTheDocument();
@@ -238,7 +247,7 @@ describe('RestaurantContent', () => {
 
   it('applies pageRef to wrapper element', () => {
     const { container } = renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
+      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />,
     );
 
     // The ref should be applied to the wrapper element
@@ -246,9 +255,7 @@ describe('RestaurantContent', () => {
   });
 
   it('passes correct address data to RestaurantAddress', () => {
-    renderWithRouter(
-      <RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />
-    );
+    renderWithRouter(<RestaurantContent restaurant={mockRestaurant} pageRef={mockPageRef} />);
 
     const address = screen.getByTestId('restaurant-address');
     expect(address).toHaveTextContent('Address: 123 Test Street, Test City');

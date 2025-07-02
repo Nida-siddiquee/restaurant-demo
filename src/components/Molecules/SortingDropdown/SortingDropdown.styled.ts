@@ -21,7 +21,7 @@ export const StyledSelect = styled.select`
   flex: 1;
   min-width: 0;
   cursor: pointer;
-  
+
   &:focus {
     outline: none;
     border-color: #007bff;

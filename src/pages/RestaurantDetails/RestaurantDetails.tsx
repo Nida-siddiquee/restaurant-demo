@@ -7,15 +7,8 @@ import { createNotFoundError, createGenericError } from '@/utils/errors';
 import { useRestaurantDetails } from '@/hooks';
 
 const RestaurantDetails: React.FC = () => {
-  const {
-    pageRef,
-    selected,
-    loading,
-    error,
-    handlingError,
-    handleRetry,
-    handleGoHome,
-  } = useRestaurantDetails();
+  const { pageRef, selected, loading, error, handlingError, handleRetry, handleGoHome } =
+    useRestaurantDetails();
 
   if (loading) {
     return (
@@ -27,27 +20,20 @@ const RestaurantDetails: React.FC = () => {
 
   if (error || handlingError) {
     const displayError = handlingError || createGenericError(error || 'Unknown error');
-    
+
     return (
       <ErrorBoundary>
-        <RestaurantErrorState
-          error={displayError}
-          onRetry={handleRetry}
-          onGoHome={handleGoHome}
-        />
+        <RestaurantErrorState error={displayError} onRetry={handleRetry} onGoHome={handleGoHome} />
       </ErrorBoundary>
     );
   }
 
   if (!selected) {
     const notFoundError = createNotFoundError('Restaurant');
-    
+
     return (
       <ErrorBoundary>
-        <RestaurantErrorState
-          error={notFoundError}
-          onGoHome={handleGoHome}
-        />
+        <RestaurantErrorState error={notFoundError} onGoHome={handleGoHome} />
       </ErrorBoundary>
     );
   }
@@ -55,7 +41,6 @@ const RestaurantDetails: React.FC = () => {
   return (
     <ErrorBoundary>
       <RestaurantContent restaurant={selected} pageRef={pageRef} />
-
     </ErrorBoundary>
   );
 };

@@ -21,19 +21,19 @@ const useRestaurantDetailsMock = {
 };
 
 jest.mock('@/hooks', () => ({
-  useRestaurantDetails: jest.fn(() => useRestaurantDetailsMock)
+  useRestaurantDetails: jest.fn(() => useRestaurantDetailsMock),
 }));
 
 async function renderWithProviders(storeState: any, route: string = '/restaurants/200586') {
   const mockStore = configureStore([]);
   const store = mockStore(storeState);
-  
+
   useRestaurantDetailsMock.selected = storeState.restaurants.selected;
   useRestaurantDetailsMock.loading = storeState.restaurants.loading;
   useRestaurantDetailsMock.error = storeState.restaurants.error;
 
   let renderResult: ReturnType<typeof render>;
-  
+
   await act(async () => {
     renderResult = render(
       <Provider store={store}>
@@ -45,10 +45,9 @@ async function renderWithProviders(storeState: any, route: string = '/restaurant
       </Provider>,
     );
   });
-  
-  await waitFor(() => {
-  });
-  
+
+  await waitFor(() => {});
+
   return renderResult!;
 }
 
@@ -66,7 +65,9 @@ describe('RestaurantDetailPage', () => {
       restaurants: { selected: null, loading: false, error: 'Something went wrong' },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    expect(screen.getByText(/Service Unavailable|Connection Problem|Something went wrong/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Service Unavailable|Connection Problem|Something went wrong/i),
+    ).toBeInTheDocument();
   });
 
   it('renders error page when restaurant not found', async () => {
@@ -109,7 +110,7 @@ describe('RestaurantDetailPage', () => {
       name: `Cuisine${i}`,
       uniqueName: `cuisine${i}`,
     }));
-    
+
     await renderWithProviders({
       restaurants: {
         selected: { ...mockRestaurant, cuisines: manyCuisines },
@@ -118,7 +119,7 @@ describe('RestaurantDetailPage', () => {
       },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    
+
     for (let i = 0; i < 6; i++) {
       expect(screen.getByText(`Cuisine${i}`)).toBeInTheDocument();
     }

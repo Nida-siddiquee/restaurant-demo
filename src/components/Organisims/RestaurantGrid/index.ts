@@ -1,1 +1,1 @@
-export {default} from './RestaurantGrid';
+export { default } from './RestaurantGrid';

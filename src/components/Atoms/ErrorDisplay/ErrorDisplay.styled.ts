@@ -63,4 +63,3 @@ export const ErrorDetails = styled.details`
     margin-top: 0.5rem;
   }
 `;
-

@@ -17,8 +17,8 @@ function renderSidebar(storeState = {}, props = {}) {
   });
   return render(
     <Provider store={store}>
-      <FiltersSidebar 
-        totalRestaurants={11} 
+      <FiltersSidebar
+        totalRestaurants={11}
         sortOption={SortOption.NONE}
         onSortChange={jest.fn()}
         {...props}
@@ -58,7 +58,7 @@ describe('FiltersSidebar', () => {
     store.dispatch = jest.fn();
     render(
       <Provider store={store}>
-        <FiltersSidebar 
+        <FiltersSidebar
           totalRestaurants={11}
           sortOption={SortOption.NONE}
           onSortChange={jest.fn()}
@@ -74,7 +74,7 @@ describe('FiltersSidebar', () => {
     store.dispatch = jest.fn();
     render(
       <Provider store={store}>
-        <FiltersSidebar 
+        <FiltersSidebar
           totalRestaurants={11}
           sortOption={SortOption.NONE}
           onSortChange={jest.fn()}
@@ -95,7 +95,7 @@ describe('FiltersSidebar', () => {
 
   it('renders sort dropdown with correct default option', () => {
     renderSidebar();
-    
+
     const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
     expect(select).toBeInTheDocument();
     expect(select).toHaveValue(SortOption.NONE);
@@ -104,16 +104,16 @@ describe('FiltersSidebar', () => {
   it('calls onSortChange when a different sort option is selected', () => {
     const onSortChangeMock = jest.fn();
     renderSidebar({}, { onSortChange: onSortChangeMock });
-    
+
     const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
     fireEvent.change(select, { target: { value: SortOption.RATING_HIGH_TO_LOW } });
-    
+
     expect(onSortChangeMock).toHaveBeenCalledWith(SortOption.RATING_HIGH_TO_LOW);
   });
 
   it('shows the selected sort option', () => {
     renderSidebar({}, { sortOption: SortOption.DELIVERY_COST_LOW_TO_HIGH });
-    
+
     const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
     expect(select).toHaveValue(SortOption.DELIVERY_COST_LOW_TO_HIGH);
   });

@@ -1,14 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-test.use({ 
+test.use({
   actionTimeout: 15000,
-  navigationTimeout: 15000 
+  navigationTimeout: 15000,
 });
 
 test.describe('Postcode select page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle', timeout: 30000 });
-    await expect(page.getByRole('heading', { name: 'Select Your Area' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: 'Select Your Area' })).toBeVisible({
+      timeout: 15000,
+    });
   });
 
   test('can select postcode and see restaurants', async ({ page }) => {
@@ -49,7 +51,7 @@ test.describe('Postcode select page', () => {
   });
 
   test('shows correct page title and content', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Select Your Area' })).toBeVisible();    
+    await expect(page.getByRole('heading', { name: 'Select Your Area' })).toBeVisible();
     await expect(page.locator('select')).toBeVisible();
     await expect(page.getByTestId('view-restaurants-btn')).toBeVisible();
   });

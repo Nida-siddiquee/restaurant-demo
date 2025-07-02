@@ -30,7 +30,7 @@ const RestaurantContent: React.FC<RestaurantContentProps> = ({ restaurant, pageR
 
       <Name data-testid="restaurant-name">{name}</Name>
 
-      <RestaurantInfo 
+      <RestaurantInfo
         rating={rating}
         deliveryEtaMinutes={deliveryEtaMinutes}
         deliveryCost={deliveryCost}

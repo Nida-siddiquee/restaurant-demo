@@ -30,10 +30,10 @@ interface RestaurantInfoProps {
   deliveryCost?: number;
 }
 
-const RestaurantInfo: React.FC<RestaurantInfoProps> = ({ 
-  rating, 
-  deliveryEtaMinutes, 
-  deliveryCost 
+const RestaurantInfo: React.FC<RestaurantInfoProps> = ({
+  rating,
+  deliveryEtaMinutes,
+  deliveryCost,
 }) => {
   return (
     <InfoRow>

@@ -8,7 +8,7 @@ export const useFilteredRestaurants = (
 ) => {
   return useMemo(() => {
     let list = restaurants ?? [];
-    
+
     const filters = activeFilters ?? {};
     if (filters.free_delivery) {
       list = list.filter(restaurant => restaurant.deliveryCost === 0);
@@ -31,13 +31,12 @@ export const useFilteredRestaurants = (
 
     const query = searchQuery.trim().toLowerCase();
     if (!query) return list;
-    
-    return list.filter(restaurant =>
-      restaurant.name.toLowerCase().includes(query) ||
-      restaurant.address?.city?.toLowerCase().includes(query) ||
-      (restaurant.cuisines ?? []).some(cuisine => 
-        cuisine.name.toLowerCase().includes(query)
-      ),
+
+    return list.filter(
+      restaurant =>
+        restaurant.name.toLowerCase().includes(query) ||
+        restaurant.address?.city?.toLowerCase().includes(query) ||
+        (restaurant.cuisines ?? []).some(cuisine => cuisine.name.toLowerCase().includes(query)),
     );
   }, [restaurants, searchQuery, activeFilters]);
 };

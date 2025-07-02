@@ -1,2 +1,1 @@
-
-export {default} from './SortingDropdown' ;
+export { default } from './SortingDropdown';

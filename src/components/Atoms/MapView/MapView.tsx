@@ -12,7 +12,10 @@ const MapView: React.FC<MapViewProps> = ({ latitude, longitude, zoom = 15 }) => 
   const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=${zoom}&output=embed`;
 
   return (
-    <MapContainer role="img" aria-label={`Map showing restaurant location at coordinates ${latitude}, ${longitude}`}>
+    <MapContainer
+      role="img"
+      aria-label={`Map showing restaurant location at coordinates ${latitude}, ${longitude}`}
+    >
       <iframe
         title="Restaurant Location Map"
         width="100%"

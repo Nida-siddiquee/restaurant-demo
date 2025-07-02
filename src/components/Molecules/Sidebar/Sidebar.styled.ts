@@ -152,7 +152,8 @@ export const StyledSelect = styled.select`
   cursor: pointer;
   transition: border-color 0.2s;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: #0066cc;
     outline: none;
   }

@@ -18,6 +18,7 @@ A production-ready React + TypeScript restaurant discovery application featuring
 ## 🏗️ Project Features
 
 ### Core Functionality
+
 - **Restaurant Discovery**: Browse restaurants by postcode/location
 - **Advanced Filtering**: Filter by cuisine type, rating, delivery options
 - **Search**: Real-time search with debouncing
@@ -26,6 +27,7 @@ A production-ready React + TypeScript restaurant discovery application featuring
 - **Responsive Design**: Mobile-first responsive layout
 
 ### Technical Features
+
 - **State Management**: Redux Toolkit with Redux-Saga for async operations
 - **Custom Hooks**: Reusable logic for filtering, pagination, and data fetching
 - **Component Architecture**: Modular, well-organized component structure
@@ -35,6 +37,7 @@ A production-ready React + TypeScript restaurant discovery application featuring
 - **Enhanced Error Handling**: Granular error types, retry mechanisms, and error boundaries
 
 ### Error Handling Features
+
 - **Typed Error Categories**: Network, API, validation, timeout, and not-found errors
 - **Smart Retry Logic**: Automatic retries with exponential backoff for transient errors
 - **Error Boundaries**: React error boundaries to prevent cascade failures
@@ -43,12 +46,14 @@ A production-ready React + TypeScript restaurant discovery application featuring
 - **Recovery Actions**: Clear next steps and retry options for users
 
 ### Development Experience
+
 - **Hot Module Replacement**: Fast development with Vite HMR
 - **Code Quality**: ESLint, Prettier, and Husky for consistent code
 - **Git Hooks**: Pre-commit linting and testing
 - **CI/CD**: Automated testing and deployment pipeline
 
 ---
+
 - ✅ Feature flags, Auth skeleton, Sentry error-boundary
 - ✅ Sample “Hello World” feature module & Storybook stub
 
@@ -63,7 +68,7 @@ All custom hooks are now consolidated in a single `src/hooks/` directory for bet
 ```
 src/hooks/
 ├── index.ts                      # Centralized exports
-├── useErrorBoundary.ts          # Error boundary utilities  
+├── useErrorBoundary.ts          # Error boundary utilities
 ├── useErrorHandler.ts           # Async error handling
 ├── useFilteredRestaurants.ts    # Restaurant filtering logic
 ├── usePagination.ts             # Pagination utilities
@@ -71,6 +76,7 @@ src/hooks/
 ```
 
 **Benefits:**
+
 - **Single Source**: All hooks in one location
 - **Better Imports**: `import { useHook } from '@/hooks'`
 - **Easier Testing**: Centralized test location
@@ -86,7 +92,7 @@ src/hooks/
 
 ## ⚡ Quick Start
 
-````bash
+```bash
 # 1. Install dependencies
 npm ci
 
@@ -104,7 +110,7 @@ npm run build
 
 # 6. Preview production build
 npm run preview
-````
+```
 
 ### Available Scripts
 
@@ -131,18 +137,21 @@ npm run format           # Format code with Prettier
 This application uses the Just Eat API to fetch restaurant data. Currently configured for development with plans for production API proxy implementation:
 
 ### Current Implementation
+
 - **Development Mode**: Uses Vite proxy configuration in `vite.config.ts`
 - **API Service**: `src/services/api.ts` handles environment detection and API calls
 - **CORS Handling**: No CORS issues in development due to proxy
 
-
 ### Production Setup (Planned)
+
 The `api/restaurants.js` file is prepared for serverless function implementation:
+
 - Will act as a proxy to the Just Eat API
 - Handle CORS headers properly
 - Deploy automatically with Vercel
 
 ### Files involved:
+
 - `src/services/api.ts` - Main API service with environment detection
 - `api/restaurants.js` - Placeholder for serverless API route (empty)
 - `vite.config.ts` - Development proxy configuration
@@ -155,9 +164,10 @@ The `api/restaurants.js` file is prepared for serverless function implementation
 The Playwright tests can be configured to run against different environments:
 
 ### Local Development
+
 ```bash
 npm run e2e:local
-````
+```
 
 ### Preview Build
 
@@ -198,15 +208,16 @@ This project includes a comprehensive GitHub Actions pipeline that ensures quali
 ### Pipeline Flow
 
 **For Pull Requests:**
+
 1. **Lint & Type Check** - Ensures code quality standards
 2. **Unit Tests** - Runs Jest tests with coverage
-3. **Build** - Compiles the application 
+3. **Build** - Compiles the application
 4. **E2E Tests (Preview)** - Tests against a local preview server
 
 **For Main/Master Branch:**
+
 1. **Lint & Type Check** - Ensures code quality standards
 2. **Unit Tests** - Runs Jest tests with coverage
 3. **Build** - Compiles the application
 4. **Deploy** - Deploys to production environment
 5. **E2E Tests (Production)** - Tests against the live deployed URL
-

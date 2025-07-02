@@ -38,10 +38,15 @@ const PostcodeSelectPage: React.FC = () => {
     <Container>
       <Title id="postcode-page-title">Select Your Area</Title>
       {loading ? (
-        <p aria-live="polite" role="status">Loading...</p>
+        <p aria-live="polite" role="status">
+          Loading...
+        </p>
       ) : (
-        <form 
-          onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSubmit();
+          }}
           aria-labelledby="postcode-page-title"
         >
           <label htmlFor="postcode-select" style={{ marginBottom: 8, fontWeight: 500 }}>
@@ -70,7 +75,7 @@ const PostcodeSelectPage: React.FC = () => {
             type="submit"
             disabled={!localPostcode || loading}
             data-testid="view-restaurants-btn"
-            aria-describedby={!localPostcode ? "submit-help" : undefined}
+            aria-describedby={!localPostcode ? 'submit-help' : undefined}
           >
             View Restaurants
           </PrimaryButton>

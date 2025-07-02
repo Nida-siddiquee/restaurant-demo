@@ -2,9 +2,7 @@ import React from 'react';
 import { ErrorType, CustomError } from '@/utils/errors';
 import PrimaryButton from '@/components/Atoms/PrimaryButton';
 import SecondaryButton from '@/components/Atoms/SecondaryButton';
-import { Actions, Container,ErrorDetails,ErrorIcon, Message, Title } from './ErrorDisplay.styled';
-
-
+import { Actions, Container, ErrorDetails, ErrorIcon, Message, Title } from './ErrorDisplay.styled';
 
 interface ErrorDisplayProps {
   error: CustomError;
@@ -20,19 +18,20 @@ const getErrorContent = (errorType: ErrorType) => {
       return {
         icon: '🌐',
         title: 'Connection Problem',
-        message: 'Unable to connect to our servers. Please check your internet connection and try again.',
+        message:
+          'Unable to connect to our servers. Please check your internet connection and try again.',
       };
     case ErrorType.API_ERROR:
       return {
         icon: '⚠️',
         title: 'Service Unavailable',
-        message: 'Our service is temporarily unavailable. We\'re working to fix this issue.',
+        message: "Our service is temporarily unavailable. We're working to fix this issue.",
       };
     case ErrorType.NOT_FOUND_ERROR:
       return {
         icon: '🔍',
         title: 'Not Found',
-        message: 'The page or resource you\'re looking for doesn\'t exist or has been moved.',
+        message: "The page or resource you're looking for doesn't exist or has been moved.",
       };
     case ErrorType.TIMEOUT_ERROR:
       return {
@@ -50,7 +49,8 @@ const getErrorContent = (errorType: ErrorType) => {
       return {
         icon: '😕',
         title: 'Something Went Wrong',
-        message: 'An unexpected error occurred. Please try again or contact support if the problem persists.',
+        message:
+          'An unexpected error occurred. Please try again or contact support if the problem persists.',
       };
   }
 };
@@ -69,20 +69,20 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
       <ErrorIcon>{icon}</ErrorIcon>
       <Title>{title}</Title>
       <Message>{message}</Message>
-      
+
       <Actions>
         {error.retryable && onRetry && (
           <PrimaryButton onClick={onRetry} aria-label="Retry the last action">
             Try Again
           </PrimaryButton>
         )}
-        
+
         {onReload && (
           <SecondaryButton onClick={onReload} aria-label="Reload the page">
             Reload Page
           </SecondaryButton>
         )}
-        
+
         {onGoHome && (
           <SecondaryButton onClick={onGoHome} aria-label="Go to home page">
             Go Home

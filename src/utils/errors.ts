@@ -28,7 +28,7 @@ export class CustomError extends Error implements AppError {
     message: string,
     statusCode?: number,
     retryable = false,
-    context?: Record<string, unknown>
+    context?: Record<string, unknown>,
   ) {
     super(message);
     this.name = 'CustomError';

@@ -50,40 +50,43 @@ describe('useSortedRestaurants', () => {
   });
 
   it('sorts by rating high to low', () => {
-    const { result } = renderHook(() => 
-      useSortedRestaurants(mockRestaurants, SortOption.RATING_HIGH_TO_LOW)
+    const { result } = renderHook(() =>
+      useSortedRestaurants(mockRestaurants, SortOption.RATING_HIGH_TO_LOW),
     );
-    
-    expect(result.current[0].id).toBe('3');         
-    expect(result.current[1].id).toBe('1');         
-    expect(result.current[2].id).toBe('2');         
+
+    expect(result.current[0].id).toBe('3');
+    expect(result.current[1].id).toBe('1');
+    expect(result.current[2].id).toBe('2');
   });
 
   it('sorts by delivery cost low to high', () => {
-    const { result } = renderHook(() => 
-      useSortedRestaurants(mockRestaurants, SortOption.DELIVERY_COST_LOW_TO_HIGH)
+    const { result } = renderHook(() =>
+      useSortedRestaurants(mockRestaurants, SortOption.DELIVERY_COST_LOW_TO_HIGH),
     );
-    
-    expect(result.current[0].id).toBe('2'); 
-    expect(result.current[1].id).toBe('1'); 
-    expect(result.current[2].id).toBe('3'); 
+
+    expect(result.current[0].id).toBe('2');
+    expect(result.current[1].id).toBe('1');
+    expect(result.current[2].id).toBe('3');
   });
 
   it('sorts by minimum order low to high', () => {
-    const { result } = renderHook(() => 
-      useSortedRestaurants(mockRestaurants, SortOption.MIN_ORDER_LOW_TO_HIGH)
+    const { result } = renderHook(() =>
+      useSortedRestaurants(mockRestaurants, SortOption.MIN_ORDER_LOW_TO_HIGH),
     );
-    
-    expect(result.current[0].id).toBe('2');     expect(result.current[1].id).toBe('1');     expect(result.current[2].id).toBe('3');   });
+
+    expect(result.current[0].id).toBe('2');
+    expect(result.current[1].id).toBe('1');
+    expect(result.current[2].id).toBe('3');
+  });
 
   it('sorts by distance near to far', () => {
-    const { result } = renderHook(() => 
-      useSortedRestaurants(mockRestaurants, SortOption.DISTANCE_NEAR_TO_FAR)
+    const { result } = renderHook(() =>
+      useSortedRestaurants(mockRestaurants, SortOption.DISTANCE_NEAR_TO_FAR),
     );
-    
-    expect(result.current[0].id).toBe('2'); 
-    expect(result.current[1].id).toBe('1'); 
-    expect(result.current[2].id).toBe('3'); 
+
+    expect(result.current[0].id).toBe('2');
+    expect(result.current[1].id).toBe('1');
+    expect(result.current[2].id).toBe('3');
   });
 
   it('handles missing data fields gracefully', () => {
@@ -106,10 +109,10 @@ describe('useSortedRestaurants', () => {
       },
     ] as unknown as Restaurant[];
 
-    const { result } = renderHook(() => 
-      useSortedRestaurants(incompleteRestaurants, SortOption.RATING_HIGH_TO_LOW)
+    const { result } = renderHook(() =>
+      useSortedRestaurants(incompleteRestaurants, SortOption.RATING_HIGH_TO_LOW),
     );
-    
+
     expect(result.current[0].id).toBe('2');
     expect(result.current[1].id).toBe('1');
   });

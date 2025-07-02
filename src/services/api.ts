@@ -1,5 +1,10 @@
 import { RestaurantsResponse } from '@/features/restaurants/types';
-import { createApiError, createValidationError, createNetworkError, createTimeoutError } from '@/utils/errors';
+import {
+  createApiError,
+  createValidationError,
+  createNetworkError,
+  createTimeoutError,
+} from '@/utils/errors';
 
 function getApiBase(): string {
   if (typeof window !== 'undefined' && 'import' in window) {
@@ -22,12 +27,12 @@ export async function fetchRestaurantsApi(postcode: string): Promise<Restaurants
   if (!postcode?.trim()) {
     throw createValidationError('Postcode is required');
   }
-  
+
   try {
     const apiUrl = `${API_BASE}/discovery/uk/restaurants/enriched/bypostcode/${encodeURIComponent(postcode)}`;
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); 
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const res = await fetch(apiUrl, {
       signal: controller.signal,
@@ -36,7 +41,10 @@ export async function fetchRestaurantsApi(postcode: string): Promise<Restaurants
     clearTimeout(timeoutId);
 
     if (!res.ok) {
-      throw createApiError(res.status, `Failed to fetch restaurants: ${res.status} ${res.statusText}`);
+      throw createApiError(
+        res.status,
+        `Failed to fetch restaurants: ${res.status} ${res.statusText}`,
+      );
     }
 
     const json = await res.json();
@@ -53,9 +61,10 @@ export async function fetchRestaurantsApi(postcode: string): Promise<Restaurants
       throw createTimeoutError('Request timed out after 10 seconds');
     }
 
-    if (error instanceof TypeError || 
-        (error instanceof Error && error.message.includes('fetch'))) {
-      throw createNetworkError('Unable to connect to the server. Please check your internet connection.');
+    if (error instanceof TypeError || (error instanceof Error && error.message.includes('fetch'))) {
+      throw createNetworkError(
+        'Unable to connect to the server. Please check your internet connection.',
+      );
     }
 
     if (error && typeof error === 'object' && 'type' in error) {

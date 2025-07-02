@@ -16,7 +16,12 @@ import {
   setSortOption,
 } from '@/features/restaurants/restaurantsSlice';
 import HomeContent from '@/components/Organisims/HomeContent';
-import { useFilteredRestaurants, usePagination, useErrorHandler, useSortedRestaurants } from '@/hooks';
+import {
+  useFilteredRestaurants,
+  usePagination,
+  useErrorHandler,
+  useSortedRestaurants,
+} from '@/hooks';
 import LoadingScreen from '@/components/Molecules/LoadingScreen';
 import MobileFilterBar from '@/components/Organisims/MobileFilterBar';
 import FiltersSidebarDrawer from '@/components/Molecules/Sidebar/FiltersSidebarDrawer';
@@ -40,16 +45,16 @@ const Home: React.FC = () => {
   const { totalPages, pageSlice } = usePagination(sortedRestaurants, currentPage);
   const hasActiveFilters = Object.values(activeFilters).some(Boolean);
 
-  const { 
-    error: handlingError, 
-    isRetrying, 
-    executeWithErrorHandling, 
-    retry, 
-    clearError 
+  const {
+    error: handlingError,
+    isRetrying,
+    executeWithErrorHandling,
+    retry,
+    clearError,
   } = useErrorHandler({
     maxRetries: 3,
     retryDelay: 2000,
-    onError: (err) => console.error('Error in Home component:', err),
+    onError: err => console.error('Error in Home component:', err),
   });
 
   useEffect(() => {
@@ -81,10 +86,13 @@ const Home: React.FC = () => {
   }, [selectedPostcode?.code, hasActiveFilters, dispatch]);
 
   const handleDetails = async (id: string) => {
-    await executeWithErrorHandling(async () => {
-      dispatch(selectRestaurant(id));
-      navigate(`/restaurants/${id}`);
-    }, { action: 'navigate_to_restaurant', restaurantId: id });
+    await executeWithErrorHandling(
+      async () => {
+        dispatch(selectRestaurant(id));
+        navigate(`/restaurants/${id}`);
+      },
+      { action: 'navigate_to_restaurant', restaurantId: id },
+    );
   };
 
   const handlePageChange = (page: number) => {
@@ -92,12 +100,12 @@ const Home: React.FC = () => {
   };
 
   const handleClearFilters = () => {
-    clearError(); 
+    clearError();
     dispatch(resetFilters());
   };
 
   const handleSearchChange = (value: string) => {
-    clearError(); 
+    clearError();
     setSearchInput(value);
   };
 
@@ -108,9 +116,12 @@ const Home: React.FC = () => {
 
   const handleRetryFetch = async () => {
     if (selectedPostcode?.code) {
-      await executeWithErrorHandling(async () => {
-        dispatch(fetchRestaurantsRequest(selectedPostcode.code));
-      }, { action: 'fetch_restaurants', postcode: selectedPostcode.code });
+      await executeWithErrorHandling(
+        async () => {
+          dispatch(fetchRestaurantsRequest(selectedPostcode.code));
+        },
+        { action: 'fetch_restaurants', postcode: selectedPostcode.code },
+      );
     }
   };
 
@@ -128,7 +139,7 @@ const Home: React.FC = () => {
   if (error && !loading) {
     const errorObj = createNetworkError(error);
     errorObj.retryable = true;
-    
+
     return (
       <Page ref={pageRef}>
         <ErrorDisplay
@@ -147,7 +158,7 @@ const Home: React.FC = () => {
         {handlingError && handlingError.type !== ErrorType.GENERIC_ERROR && (
           <InlineError error={handlingError} onRetry={retry} />
         )}
-        
+
         {loading || isRetrying ? (
           <LoadingScreen />
         ) : (
@@ -157,9 +168,9 @@ const Home: React.FC = () => {
               onFilterClick={() => setDrawerOpen(true)}
               onClearFilters={handleClearFilters}
             />
-            <FiltersSidebarDrawer 
-              open={drawerOpen} 
-              onClose={() => setDrawerOpen(false)} 
+            <FiltersSidebarDrawer
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
               sortOption={sortOption}
               onSortChange={handleSortChange}
             />

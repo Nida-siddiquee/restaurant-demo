@@ -1,1 +1,1 @@
-export {default} from './MobileFilterBar';
+export { default } from './MobileFilterBar';

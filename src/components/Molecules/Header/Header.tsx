@@ -10,17 +10,11 @@ const Header: React.FC = () => {
 
   return (
     <HeaderWrapper role="banner">
-      <LogoContainer 
-        to={selectedPostcode ? 'restaurants' : '/'} 
-        aria-label="logo"
-      >
+      <LogoContainer to={selectedPostcode ? 'restaurants' : '/'} aria-label="logo">
         <img src={LogoSVG} alt="logo" />
       </LogoContainer>
       {selectedPostcode && (
-        <PostcodeInfo 
-          to="/" 
-          aria-label={selectedPostcode.label}
-        >
+        <PostcodeInfo to="/" aria-label={selectedPostcode.label}>
           <img src={Pin} alt="Pin icon" />
           {selectedPostcode ? <span>{selectedPostcode.label}</span> : <span>Select Area</span>}
         </PostcodeInfo>

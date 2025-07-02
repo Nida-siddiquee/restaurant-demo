@@ -8,7 +8,13 @@ import { SortOption } from '@/utils/sorting';
 const mockStore = configureStore([]);
 const defaultFilters = FILTERS.reduce((acc, f) => ({ ...acc, [f.id]: false }), {});
 
-function renderDrawer({ open = true, filters = {}, onClose = jest.fn(), sortOption = SortOption.NONE, onSortChange = jest.fn() } = {}) {
+function renderDrawer({
+  open = true,
+  filters = {},
+  onClose = jest.fn(),
+  sortOption = SortOption.NONE,
+  onSortChange = jest.fn(),
+} = {}) {
   const store = mockStore({
     restaurants: { activeFilters: { ...defaultFilters, ...filters } },
   });
@@ -16,9 +22,9 @@ function renderDrawer({ open = true, filters = {}, onClose = jest.fn(), sortOpti
   return {
     ...render(
       <Provider store={store}>
-        <FiltersSidebarDrawer 
-          open={open} 
-          onClose={onClose} 
+        <FiltersSidebarDrawer
+          open={open}
+          onClose={onClose}
           sortOption={sortOption}
           onSortChange={onSortChange}
         />
@@ -87,16 +93,16 @@ describe('FiltersSidebarDrawer', () => {
   it('calls onSortChange when a new sort option is selected', () => {
     const onSortChangeMock = jest.fn();
     renderDrawer({ open: true, onSortChange: onSortChangeMock });
-    
+
     const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
     fireEvent.change(select, { target: { value: SortOption.RATING_HIGH_TO_LOW } });
-    
+
     expect(onSortChangeMock).toHaveBeenCalledWith(SortOption.RATING_HIGH_TO_LOW);
   });
 
   it('displays the currently selected sort option', () => {
     renderDrawer({ open: true, sortOption: SortOption.DELIVERY_COST_LOW_TO_HIGH });
-    
+
     const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
     expect(select).toHaveValue(SortOption.DELIVERY_COST_LOW_TO_HIGH);
   });

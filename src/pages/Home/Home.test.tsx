@@ -38,7 +38,7 @@ describe('RestaurantsListPage', () => {
     const store = mockStore(getInitialState({ loading: true }));
     renderPage(store);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
-  })
+  });
 
   it('renders error page', () => {
     const store = mockStore(getInitialState({ error: 'Some error' }));
@@ -175,10 +175,12 @@ describe('RestaurantsListPage', () => {
   });
 
   it('clears filters when postcode changes', () => {
-    const initialStore = mockStore(getInitialState({ 
-      activeFilters: { free_delivery: true },
-    }));
-    
+    const initialStore = mockStore(
+      getInitialState({
+        activeFilters: { free_delivery: true },
+      }),
+    );
+
     const { rerender } = render(
       <Provider store={initialStore}>
         <MemoryRouter>
@@ -189,7 +191,7 @@ describe('RestaurantsListPage', () => {
 
     const newStore = mockStore({
       ...getInitialState({ activeFilters: { free_delivery: true } }),
-      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } }
+      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } },
     });
 
     rerender(
@@ -201,16 +203,16 @@ describe('RestaurantsListPage', () => {
     );
 
     const actions = newStore.getActions();
-    expect(actions).toContainEqual(
-      expect.objectContaining({ type: 'restaurants/resetFilters' }),
-    );
+    expect(actions).toContainEqual(expect.objectContaining({ type: 'restaurants/resetFilters' }));
   });
 
   it('does not clear filters on initial load', () => {
-    const store = mockStore(getInitialState({ 
-      activeFilters: { free_delivery: true },
-    }));
-    
+    const store = mockStore(
+      getInitialState({
+        activeFilters: { free_delivery: true },
+      }),
+    );
+
     renderPage(store);
 
     const actions = store.getActions();
@@ -220,10 +222,12 @@ describe('RestaurantsListPage', () => {
   });
 
   it('does not clear filters when postcode changes but no filters are active', () => {
-    const initialStore = mockStore(getInitialState({ 
-      activeFilters: {},
-    }));
-    
+    const initialStore = mockStore(
+      getInitialState({
+        activeFilters: {},
+      }),
+    );
+
     const { rerender } = render(
       <Provider store={initialStore}>
         <MemoryRouter>
@@ -234,7 +238,7 @@ describe('RestaurantsListPage', () => {
 
     const newStore = mockStore({
       ...getInitialState({ activeFilters: {} }),
-      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } }
+      postcodes: { selected: { code: 'CF24', label: 'Cardiff Bay' } },
     });
 
     rerender(

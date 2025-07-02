@@ -1,4 +1,4 @@
-import { SortOption } from "@/utils/sorting";
+import { SortOption } from '@/utils/sorting';
 
 export interface SortingDropdownProps {
   value: SortOption;

@@ -84,7 +84,8 @@ describe('useErrorHandler', () => {
 
   it('retries for retryable errors', async () => {
     const { result } = renderHook(() => useErrorHandler({ maxRetries: 2 }));
-    const mockFn = jest.fn()
+    const mockFn = jest
+      .fn()
       .mockRejectedValueOnce(createNetworkError('Network error'))
       .mockResolvedValueOnce('success');
 
@@ -97,7 +98,7 @@ describe('useErrorHandler', () => {
 
     await act(async () => {
       const retryPromise = result.current.retry();
-      jest.advanceTimersByTime(1000); 
+      jest.advanceTimersByTime(1000);
       await retryPromise;
     });
 
@@ -109,7 +110,7 @@ describe('useErrorHandler', () => {
     const { result } = renderHook(() => useErrorHandler());
     const nonRetryableError = createNetworkError('Network error');
     nonRetryableError.retryable = false;
-    
+
     const mockFn = jest.fn().mockRejectedValue(nonRetryableError);
 
     await act(async () => {
@@ -120,7 +121,7 @@ describe('useErrorHandler', () => {
       await result.current.retry();
     });
 
-    expect(mockFn).toHaveBeenCalledTimes(1); 
+    expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
   it('respects maxRetries limit', async () => {
@@ -143,6 +144,6 @@ describe('useErrorHandler', () => {
       await result.current.retry();
     });
 
-    expect(mockFn).toHaveBeenCalledTimes(2); 
+    expect(mockFn).toHaveBeenCalledTimes(2);
   });
 });

@@ -33,12 +33,12 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   testId,
   onClick,
 }) => (
-  <Card 
-    onClick={onClick} 
-    data-testid={testId} 
-    role="button" 
+  <Card
+    onClick={onClick}
+    data-testid={testId}
+    role="button"
     tabIndex={0}
-    onKeyDown={(e) => {
+    onKeyDown={e => {
       if ((e.key === 'Enter' || e.key === ' ') && onClick) {
         e.preventDefault();
         onClick();
@@ -65,12 +65,16 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       <Name>{highlightMatch(name, highlight ?? '')}</Name>
 
       <DetailsRow>
-        <span className="star" aria-hidden="true">★</span>
+        <span className="star" aria-hidden="true">
+          ★
+        </span>
         <span aria-label={`Rating: ${rating} out of 5 stars`}>{rating}</span>
         <span style={{ fontSize: '.9em', color: '#868' }} aria-label={`${reviewCount} reviews`}>
           ({reviewCount})
         </span>
-        <span className="clock" aria-hidden="true">🕒</span>
+        <span className="clock" aria-hidden="true">
+          🕒
+        </span>
         <span aria-label={`Delivery time: ${deliveryTime}`}>{deliveryTime}</span>
       </DetailsRow>
 

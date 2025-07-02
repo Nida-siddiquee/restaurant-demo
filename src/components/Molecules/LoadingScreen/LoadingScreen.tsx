@@ -3,9 +3,9 @@ import Loading from '@/assets/Loading.gif';
 import { Container, LoaderImage, LoadingText } from './LoadingScreen.styled';
 
 const LoadingScreen: React.FC = () => (
-  <Container 
-    data-testid="loading-container" 
-    role="status" 
+  <Container
+    data-testid="loading-container"
+    role="status"
     aria-live="polite"
     aria-label="Loading restaurants"
   >

@@ -20,10 +20,10 @@ export const useRestaurantDetails = () => {
     console.error('Error in RestaurantDetails:', err);
   }, []);
 
-  const { 
-    error: handlingError, 
-    executeWithErrorHandling, 
-    clearError 
+  const {
+    error: handlingError,
+    executeWithErrorHandling,
+    clearError,
   } = useErrorHandler({
     maxRetries: 2,
     onError: handleError,
@@ -33,9 +33,12 @@ export const useRestaurantDetails = () => {
     const initializeRestaurant = async () => {
       if (!selected) {
         if (postcode) {
-          await executeWithErrorHandling(async () => {
-            dispatch(fetchRestaurantsRequest(postcode));
-          }, { action: 'fetch_restaurants_for_details', postcode, restaurantId: id });
+          await executeWithErrorHandling(
+            async () => {
+              dispatch(fetchRestaurantsRequest(postcode));
+            },
+            { action: 'fetch_restaurants_for_details', postcode, restaurantId: id },
+          );
         } else {
           navigate('/');
         }
@@ -49,9 +52,12 @@ export const useRestaurantDetails = () => {
   useEffect(() => {
     if (id && selected && id !== selected.id && hasAttemptedSelection.current !== id) {
       hasAttemptedSelection.current = id;
-      executeWithErrorHandling(async () => {
-        dispatch(selectRestaurant(id));
-      }, { action: 'select_restaurant', restaurantId: id });
+      executeWithErrorHandling(
+        async () => {
+          dispatch(selectRestaurant(id));
+        },
+        { action: 'select_restaurant', restaurantId: id },
+      );
     }
   }, [id, selected, dispatch, executeWithErrorHandling]);
 
@@ -70,9 +76,12 @@ export const useRestaurantDetails = () => {
   const handleRetry = useCallback(async () => {
     clearError();
     if (postcode) {
-      await executeWithErrorHandling(async () => {
-        dispatch(fetchRestaurantsRequest(postcode));
-      }, { action: 'retry_fetch_restaurants', postcode, restaurantId: id });
+      await executeWithErrorHandling(
+        async () => {
+          dispatch(fetchRestaurantsRequest(postcode));
+        },
+        { action: 'retry_fetch_restaurants', postcode, restaurantId: id },
+      );
     }
   }, [clearError, executeWithErrorHandling, dispatch, postcode, id]);
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { CustomError } from '@/utils/errors';
 import { InlineContainer, Icon, Message, RetryButton } from './InlineError.styled';
 
-
 interface InlineErrorProps {
   error: CustomError;
   onRetry?: () => void;
