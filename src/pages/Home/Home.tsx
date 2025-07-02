@@ -13,20 +13,22 @@ import {
   setCurrentPage,
   resetFilters,
   fetchRestaurantsRequest,
+  setSortOption,
 } from '@/features/restaurants/restaurantsSlice';
 import HomeContent from '@/components/Organisims/HomeContent';
-import { useFilteredRestaurants, usePagination, useErrorHandler } from '@/hooks';
+import { useFilteredRestaurants, usePagination, useErrorHandler, useSortedRestaurants } from '@/hooks';
 import LoadingScreen from '@/components/Molecules/LoadingScreen';
 import MobileFilterBar from '@/components/Organisims/MobileFilterBar';
 import FiltersSidebarDrawer from '@/components/Molecules/Sidebar/FiltersSidebarDrawer';
 import { createNetworkError, ErrorType } from '@/utils/errors';
+import { SortOption } from '@/utils/sorting';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
   const previousPostcodeRef = useRef<string | null>(null);
-  const { data, loading, error, searchQuery, currentPage, activeFilters } = useSelector(
+  const { data, loading, error, searchQuery, currentPage, activeFilters, sortOption } = useSelector(
     (state: RootState) => state.restaurants,
   );
   const { selected: selectedPostcode } = useSelector((state: RootState) => state.postcodes);
@@ -34,7 +36,8 @@ const Home: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [debouncedQuery] = useDebounce(searchInput, 300);
   const filteredRestaurants = useFilteredRestaurants(data?.restaurants, searchQuery, activeFilters);
-  const { totalPages, pageSlice } = usePagination(filteredRestaurants, currentPage);
+  const sortedRestaurants = useSortedRestaurants(filteredRestaurants, sortOption);
+  const { totalPages, pageSlice } = usePagination(sortedRestaurants, currentPage);
   const hasActiveFilters = Object.values(activeFilters).some(Boolean);
 
   const { 
@@ -118,6 +121,10 @@ const Home: React.FC = () => {
   const handleReload = () => {
     window.location.reload();
   };
+
+  const handleSortChange = (option: SortOption) => {
+    dispatch(setSortOption(option));
+  };
   if (error && !loading) {
     const errorObj = createNetworkError(error);
     errorObj.retryable = true;
@@ -150,12 +157,17 @@ const Home: React.FC = () => {
               onFilterClick={() => setDrawerOpen(true)}
               onClearFilters={handleClearFilters}
             />
-            <FiltersSidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+            <FiltersSidebarDrawer 
+              open={drawerOpen} 
+              onClose={() => setDrawerOpen(false)} 
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
+            />
             <HomeContent
               searchInput={searchInput}
               onSearchChange={handleSearchChange}
               onSearchClear={handleSearchClear}
-              filteredRestaurants={filteredRestaurants}
+              filteredRestaurants={sortedRestaurants}
               pageSlice={pageSlice}
               searchQuery={debouncedQuery}
               loading={loading || isRetrying}
@@ -165,6 +177,8 @@ const Home: React.FC = () => {
               onRestaurantClick={handleDetails}
               onPageChange={handlePageChange}
               onClearFilters={handleClearFilters}
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
             />
           </FlexWrap>
         )}

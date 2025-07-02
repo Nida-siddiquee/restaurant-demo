@@ -10,11 +10,17 @@ import {
   SidebarTitle,
   ToggleSwitch,
   TopRow,
+  SectionTitle,
 } from '../Sidebar.styled';
 import { FILTERS } from '../constants';
 import { FiltersSidebarProps } from '../types';
+import SortingDropdown from '@/components/Molecules/SortingDropdown';
 
-const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => {
+const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ 
+  totalRestaurants, 
+  sortOption, 
+  onSortChange 
+}) => {
   const activeFilters = useSelector((s: RootState) => s.restaurants.activeFilters);
   const dispatch = useDispatch<AppDispatch>();
   const hasActiveFilters = Object.values(activeFilters).some(Boolean);
@@ -45,6 +51,11 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({ totalRestaurants }) => 
           </ClearButton>
         )}
       </TopRow>
+      
+      <SectionTitle>Sort by</SectionTitle>
+      <SortingDropdown value={sortOption} onChange={onSortChange} />
+      
+      <SectionTitle>Filter options</SectionTitle>
       <FiltersList role="group" aria-labelledby="filters-title">
         {FILTERS.map(f => (
           <FilterRow key={f.id}>

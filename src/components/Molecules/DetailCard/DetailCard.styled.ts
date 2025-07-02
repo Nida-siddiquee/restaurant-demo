@@ -20,6 +20,9 @@ export const Card = styled.div`
   @media (max-width: 600px) {
     margin: 0.6rem 0 1rem 0;
     border-radius: 9px;
+    /* Maintain width but allow height to adapt to content on mobile */
+    min-height: auto;
+    height: auto;
   }
 `;
 
@@ -37,6 +40,8 @@ export const TopWrapper = styled.div`
 
   @media (max-width: 600px) {
     height: 90px;
+    /* Ensure the banner fills the space properly on mobile */
+    width: 100%;
   }
 `;
 
@@ -91,6 +96,7 @@ export const Logo = styled.img`
   position: absolute;
   bottom: 10px;
   left: 12px;
+  /* Desktop dimensions */
   width: 70px;
   height: 70px;
   object-fit: contain;
@@ -99,6 +105,7 @@ export const Logo = styled.img`
   border: 2px solid #eee;
 
   @media (max-width: 600px) {
+    /* Mobile dimensions */
     width: 42px;
     height: 42px;
     bottom: 6px;

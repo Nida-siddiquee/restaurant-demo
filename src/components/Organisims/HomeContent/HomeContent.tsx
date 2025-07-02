@@ -21,10 +21,16 @@ const HomeContent: React.FC<HomeContentProps> = ({
   onRestaurantClick,
   onPageChange,
   onClearFilters,
+  sortOption,
+  onSortChange,
 }) => {
   return (
     <>
-      <FiltersSidebar totalRestaurants={filteredRestaurants.length} />
+      <FiltersSidebar 
+        totalRestaurants={filteredRestaurants.length}
+        sortOption={sortOption}
+        onSortChange={onSortChange}
+      />
       <Content>
         <SearchAndHeading
           searchInput={searchInput}

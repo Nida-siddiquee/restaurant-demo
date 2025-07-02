@@ -1,5 +1,7 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Restaurant, RestaurantsResponse } from './types';
+import { SortOption } from '@/utils/sorting';
+
 export const fetchRestaurantsRequest = createAction<string>('restaurants/fetchRestaurantsRequest');
 export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>(
   'restaurants/fetchRestaurantsSuccess',
@@ -12,6 +14,7 @@ export const setActiveFilters = createAction<{ [filterId: string]: boolean }>(
   'restaurants/setActiveFilters',
 );
 export const resetFilters = createAction('restaurants/resetFilters');
+export const setSortOption = createAction<SortOption>('restaurants/setSortOption');
 
 export interface RestaurantsState {
   data: RestaurantsResponse | null;
@@ -23,6 +26,7 @@ export interface RestaurantsState {
   searchQuery: string;
   currentPage: number;
   activeFilters: { [filterId: string]: boolean };
+  sortOption: SortOption;
 }
 
 const initialState: RestaurantsState = {
@@ -35,6 +39,7 @@ const initialState: RestaurantsState = {
   searchQuery: '',
   currentPage: 1,
   activeFilters: {},
+  sortOption: SortOption.NONE,
 };
 
 export const restaurantsSlice = createSlice({
@@ -66,6 +71,10 @@ export const restaurantsSlice = createSlice({
     },
     resetFilters: state => {
       state.activeFilters = {};
+      state.currentPage = 1;
+    },
+    setSortOption: (state, action: PayloadAction<SortOption>) => {
+      state.sortOption = action.payload;
       state.currentPage = 1;
     },
   },

@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import HomeContent from './HomeContent';
 import { Restaurant } from '@/features/restaurants/types';
 import { mockRestaurantsResponse } from '@/features/restaurants/mockRestaurantsResponse';
+import { SortOption } from '@/utils/sorting';
 
 jest.mock('../SearchAndHeading/SearchAndHeading', () => {
   return function MockSearchAndHeading(props: any) {
@@ -34,7 +35,18 @@ jest.mock('../RestaurantGrid/RestaurantGrid', () => {
 
 jest.mock('@/components/Molecules/Sidebar/FiltersSidebar', () => {
   return function MockFiltersSidebar(props: any) {
-    return <div data-testid="filters-sidebar">Total: {props.totalRestaurants}</div>;
+    return (
+      <div data-testid="filters-sidebar">
+        <div>Total: {props.totalRestaurants}</div>
+        <div data-testid="sort-option">{props.sortOption}</div>
+        <button 
+          data-testid="sort-change-button"
+          onClick={() => props.onSortChange && props.onSortChange(SortOption.RATING_HIGH_TO_LOW)}
+        >
+          Change Sort
+        </button>
+      </div>
+    );
   };
 });
 
@@ -74,6 +86,8 @@ const defaultProps = {
   onRestaurantClick: jest.fn(),
   onPageChange: jest.fn(),
   onClearFilters: jest.fn(),
+  sortOption: SortOption.NONE,
+  onSortChange: jest.fn(),
 };
 
 describe('HomeContent', () => {
@@ -161,5 +175,19 @@ describe('HomeContent', () => {
     render(<HomeContent {...defaultProps} />);
     
     expect(screen.queryByTestId('clear-filters-empty-state')).not.toBeInTheDocument();
+  });
+
+  it('renders with the correct sort option in sidebar', () => {
+    render(<HomeContent {...defaultProps} sortOption={SortOption.RATING_HIGH_TO_LOW} />);
+    
+    expect(screen.getByTestId('sort-option')).toHaveTextContent(SortOption.RATING_HIGH_TO_LOW);
+  });
+
+  it('calls onSortChange when sort is changed in sidebar', () => {
+    render(<HomeContent {...defaultProps} />);
+    
+    fireEvent.click(screen.getByTestId('sort-change-button'));
+    
+    expect(defaultProps.onSortChange).toHaveBeenCalledWith(SortOption.RATING_HIGH_TO_LOW);
   });
 });
