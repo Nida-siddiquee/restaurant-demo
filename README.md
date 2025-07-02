@@ -133,13 +133,8 @@ This application uses the Just Eat API to fetch restaurant data. Currently confi
 ### Current Implementation
 - **Development Mode**: Uses Vite proxy configuration in `vite.config.ts`
 - **API Service**: `src/services/api.ts` handles environment detection and API calls
-- **Proxy Setup**: Proxies requests from `/api/*` to `https://uk.api.just-eat.io/*`
 - **CORS Handling**: No CORS issues in development due to proxy
 
-### Development Flow
-```
-localhost:5174/api/... → Vite proxy → https://uk.api.just-eat.io/...
-```
 
 ### Production Setup (Planned)
 The `api/restaurants.js` file is prepared for serverless function implementation:
@@ -215,55 +210,3 @@ This project includes a comprehensive GitHub Actions pipeline that ensures quali
 4. **Deploy** - Deploys to production environment
 5. **E2E Tests (Production)** - Tests against the live deployed URL
 
-### Key Features
-
-- **Smart E2E Testing**: 
-  - PRs test against preview servers (localhost)
-  - Main/master tests against the actual deployed application
-  - No localhost testing for production deployments
-- **Build Artifacts**: Shared between jobs for efficiency
-- **Environment-based URLs**: Uses `PLAYWRIGHT_BASE_URL` for flexible testing
-- **Comprehensive Coverage**: All tests must pass before deployment
-
-### E2E Test Configuration
-
-The tests are configured to run against different environments:
-
-- **Local Development**: `npm run e2e:local` (port 5174)
-- **Preview Build**: `npm run e2e:preview` (port 4173) 
-- **Deployed Application**: `npm run e2e:deployed` (uses PLAYWRIGHT_BASE_URL)
-
-### Pipeline Configuration
-
-The pipeline is defined in `.github/workflows/ci-cd.yml` and includes:
-
-## 📚 Documentation
-
-- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Comprehensive deployment instructions
-- **[Error Handling Guide](./docs/ERROR_HANDLING.md)** - Enhanced error handling system documentation
-- **[Accessibility Guide](./docs/ACCESSIBILITY.md)** - Accessibility features and best practices
-- **[Card Consistency Guide](./docs/CARD_CONSISTENCY.md)** - Restaurant card layout and styling
-- **API Configuration** - See above section for current setup
-- **Testing Strategy** - Unit tests (Jest) + E2E tests (Playwright)
-- **CI/CD Pipeline** - Automated quality gates and deployment
-
----
-
-## 🚀 Deployment
-
-For detailed deployment instructions, see **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)**.
-
-### Quick Setup for Vercel
-
-1. **Prerequisites**: Vercel account and GitHub repository
-2. **Secrets**: Configure `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
-3. **Deploy**: Push to `main` branch triggers automatic deployment
-4. **Preview**: Pull requests create preview deployments with E2E testing
-
-### Deployment Flow
-
-- **Production**: `main/master` branch → Vercel production → E2E tests
-- **Preview**: Pull requests → Vercel preview → E2E tests → PR comments
-- **Quality Gates**: Lint → Type check → Unit tests → Build → Deploy → E2E tests
-
----
