@@ -32,6 +32,15 @@ A production-ready React + TypeScript restaurant discovery application featuring
 - **Type Safety**: Full TypeScript coverage with strict type checking
 - **Testing**: Comprehensive unit and E2E test coverage
 - **Performance**: Optimized builds with code splitting and lazy loading
+- **Enhanced Error Handling**: Granular error types, retry mechanisms, and error boundaries
+
+### Error Handling Features
+- **Typed Error Categories**: Network, API, validation, timeout, and not-found errors
+- **Smart Retry Logic**: Automatic retries with exponential backoff for transient errors
+- **Error Boundaries**: React error boundaries to prevent cascade failures
+- **Contextual Error Display**: Appropriate UI components for different error scenarios
+- **Accessibility**: Full ARIA support and keyboard navigation for error states
+- **Recovery Actions**: Clear next steps and retry options for users
 
 ### Development Experience
 - **Hot Module Replacement**: Fast development with Vite HMR
@@ -44,6 +53,28 @@ A production-ready React + TypeScript restaurant discovery application featuring
 - ✅ Sample “Hello World” feature module & Storybook stub
 
 ---
+
+## 🏗️ Architecture Improvements
+
+### Centralized Hooks Structure
+
+All custom hooks are now consolidated in a single `src/hooks/` directory for better maintainability:
+
+```
+src/hooks/
+├── index.ts                      # Centralized exports
+├── useErrorBoundary.ts          # Error boundary utilities  
+├── useErrorHandler.ts           # Async error handling
+├── useFilteredRestaurants.ts    # Restaurant filtering logic
+├── usePagination.ts             # Pagination utilities
+└── *.test.ts                    # Corresponding tests
+```
+
+**Benefits:**
+- **Single Source**: All hooks in one location
+- **Better Imports**: `import { useHook } from '@/hooks'`
+- **Easier Testing**: Centralized test location
+- **Improved Maintainability**: Clear separation of concerns
 
 ## 🛠 Prerequisites
 
@@ -209,6 +240,9 @@ The pipeline is defined in `.github/workflows/ci-cd.yml` and includes:
 ## 📚 Documentation
 
 - **[Deployment Guide](./docs/DEPLOYMENT.md)** - Comprehensive deployment instructions
+- **[Error Handling Guide](./docs/ERROR_HANDLING.md)** - Enhanced error handling system documentation
+- **[Accessibility Guide](./docs/ACCESSIBILITY.md)** - Accessibility features and best practices
+- **[Card Consistency Guide](./docs/CARD_CONSISTENCY.md)** - Restaurant card layout and styling
 - **API Configuration** - See above section for current setup
 - **Testing Strategy** - Unit tests (Jest) + E2E tests (Playwright)
 - **CI/CD Pipeline** - Automated quality gates and deployment

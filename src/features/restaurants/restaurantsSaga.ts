@@ -1,6 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchRestaurantsApi } from '@/services/api';
+import { parseError } from '@/utils/errors';
 import {
   fetchRestaurantsRequest,
   fetchRestaurantsSuccess,
@@ -13,8 +14,8 @@ export function* fetchRestaurantsSaga(action: PayloadAction<string>) {
     const response: RestaurantsResponse = yield call(fetchRestaurantsApi, action.payload);
     yield put(fetchRestaurantsSuccess(response));
   } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : 'Failed to fetch restaurants';
-    yield put(fetchRestaurantsFailure(errorMessage));
+    const customError = parseError(err);
+    yield put(fetchRestaurantsFailure(customError.message));
   }
 }
 

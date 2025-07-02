@@ -1,6 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Restaurant, RestaurantsResponse } from './types';
-
 export const fetchRestaurantsRequest = createAction<string>('restaurants/fetchRestaurantsRequest');
 export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>(
   'restaurants/fetchRestaurantsSuccess',
@@ -18,6 +17,7 @@ export interface RestaurantsState {
   data: RestaurantsResponse | null;
   loading: boolean;
   error: string | null;
+  errorType?: string;
   selectedId: string | null;
   selected: Restaurant | null;
   searchQuery: string;
@@ -29,6 +29,7 @@ const initialState: RestaurantsState = {
   data: null,
   loading: false,
   error: null,
+  errorType: undefined,
   selectedId: null,
   selected: null,
   searchQuery: '',
@@ -73,6 +74,7 @@ export const restaurantsSlice = createSlice({
       .addCase(fetchRestaurantsRequest, state => {
         state.loading = true;
         state.error = null;
+        state.errorType = undefined;
         state.data = null;
       })
       .addCase(fetchRestaurantsSuccess, (state, action: PayloadAction<RestaurantsResponse>) => {

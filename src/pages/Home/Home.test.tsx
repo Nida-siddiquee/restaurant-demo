@@ -43,7 +43,7 @@ describe('RestaurantsListPage', () => {
   it('renders error page', () => {
     const store = mockStore(getInitialState({ error: 'Some error' }));
     renderPage(store);
-    expect(screen.getByText(/Something Went Wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/Connection Problem/i)).toBeInTheDocument();
   });
 
   it('renders sidebar filters on desktop', () => {
