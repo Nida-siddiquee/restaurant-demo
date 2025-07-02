@@ -120,7 +120,7 @@ describe('useFilteredRestaurants', () => {
   });
 
   it('applies search query and filters together', () => {
-    const searchQuery = 'a'; // Common letter
+    const searchQuery = 'a'; 
     const { result } = renderHook(() =>
       useFilteredRestaurants(mockRestaurants, searchQuery, { open_now: true })
     );
@@ -159,7 +159,6 @@ describe('useFilteredRestaurants', () => {
       useFilteredRestaurants(mockRestaurants, searchQuery, {})
     );
 
-    // Should work same as 'test' (trimmed)
     expect(result.current).toBeDefined();
   });
 

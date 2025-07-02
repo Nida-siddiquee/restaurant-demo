@@ -89,12 +89,12 @@ const Home: React.FC = () => {
   };
 
   const handleClearFilters = () => {
-    clearError(); // Clear any error when user takes action
+    clearError(); 
     dispatch(resetFilters());
   };
 
   const handleSearchChange = (value: string) => {
-    clearError(); // Clear any error when user searches
+    clearError(); 
     setSearchInput(value);
   };
 

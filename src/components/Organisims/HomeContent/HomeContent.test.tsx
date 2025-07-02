@@ -3,7 +3,6 @@ import HomeContent from './HomeContent';
 import { Restaurant } from '@/features/restaurants/types';
 import { mockRestaurantsResponse } from '@/features/restaurants/mockRestaurantsResponse';
 
-// Mock child components
 jest.mock('../SearchAndHeading/SearchAndHeading', () => {
   return function MockSearchAndHeading(props: any) {
     return (

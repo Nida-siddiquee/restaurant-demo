@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import SecondaryButton from './SecondaryButton';
-import 'jest-styled-components'; // ensure this is imported in your setupTests.js
+import 'jest-styled-components';
 
 describe('SecondaryButton', () => {
   it('renders with child text', () => {

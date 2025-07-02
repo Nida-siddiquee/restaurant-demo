@@ -41,7 +41,6 @@ describe('RestaurantCard', () => {
   it('renders the offer ribbon if offer is provided', () => {
     render(<RestaurantCard {...baseProps} offer="20% Off!" />);
     expect(screen.getByText(/20% Off!/)).toBeInTheDocument();
-    // Optionally: check the tag icon by role or svg tag
     expect(screen.getByText(/20% Off!/).parentElement?.querySelector('svg')).toBeInTheDocument();
   });
 

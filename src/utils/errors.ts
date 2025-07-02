@@ -1,4 +1,3 @@
-// Error types for better error categorization and handling
 export enum ErrorType {
   NETWORK_ERROR = 'NETWORK_ERROR',
   API_ERROR = 'API_ERROR',

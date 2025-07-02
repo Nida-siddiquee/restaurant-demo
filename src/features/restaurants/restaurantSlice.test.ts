@@ -7,7 +7,7 @@ import reducer, {
   selectRestaurant,
   resetFilters,
   setActiveFilters,
-} from './restaurantsSlice'; // or './restaurantsSlice'
+} from './restaurantsSlice';
 import { mockRestaurantsResponse } from './mockRestaurantsResponse';
 
 describe('restaurantsSlice', () => {

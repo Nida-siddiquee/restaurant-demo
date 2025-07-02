@@ -98,7 +98,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         return <FallbackComponent error={this.state.error} onRetry={this.handleRetry} />;
       }
 
-      // Use default error display
       return (
         <ErrorDisplay
           error={this.state.error}

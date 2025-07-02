@@ -97,7 +97,7 @@ describe('useErrorHandler', () => {
 
     await act(async () => {
       const retryPromise = result.current.retry();
-      jest.advanceTimersByTime(1000); // Advance past delay
+      jest.advanceTimersByTime(1000); 
       await retryPromise;
     });
 
@@ -120,7 +120,7 @@ describe('useErrorHandler', () => {
       await result.current.retry();
     });
 
-    expect(mockFn).toHaveBeenCalledTimes(1); // Only initial call
+    expect(mockFn).toHaveBeenCalledTimes(1); 
   });
 
   it('respects maxRetries limit', async () => {

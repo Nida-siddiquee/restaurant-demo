@@ -17,7 +17,6 @@ export const FlexWrap = styled.div`
   }
 `;
 
-// Legacy styles kept for compatibility with existing components
 export const Title = styled.h2`
   text-align: center;
   margin-bottom: 1.5rem;

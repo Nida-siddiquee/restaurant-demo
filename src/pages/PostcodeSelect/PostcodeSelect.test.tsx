@@ -103,7 +103,7 @@ describe('PostcodeSelectPage', () => {
     const store = mockStore(getInitialState());
     renderPage(store);
     fireEvent.click(screen.getByTestId('view-restaurants-btn'));
-    expect(dispatch).toHaveBeenCalledTimes(1); // Only initial fetchPostcodesRequest
+    expect(dispatch).toHaveBeenCalledTimes(1);
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 

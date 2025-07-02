@@ -76,13 +76,11 @@ export const useErrorHandler = (options: UseErrorHandlerOptions = {}): UseErrorH
     setIsRetrying(true);
     
     try {
-      // Add delay before retry
-      await delay(retryDelay * Math.pow(2, retryCount)); // Exponential backoff
+      await delay(retryDelay * Math.pow(2, retryCount));
       
       setRetryCount(prev => prev + 1);
       await lastAttemptedFunction.fn();
       
-      // Success - clear error state
       setError(null);
       setRetryCount(0);
       setLastAttemptedFunction(null);

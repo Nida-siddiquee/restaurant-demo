@@ -1,4 +1,3 @@
-// RestaurantDetailPage.test.tsx
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
