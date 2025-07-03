@@ -1,5 +1,5 @@
 import React from 'react';
-import { highlightMatch } from '@/components/utils/highlightMatch';
+import { highlightMatch } from '@/utils/highlightMatch';
 import { RestaurantCardProps } from './types';
 import {
   Badge,

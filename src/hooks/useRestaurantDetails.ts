@@ -48,7 +48,6 @@ export const useRestaurantDetails = () => {
     initializeRestaurant();
   }, [dispatch, id, navigate, postcode, selected, executeWithErrorHandling]);
 
-  // Separate useEffect for restaurant selection to avoid infinite loops
   useEffect(() => {
     if (id && selected && id !== selected.id && hasAttemptedSelection.current !== id) {
       hasAttemptedSelection.current = id;
@@ -61,12 +60,10 @@ export const useRestaurantDetails = () => {
     }
   }, [id, selected, dispatch, executeWithErrorHandling]);
 
-  // Reset the attempted selection ref when id changes
   useEffect(() => {
     hasAttemptedSelection.current = null;
   }, [id]);
 
-  // Separate useEffect for scrolling
   useEffect(() => {
     if (pageRef.current && selected) {
       pageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
