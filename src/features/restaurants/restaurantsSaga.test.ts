@@ -1,12 +1,12 @@
 import { expectSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
-import { fetchRestaurantsSaga } from './restaurantsSaga'; 
+import { fetchRestaurantsSaga } from './restaurantsSaga';
 import {
   fetchRestaurantsRequest,
   fetchRestaurantsSuccess,
   fetchRestaurantsFailure,
 } from './restaurantsSlice';
-import { mockRestaurantsResponse } from './mockRestaurantsResponse'; 
+import { mockRestaurantsResponse } from './mockRestaurantsResponse';
 import * as api from '@/services/api';
 
 const postcode = 'CF11';

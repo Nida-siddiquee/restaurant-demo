@@ -130,3 +130,31 @@ export const ToggleSwitch = styled.input.attrs({ type: 'checkbox' })`
     transform: translateX(22px);
   }
 `;
+
+export const SectionTitle = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.7rem;
+  color: #444;
+`;
+
+export const SelectWrapper = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+export const StyledSelect = styled.select`
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover,
+  &:focus {
+    border-color: #0066cc;
+    outline: none;
+  }
+`;

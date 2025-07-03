@@ -5,7 +5,7 @@ test.describe('Home Page', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
-    await page.getByText('View Restaurants').click();
+    await page.getByTestId('view-restaurants-btn').click();
     await page.waitForURL('**/restaurants');
 
     await expect(page.getByText(/Order from \d+ place/)).toBeVisible({ timeout: 10000 });
@@ -51,7 +51,7 @@ test.describe('Home Page', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
-    await page.getByText('View Restaurants').click();
+    await page.getByTestId('view-restaurants-btn').click();
     await page.waitForURL('**/restaurants');
 
     await expect(page.getByText(/Order from \d+ place/)).toBeVisible({ timeout: 10000 });
@@ -87,7 +87,7 @@ test.describe('Home Page', () => {
   test('navigates to restaurants page after selecting area', async ({ page }) => {
     await page.goto('/');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
-    await page.getByText('View Restaurants').click();
+    await page.getByTestId('view-restaurants-btn').click();
 
     await expect(page).toHaveURL(/\/restaurants$/);
     await expect(page.getByText(/Order from \d+ place/)).toBeVisible();
@@ -97,7 +97,7 @@ test.describe('Home Page', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.selectOption('select', { label: 'Cardiff - CF11 8AZ' });
-    await page.getByText('View Restaurants').click();
+    await page.getByTestId('view-restaurants-btn').click();
     await page.waitForURL('**/restaurants');
 
     await expect(page.getByText(/Order from \d+ place/)).toBeVisible({ timeout: 10000 });

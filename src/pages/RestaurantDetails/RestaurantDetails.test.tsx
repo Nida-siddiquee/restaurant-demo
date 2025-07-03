@@ -1,57 +1,85 @@
-// RestaurantDetailPage.test.tsx
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import RestaurantDetailPage from './RestaurantDetails';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { mockRestaurant } from './mockRestaurant';
 
 jest.mock('@/components/Atoms/MapView', () => () => <div>MapView</div>);
 jest.mock('@/components/Molecules/LoadingScreen', () => () => <div>LoadingScreen</div>);
 jest.mock('@/pages/ErrorPage', () => () => <div>ErrorPage</div>);
 
-function renderWithProviders(storeState: any, route: string = '/restaurants/200586') {
+const useRestaurantDetailsMock = {
+  pageRef: { current: null },
+  selected: null,
+  loading: false,
+  error: null,
+  handlingError: null,
+  handleRetry: jest.fn(),
+  handleGoHome: jest.fn(),
+};
+
+jest.mock('@/hooks', () => ({
+  useRestaurantDetails: jest.fn(() => useRestaurantDetailsMock),
+}));
+
+async function renderWithProviders(storeState: any, route: string = '/restaurants/200586') {
   const mockStore = configureStore([]);
   const store = mockStore(storeState);
 
-  return render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>,
-  );
+  useRestaurantDetailsMock.selected = storeState.restaurants.selected;
+  useRestaurantDetailsMock.loading = storeState.restaurants.loading;
+  useRestaurantDetailsMock.error = storeState.restaurants.error;
+
+  let renderResult: ReturnType<typeof render>;
+
+  await act(async () => {
+    renderResult = render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
+    );
+  });
+
+  await waitFor(() => {});
+
+  return renderResult!;
 }
 
 describe('RestaurantDetailPage', () => {
-  it('renders loading screen when loading', () => {
-    renderWithProviders({
+  it('renders loading screen when loading', async () => {
+    await renderWithProviders({
       restaurants: { selected: null, loading: true, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
     expect(screen.getByText(/LoadingScreen/i)).toBeInTheDocument();
   });
 
-  it('renders error page when error exists', () => {
-    renderWithProviders({
+  it('renders error page when error exists', async () => {
+    await renderWithProviders({
       restaurants: { selected: null, loading: false, error: 'Something went wrong' },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Service Unavailable|Connection Problem|Something went wrong/i),
+    ).toBeInTheDocument();
   });
 
-  it('renders error page when restaurant not found', () => {
-    renderWithProviders({
+  it('renders error page when restaurant not found', async () => {
+    await renderWithProviders({
       restaurants: { selected: null, loading: false, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
-    expect(screen.getByText(/ErrorPage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Not Found/i)).toBeInTheDocument();
   });
 
-  it('renders restaurant details correctly', () => {
-    renderWithProviders({
+  it('renders restaurant details correctly', async () => {
+    await renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
@@ -67,8 +95,8 @@ describe('RestaurantDetailPage', () => {
     expect(screen.getByText(/MapView/i)).toBeInTheDocument();
   });
 
-  it('shows address details', () => {
-    renderWithProviders({
+  it('shows address details', async () => {
+    await renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
@@ -77,12 +105,13 @@ describe('RestaurantDetailPage', () => {
     expect(screen.getByText(/Cardiff CF24 3BJ/i)).toBeInTheDocument();
   });
 
-  it('renders only first 6 cuisines', () => {
+  it('renders only first 6 cuisines', async () => {
     const manyCuisines = [...Array(10)].map((_, i) => ({
       name: `Cuisine${i}`,
       uniqueName: `cuisine${i}`,
     }));
-    renderWithProviders({
+
+    await renderWithProviders({
       restaurants: {
         selected: { ...mockRestaurant, cuisines: manyCuisines },
         loading: false,
@@ -90,6 +119,7 @@ describe('RestaurantDetailPage', () => {
       },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });
+
     for (let i = 0; i < 6; i++) {
       expect(screen.getByText(`Cuisine${i}`)).toBeInTheDocument();
     }
@@ -97,7 +127,7 @@ describe('RestaurantDetailPage', () => {
   });
 
   it('back link navigates to /restaurants', async () => {
-    renderWithProviders({
+    await renderWithProviders({
       restaurants: { selected: mockRestaurant, loading: false, error: null },
       postcodes: { selected: { code: 'CF11', label: 'Cardiff' } },
     });

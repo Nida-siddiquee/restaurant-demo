@@ -7,8 +7,9 @@ import reducer, {
   selectRestaurant,
   resetFilters,
   setActiveFilters,
-} from './restaurantsSlice'; // or './restaurantsSlice'
+} from './restaurantsSlice';
 import { mockRestaurantsResponse } from './mockRestaurantsResponse';
+import { SortOption } from '@/utils/sorting';
 
 describe('restaurantsSlice', () => {
   const initialState = {
@@ -20,6 +21,7 @@ describe('restaurantsSlice', () => {
     searchQuery: '',
     currentPage: 1,
     activeFilters: {},
+    sortOption: SortOption.NONE,
   };
 
   it('handles fetchRestaurantsRequest', () => {

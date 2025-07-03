@@ -7,7 +7,6 @@ import {
 } from './postcodesSlice';
 import { mockPostcodes } from './mockPostcodes';
 
-// Replace this with your real API call!
 function fetchPostcodesApi(): Postcode[] {
   return [...mockPostcodes];
 }

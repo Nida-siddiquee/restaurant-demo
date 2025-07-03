@@ -3,11 +3,12 @@ import FiltersSidebar from './FiltersSidebar';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { FILTERS } from '../constants';
+import { SortOption } from '@/utils/sorting';
 
 const mockStore = configureStore([]);
 const defaultFilters = FILTERS.reduce((acc, f) => ({ ...acc, [f.id]: false }), {});
 
-function renderSidebar(storeState = {}) {
+function renderSidebar(storeState = {}, props = {}) {
   const store = mockStore({
     restaurants: {
       activeFilters: defaultFilters,
@@ -16,7 +17,12 @@ function renderSidebar(storeState = {}) {
   });
   return render(
     <Provider store={store}>
-      <FiltersSidebar totalRestaurants={11} />
+      <FiltersSidebar
+        totalRestaurants={11}
+        sortOption={SortOption.NONE}
+        onSortChange={jest.fn()}
+        {...props}
+      />
     </Provider>,
   );
 }
@@ -52,7 +58,11 @@ describe('FiltersSidebar', () => {
     store.dispatch = jest.fn();
     render(
       <Provider store={store}>
-        <FiltersSidebar totalRestaurants={11} />
+        <FiltersSidebar
+          totalRestaurants={11}
+          sortOption={SortOption.NONE}
+          onSortChange={jest.fn()}
+        />
       </Provider>,
     );
     fireEvent.click(screen.getByText(/clear filters/i));
@@ -64,7 +74,11 @@ describe('FiltersSidebar', () => {
     store.dispatch = jest.fn();
     render(
       <Provider store={store}>
-        <FiltersSidebar totalRestaurants={11} />
+        <FiltersSidebar
+          totalRestaurants={11}
+          sortOption={SortOption.NONE}
+          onSortChange={jest.fn()}
+        />
       </Provider>,
     );
     const checkboxes = screen.getAllByRole('checkbox');
@@ -77,5 +91,30 @@ describe('FiltersSidebar', () => {
     renderSidebar({ activeFilters: filters });
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes[1]).toBeChecked();
+  });
+
+  it('renders sort dropdown with correct default option', () => {
+    renderSidebar();
+
+    const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
+    expect(select).toBeInTheDocument();
+    expect(select).toHaveValue(SortOption.NONE);
+  });
+
+  it('calls onSortChange when a different sort option is selected', () => {
+    const onSortChangeMock = jest.fn();
+    renderSidebar({}, { onSortChange: onSortChangeMock });
+
+    const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
+    fireEvent.change(select, { target: { value: SortOption.RATING_HIGH_TO_LOW } });
+
+    expect(onSortChangeMock).toHaveBeenCalledWith(SortOption.RATING_HIGH_TO_LOW);
+  });
+
+  it('shows the selected sort option', () => {
+    renderSidebar({}, { sortOption: SortOption.DELIVERY_COST_LOW_TO_HIGH });
+
+    const select = screen.getByRole('combobox', { name: /sort restaurants by/i });
+    expect(select).toHaveValue(SortOption.DELIVERY_COST_LOW_TO_HIGH);
   });
 });

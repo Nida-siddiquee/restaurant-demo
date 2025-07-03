@@ -26,7 +26,6 @@ describe('MapView', () => {
 
   it('is wrapped in a container with border radius and shadow', () => {
     const { container } = render(<MapView latitude={1} longitude={2} />);
-    // Should be a styled div with a child iframe
     const mapContainer = container.querySelector('div');
     expect(mapContainer).toContainElement(container.querySelector('iframe'));
   });

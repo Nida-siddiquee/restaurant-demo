@@ -1,5 +1,6 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Restaurant, RestaurantsResponse } from './types';
+import { SortOption } from '@/utils/sorting';
 
 export const fetchRestaurantsRequest = createAction<string>('restaurants/fetchRestaurantsRequest');
 export const fetchRestaurantsSuccess = createAction<RestaurantsResponse>(
@@ -13,27 +14,32 @@ export const setActiveFilters = createAction<{ [filterId: string]: boolean }>(
   'restaurants/setActiveFilters',
 );
 export const resetFilters = createAction('restaurants/resetFilters');
+export const setSortOption = createAction<SortOption>('restaurants/setSortOption');
 
 export interface RestaurantsState {
   data: RestaurantsResponse | null;
   loading: boolean;
   error: string | null;
+  errorType?: string;
   selectedId: string | null;
   selected: Restaurant | null;
   searchQuery: string;
   currentPage: number;
   activeFilters: { [filterId: string]: boolean };
+  sortOption: SortOption;
 }
 
 const initialState: RestaurantsState = {
   data: null,
   loading: false,
   error: null,
+  errorType: undefined,
   selectedId: null,
   selected: null,
   searchQuery: '',
   currentPage: 1,
   activeFilters: {},
+  sortOption: SortOption.NONE,
 };
 
 export const restaurantsSlice = createSlice({
@@ -67,17 +73,24 @@ export const restaurantsSlice = createSlice({
       state.activeFilters = {};
       state.currentPage = 1;
     },
+    setSortOption: (state, action: PayloadAction<SortOption>) => {
+      state.sortOption = action.payload;
+      state.currentPage = 1;
+    },
   },
   extraReducers: builder =>
     builder
       .addCase(fetchRestaurantsRequest, state => {
         state.loading = true;
         state.error = null;
+        state.errorType = undefined;
         state.data = null;
       })
       .addCase(fetchRestaurantsSuccess, (state, action: PayloadAction<RestaurantsResponse>) => {
         state.loading = false;
         state.data = action.payload;
+        state.activeFilters = {};
+
         if (state.selectedId) {
           state.selected = state.data.restaurants.find(r => r.id === state.selectedId) ?? null;
         }

@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const Home = lazy(() => import('@/pages/Home'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage/ErrorPage'));
 const Layout = lazy(() => import('@/components/Organisims/Layout'));
-const ScrollToTop = lazy(() => import('@/components/utils/ScrollToTop'));
+const ScrollToTop = lazy(() => import('@/utils/ScrollToTop'));
 const PostcodeSelectorPage = lazy(() => import('@/pages/PostcodeSelect'));
 const RestaurantDetailsPage = lazy(() => import('@/pages/RestaurantDetails'));
 const LoadingScreen = lazy(() => import('@/components/Molecules/LoadingScreen'));

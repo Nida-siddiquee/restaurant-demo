@@ -9,12 +9,12 @@ const Header: React.FC = () => {
   const selectedPostcode = useSelector((state: RootState) => state.postcodes.selected);
 
   return (
-    <HeaderWrapper>
-      <LogoContainer to={selectedPostcode ? 'restaurants' : '/'}>
+    <HeaderWrapper role="banner">
+      <LogoContainer to={selectedPostcode ? 'restaurants' : '/'} aria-label="logo">
         <img src={LogoSVG} alt="logo" />
       </LogoContainer>
       {selectedPostcode && (
-        <PostcodeInfo to="/">
+        <PostcodeInfo to="/" aria-label={selectedPostcode.label}>
           <img src={Pin} alt="Pin icon" />
           {selectedPostcode ? <span>{selectedPostcode.label}</span> : <span>Select Area</span>}
         </PostcodeInfo>

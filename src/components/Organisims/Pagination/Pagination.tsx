@@ -1,13 +1,8 @@
 import React from 'react';
 import { PageButton, Wrapper } from './Pagination.styled';
+import { PaginationProps } from './types';
 
-type Props = {
-  totalPages: number;
-  currentPage: number;
-  setCurrentPage: (p: number) => void;
-};
-
-const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }) => {
+const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCurrentPage }) => {
   if (totalPages <= 1) return null;
 
   const getPageList = () => {
@@ -29,8 +24,12 @@ const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }
   };
 
   return (
-    <Wrapper>
-      <PageButton onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+    <Wrapper role="navigation" aria-label="Pagination Navigation">
+      <PageButton
+        onClick={() => setCurrentPage(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Go to previous page"
+      >
         Previous
       </PageButton>
 
@@ -40,11 +39,17 @@ const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }
             key={item}
             $active={item === currentPage}
             onClick={() => setCurrentPage(item)}
+            aria-current={item === currentPage ? 'page' : undefined}
+            aria-label={`Go to page ${item}`}
           >
             {item}
           </PageButton>
         ) : (
-          <span key={`ellipsis-${idx}`} style={{ padding: '0.5rem 0.75rem', color: '#888' }}>
+          <span
+            key={`ellipsis-${idx}`}
+            style={{ padding: '0.5rem 0.75rem', color: '#888' }}
+            aria-hidden="true"
+          >
             ...
           </span>
         ),
@@ -53,6 +58,7 @@ const Pagination: React.FC<Props> = ({ totalPages, currentPage, setCurrentPage }
       <PageButton
         onClick={() => setCurrentPage(currentPage + 1)}
         disabled={currentPage === totalPages}
+        aria-label="Go to next page"
       >
         Next
       </PageButton>

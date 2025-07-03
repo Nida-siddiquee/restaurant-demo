@@ -1,51 +1,62 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '@/app/store';
-import {
-  Page,
-  Grid,
-  SubHeading,
-  Icon,
-  FilterContainer,
-  FilterButton,
-  FlexWrap,
-  Content,
-} from './Home.styled';
-
+import { Page, FlexWrap } from './Home.styled';
+import ErrorDisplay from '@/components/Atoms/ErrorDisplay';
+import InlineError from '@/components/Atoms/InlineError';
+import ErrorBoundary from '@/components/Atoms/ErrorBoundary';
 import {
   selectRestaurant,
   setSearchQuery,
   setCurrentPage,
   resetFilters,
+  fetchRestaurantsRequest,
+  setSortOption,
 } from '@/features/restaurants/restaurantsSlice';
-import FilterIcon from '@/assets/filterIcon.svg';
-import Pagination from '@/components/Organisims/Pagination/Pagination';
-import RestaurantCard from '@/components/Molecules/DetailCard';
-import SearchBox from '@/components/Atoms/SearchBox';
-import FiltersSidebar from '@/components/Molecules/Sidebar/FiltersSidebar';
-import ClearFiltersEmptyState from '@/components/Atoms/ClearFiltersEmptyState';
-import FiltersSidebarDrawer from '@/components/Molecules/Sidebar/FiltersSidebarDrawer';
-import { ClearButton } from '@/components/Molecules/Sidebar/Sidebar.styled';
+import HomeContent from '@/components/Organisims/HomeContent';
+import {
+  useFilteredRestaurants,
+  usePagination,
+  useErrorHandler,
+  useSortedRestaurants,
+} from '@/hooks';
 import LoadingScreen from '@/components/Molecules/LoadingScreen';
-import ErrorPage from '../ErrorPage';
-
-const RESTAURANTS_PER_PAGE = 30;
+import MobileFilterBar from '@/components/Organisims/MobileFilterBar';
+import FiltersSidebarDrawer from '@/components/Molecules/Sidebar/FiltersSidebarDrawer';
+import { createNetworkError, ErrorType } from '@/utils/errors';
+import { SortOption } from '@/utils/sorting';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pageRef = useRef<HTMLDivElement>(null);
-
-  const { data, loading, error, searchQuery, currentPage, activeFilters } = useSelector(
+  const previousPostcodeRef = useRef<string | null>(null);
+  const { data, loading, error, searchQuery, currentPage, activeFilters, sortOption } = useSelector(
     (state: RootState) => state.restaurants,
   );
-
+  const { selected: selectedPostcode } = useSelector((state: RootState) => state.postcodes);
   const [searchInput, setSearchInput] = useState(searchQuery);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const [debouncedQuery] = useDebounce(searchInput, 300);
+  const filteredRestaurants = useFilteredRestaurants(data?.restaurants, searchQuery, activeFilters);
+  const sortedRestaurants = useSortedRestaurants(filteredRestaurants, sortOption);
+  const { totalPages, pageSlice } = usePagination(sortedRestaurants, currentPage);
+  const hasActiveFilters = Object.values(activeFilters).some(Boolean);
+
+  const {
+    error: handlingError,
+    isRetrying,
+    executeWithErrorHandling,
+    retry,
+    clearError,
+  } = useErrorHandler({
+    maxRetries: 3,
+    retryDelay: 2000,
+    onError: err => console.error('Error in Home component:', err),
+  });
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
@@ -60,119 +71,130 @@ const Home: React.FC = () => {
     }
   }, [debouncedQuery, searchQuery, dispatch]);
 
-  const filteredRestaurants = useMemo(() => {
-    let list = data?.restaurants ?? [];
-    // Apply active filters
-    const f = activeFilters ?? {};
-    if (f.free_delivery) list = list.filter(r => r.deliveryCost === 0);
-    if (f.open_now) list = list.filter(r => r.isOpenNowForDelivery);
-    if (f.with_discounts) list = list.filter(r => (r.deals?.length ?? 0) > 0);
-    if (f.collection) list = list.filter(r => r.isCollection);
-    if (f.new) list = list.filter(r => r.isNew);
-    if (f['four_star']) list = list.filter(r => (r.rating?.starRating ?? 0) >= 4);
+  useEffect(() => {
+    const currentPostcodeCode = selectedPostcode?.code;
 
-    // search
+    if (
+      previousPostcodeRef.current !== null &&
+      previousPostcodeRef.current !== currentPostcodeCode &&
+      hasActiveFilters
+    ) {
+      dispatch(resetFilters());
+    }
 
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return list;
-    return list.filter(
-      r =>
-        r.name.toLowerCase().includes(q) ||
-        r.address?.city?.toLowerCase().includes(q) ||
-        (r.cuisines ?? []).some(c => c.name.toLowerCase().includes(q)),
+    previousPostcodeRef.current = currentPostcodeCode || null;
+  }, [selectedPostcode?.code, hasActiveFilters, dispatch]);
+
+  const handleDetails = async (id: string) => {
+    await executeWithErrorHandling(
+      async () => {
+        dispatch(selectRestaurant(id));
+        navigate(`/restaurants/${id}`);
+      },
+      { action: 'navigate_to_restaurant', restaurantId: id },
     );
-  }, [data?.restaurants, searchQuery, activeFilters]);
-
-  const totalPages = Math.ceil(filteredRestaurants.length / RESTAURANTS_PER_PAGE);
-  const startIdx = (currentPage - 1) * RESTAURANTS_PER_PAGE;
-  const pageSlice = filteredRestaurants.slice(startIdx, startIdx + RESTAURANTS_PER_PAGE);
-  const hasActiveFilters = Object.values(activeFilters).some(Boolean);
-
-  const handleDetails = (id: string) => {
-    dispatch(selectRestaurant(id));
-    navigate(`/restaurants/${id}`);
   };
 
   const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
   };
-  const handleClear = () => {
+
+  const handleClearFilters = () => {
+    clearError();
     dispatch(resetFilters());
   };
-  if (error) {
-    return <Page ref={pageRef}>{error && <ErrorPage />} </Page>;
-  }
-  return (
-    <Page ref={pageRef}>
 
-      {loading ? (
-        <LoadingScreen />
-      ) : (
-        <FlexWrap>
-          <FilterContainer className="mobile-only">
-            <FilterButton aria-label="Open filters" onClick={() => setDrawerOpen(true)}>
-              <Icon src={FilterIcon} alt="Filter icon" />
-            </FilterButton>
-            {hasActiveFilters && <ClearButton onClick={handleClear}>Clear filters </ClearButton>}
-          </FilterContainer>
-          <FiltersSidebarDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-          <FiltersSidebar totalRestaurants={filteredRestaurants.length} />
-          <Content>
-            <SearchBox
-              value={searchInput}
-              onChange={setSearchInput}
-              onClear={() => setSearchInput('')}
-              placeholder="Search by name, location, cuisine…"
+  const handleSearchChange = (value: string) => {
+    clearError();
+    setSearchInput(value);
+  };
+
+  const handleSearchClear = () => {
+    clearError();
+    setSearchInput('');
+  };
+
+  const handleRetryFetch = async () => {
+    if (selectedPostcode?.code) {
+      await executeWithErrorHandling(
+        async () => {
+          dispatch(fetchRestaurantsRequest(selectedPostcode.code));
+        },
+        { action: 'fetch_restaurants', postcode: selectedPostcode.code },
+      );
+    }
+  };
+
+  const handleGoHome = () => {
+    navigate('/');
+  };
+
+  const handleReload = () => {
+    window.location.reload();
+  };
+
+  const handleSortChange = (option: SortOption) => {
+    dispatch(setSortOption(option));
+  };
+  if (error && !loading) {
+    const errorObj = createNetworkError(error);
+    errorObj.retryable = true;
+
+    return (
+      <Page ref={pageRef}>
+        <ErrorDisplay
+          error={errorObj}
+          onRetry={handleRetryFetch}
+          onGoHome={handleGoHome}
+          onReload={handleReload}
+        />
+      </Page>
+    );
+  }
+
+  return (
+    <ErrorBoundary>
+      <Page ref={pageRef}>
+        {handlingError && handlingError.type !== ErrorType.GENERIC_ERROR && (
+          <InlineError error={handlingError} onRetry={retry} />
+        )}
+
+        {loading || isRetrying ? (
+          <LoadingScreen />
+        ) : (
+          <FlexWrap>
+            <MobileFilterBar
+              hasActiveFilters={hasActiveFilters}
+              onFilterClick={() => setDrawerOpen(true)}
+              onClearFilters={handleClearFilters}
             />
-            <SubHeading id="restaurant-count">
-              Order from {filteredRestaurants.length} place
-              {filteredRestaurants.length !== 1 && 's'}
-            </SubHeading>
-            {!loading && !error && filteredRestaurants.length === 0 && (
-              <ClearFiltersEmptyState onClear={() => dispatch(resetFilters())} />
-            )}
-            <Grid>
-              {pageSlice.map(r => (
-                <RestaurantCard
-                  logoUrl={r.logoUrl}
-                  key={r.id}
-                  testId={r.id}
-                  name={r.name}
-                  highlight={debouncedQuery}
-                  rating={r.rating?.starRating ?? 0}
-                  reviewCount={r.rating?.count?.toLocaleString() ?? '0'}
-                  deliveryTime={
-                    r.deliveryEtaMinutes
-                      ? `${r.deliveryEtaMinutes.rangeLower}-${r.deliveryEtaMinutes.rangeUpper} min`
-                      : 'N/A'
-                  }
-                  deliveryFee={
-                    r.deliveryCost !== undefined ? `£${r.deliveryCost.toFixed(2)}` : 'N/A'
-                  }
-                  offer={r.deals?.[0]?.description || undefined}
-                  badge={
-                    r.isPremier
-                      ? 'Sponsored'
-                      : r.deals?.some(d => d.offerType === 'StampCard')
-                        ? 'StampCard'
-                        : null
-                  }
-                  onClick={() => handleDetails(r.id)}
-                />
-              ))}
-            </Grid>
-            {totalPages > 1 && (
-              <Pagination
-                totalPages={totalPages}
-                currentPage={currentPage}
-                setCurrentPage={handlePageChange}
-              />
-            )}
-          </Content>
-        </FlexWrap>
-      )}
-    </Page>
+            <FiltersSidebarDrawer
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
+            />
+            <HomeContent
+              searchInput={searchInput}
+              onSearchChange={handleSearchChange}
+              onSearchClear={handleSearchClear}
+              filteredRestaurants={sortedRestaurants}
+              pageSlice={pageSlice}
+              searchQuery={debouncedQuery}
+              loading={loading || isRetrying}
+              error={error}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onRestaurantClick={handleDetails}
+              onPageChange={handlePageChange}
+              onClearFilters={handleClearFilters}
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
+            />
+          </FlexWrap>
+        )}
+      </Page>
+    </ErrorBoundary>
   );
 };
-
 export default Home;

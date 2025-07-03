@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, master]
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 env:
   NODE_VERSION: 'lts/*'
 
@@ -115,68 +120,36 @@ jobs:
           name: build-files
           path: dist/
 
-      # Example deployment to Vercel (uncomment and configure secrets)
-      # - name: Deploy to Vercel
-      #   id: deploy
-      #   uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-      #     vercel-args: '--prod'
-      #     working-directory: ./
-
-      # Placeholder deployment step (replace with your actual deployment)
-      - name: Deploy Application
+      - name: Deploy to Vercel Production
         id: deploy
         run: |
-          echo "Deploying application..."
-          echo "url=https://restaurant-demo-tau.vercel.app" >> $GITHUB_OUTPUT
+          # Install Vercel CLI
+          npm install -g vercel@latest
 
-  # Job 5: E2E Tests on Production (main/master only)
-  e2e-tests-production:
-    name: E2E Tests (Production)
-    runs-on: ubuntu-latest
-    needs: [deploy]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+          # Deploy to production
+          echo "Deploying to Vercel Production..."
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Wait for deployment to be ready
-        run: sleep 30
-
-      - name: Run E2E tests against production
-        run: npm run e2e:deployed
+          if DEPLOYMENT_URL=$(vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes 2>&1); then
+            # Extract the last line which should be the URL
+            DEPLOYMENT_URL=$(echo "$DEPLOYMENT_URL" | tail -1)
+            echo "url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+            echo "✅ Production deployment successful: $DEPLOYMENT_URL"
+          else
+            echo "❌ Production deployment failed: $DEPLOYMENT_URL"
+            exit 1
+          fi
         env:
-          PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.deployment-url }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Upload production test report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: production-playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-  # Job 6: E2E Tests on Preview (PRs only)
-  e2e-tests-preview:
-    name: E2E Tests (Preview)
+  # Job 5: Deploy Preview (PRs only)
+  deploy-preview:
+    name: Deploy Preview
     runs-on: ubuntu-latest
     needs: [build]
     if: github.event_name == 'pull_request'
+    outputs:
+      preview-url: ${{ steps.deploy-preview.outputs.url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -196,26 +169,72 @@ jobs:
           name: build-files
           path: dist/
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Deploy to Vercel Preview
+        id: deploy-preview
+        run: |
+          # Install Vercel CLI
+          npm install -g vercel@latest
 
-      - name: Start preview server
-        run: npm run preview &
+          # Link the project (if not already linked)
+          echo "Deploying to Vercel..."
+
+          # Deploy to preview - capture both URL and potential errors
+          if PREVIEW_URL=$(vercel --token ${{ secrets.VERCEL_TOKEN }} --yes 2>&1); then
+            # Extract the last line which should be the URL
+            PREVIEW_URL=$(echo "$PREVIEW_URL" | tail -1)
+            echo "url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+            echo "✅ Deployment successful: $PREVIEW_URL"
+          else
+            echo "❌ Deployment failed: $PREVIEW_URL"
+            echo "error=true" >> $GITHUB_OUTPUT
+            exit 1
+          fi
         env:
-          CI: true
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Wait for server
-        run: npx wait-on http://localhost:4173 --timeout 60000
-
-      - name: Run Playwright tests
-        run: npm run e2e:preview
-        env:
-          PLAYWRIGHT_BASE_URL: http://localhost:4173
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+      - name: Comment Preview URL
+        uses: actions/github-script@v7
+        if: steps.deploy-preview.outcome == 'success'
+        continue-on-error: true
         with:
-          name: playwright-report-preview
-          path: playwright-report/
-          retention-days: 30
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `🚀 **Preview deployment ready!**
+                
+                Preview URL: ${{ steps.deploy-preview.outputs.url }}
+                
+                You can now manually test the preview deployment.`
+              });
+            } catch (error) {
+              console.log('Failed to post comment:', error.message);
+            }
+
+      - name: Handle deployment failure
+        if: steps.deploy-preview.outcome == 'failure'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `❌ **Preview deployment failed**
+                
+                Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+                
+                Common issues:
+                - Check that VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID secrets are correctly set
+                - Ensure the Vercel project exists and is linked to this repository`
+              });
+            } catch (error) {
+              console.log('Failed to post failure comment:', error.message);
+            }

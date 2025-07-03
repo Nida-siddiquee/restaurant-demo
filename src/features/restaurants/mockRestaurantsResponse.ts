@@ -444,7 +444,6 @@ export const mockRestaurantsResponse: RestaurantsResponse = {
         '152631',
       ],
     },
-    // ... add american, groceries, etc. as needed (trimmed for brevity)
     american: {
       displayName: 'American',
       imageName: 'american',

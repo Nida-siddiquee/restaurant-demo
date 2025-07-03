@@ -6,7 +6,10 @@ export const Card = styled.div`
   box-shadow: 0 4px 16px rgba(25, 40, 70, 0.06);
   overflow: hidden;
   margin: 0.7rem 0;
-  min-width: 220px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   transition: box-shadow 0.2s;
 
@@ -15,9 +18,11 @@ export const Card = styled.div`
   }
 
   @media (max-width: 600px) {
-    min-width: 0;
     margin: 0.6rem 0 1rem 0;
     border-radius: 9px;
+    /* Maintain width but allow height to adapt to content on mobile */
+    min-height: auto;
+    height: auto;
   }
 `;
 
@@ -35,6 +40,8 @@ export const TopWrapper = styled.div`
 
   @media (max-width: 600px) {
     height: 90px;
+    /* Ensure the banner fills the space properly on mobile */
+    width: 100%;
   }
 `;
 
@@ -89,6 +96,7 @@ export const Logo = styled.img`
   position: absolute;
   bottom: 10px;
   left: 12px;
+  /* Desktop dimensions */
   width: 70px;
   height: 70px;
   object-fit: contain;
@@ -97,6 +105,7 @@ export const Logo = styled.img`
   border: 2px solid #eee;
 
   @media (max-width: 600px) {
+    /* Mobile dimensions */
     width: 42px;
     height: 42px;
     bottom: 6px;
@@ -108,6 +117,9 @@ export const Logo = styled.img`
 
 export const Body = styled.div`
   padding: 1.1rem 1.1rem 0.9rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 600px) {
     padding: 0.7rem 0.7rem 0.55rem;

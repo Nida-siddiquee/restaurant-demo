@@ -1,5 +1,6 @@
 import React from 'react';
-import { highlightMatch } from '@/components/utils/highlightMatch';
+import { highlightMatch } from '@/utils/highlightMatch';
+import { RestaurantCardProps } from './types';
 import {
   Badge,
   Body,
@@ -11,21 +12,6 @@ import {
   OfferRibbon,
   TopWrapper,
 } from './DetailCard.styled';
-
-interface RestaurantCardProps {
-  heroUrl?: string;
-  logoUrl?: string;
-  name: string;
-  highlight?: string;
-  rating: number;
-  reviewCount: string;
-  deliveryTime: string;
-  deliveryFee: string;
-  offer?: string;
-  testId?: string;
-  badge?: 'Sponsored' | 'StampCard' | null;
-  onClick?: () => void;
-}
 
 const TagIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff8000">
@@ -47,7 +33,19 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   testId,
   onClick,
 }) => (
-  <Card onClick={onClick} data-testid={testId} role="button" tabIndex={0}>
+  <Card
+    onClick={onClick}
+    data-testid={testId}
+    role="button"
+    tabIndex={0}
+    onKeyDown={e => {
+      if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+        e.preventDefault();
+        onClick();
+      }
+    }}
+    aria-label={`${name} restaurant - ${rating} stars, ${deliveryTime} delivery, from ${deliveryFee}${offer ? `, ${offer}` : ''}`}
+  >
     <TopWrapper>
       {heroUrl && <img className="banner" src={heroUrl} alt={`${name} banner`} />}
 
@@ -67,13 +65,23 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       <Name>{highlightMatch(name, highlight ?? '')}</Name>
 
       <DetailsRow>
-        <span className="star">★</span>
-        {rating} <span style={{ fontSize: '.9em', color: '#868' }}>({reviewCount})</span>
-        <span className="clock">🕒</span>
-        {deliveryTime}
+        <span className="star" aria-hidden="true">
+          ★
+        </span>
+        <span aria-label={`Rating: ${rating} out of 5 stars`}>{rating}</span>
+        <span style={{ fontSize: '.9em', color: '#868' }} aria-label={`${reviewCount} reviews`}>
+          ({reviewCount})
+        </span>
+        <span className="clock" aria-hidden="true">
+          🕒
+        </span>
+        <span aria-label={`Delivery time: ${deliveryTime}`}>{deliveryTime}</span>
       </DetailsRow>
 
-      <DeliveryRow>🚴‍♂️ Delivery from {deliveryFee}</DeliveryRow>
+      <DeliveryRow>
+        <span aria-hidden="true">🚴‍♂️</span>
+        <span aria-label={`Delivery cost: ${deliveryFee}`}>Delivery from {deliveryFee}</span>
+      </DeliveryRow>
     </Body>
   </Card>
 );

@@ -1,10 +1,7 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Header from '@/components/Molecules/Header';
 import { Container, Main } from './Layout.styled';
-
-interface LayoutProps {
-  children: ReactNode;
-}
+import { LayoutProps } from './types';
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
